@@ -36,7 +36,12 @@ const items = computed(() => page.props.items);
         </thead>
         <tbody>
             <tr v-for="item in items.data" :key="item.id">
-                <td class="px-2">{{ item.property_ack_receipt.par_number }}</td>
+                <td class="'px-2'" 
+                :class="{
+                'text-red-500' : item.status === 0,
+                'text-green-500' : item.status === 1,
+                'text-yellow-500' : item.status === 2
+                                 }">{{ item.property_ack_receipt.par_number }}</td>
                 <td class="px-2">{{ item.asset.property_no }}</td>
                 <td class="px-2">{{ item.item_name }}</td>
                 <td class="px-2">{{ item.unit ?? 'N/A' }}</td>

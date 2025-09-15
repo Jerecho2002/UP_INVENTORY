@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InventoryController;
 use App\Models\Item;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -15,20 +16,7 @@ use App\Http\Controllers\ProfileController;
 //     ]);
 // });
 
-Route::get('/', function (Request $request) {
-    $items = Item::with('asset', 'propertyAckReceipt')
-    ->when($request->search, function ($query, $search) {
-        $query->where('item_name', 'like', '%' . $search . '%')
-              ->orWhere('unit', 'like', '%' . $search . '%');
-    })
-    ->paginate(5)
-    ->withQueryString();
-
-    return Inertia::render('Welcome', [
-        'items' => $items,
-        'searchItem' => $request->search
-    ]);
-});
+Route::get('/', [InventoryController::class, 'searchBar']);
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');

@@ -40,5 +40,19 @@ class Item extends Model
     {
         return $this->belongsTo(PropertyAckReceipt::class, 'par_id');
     }
+
+    public function scopeSearch($query, $term)
+    {
+        return $query
+        // ->where('status', 1) uncomment this if wanna see only active status in items table
+        ->where(function ($q) use ($term) {
+        // Search item_name, unit in the items table
+          $q->where('item_name', 'like', "%{$term}%")
+            ->orWhere('unit', 'like', "%{$term}%")
+        // Search property_no, par_number from another table assets and property_ack_receipts
+            ->orWhereHas('asset', fn($q) => $q->where('property_no', 'like', "%{$term}%"))
+            ->orWhereHas('propertyAckReceipt', fn($q) => $q->where('par_number', 'like', "%{$term}%"));
+        });
+    }
 }
 
