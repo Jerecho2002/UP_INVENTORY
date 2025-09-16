@@ -15,7 +15,7 @@ import { Link } from "@inertiajs/vue3";
                         </button>
                     </div>
                     <div>
-                        <Link><img src="/images/up-logo.png" class="h-[80px]" alt=""></Link>
+                        <Link><img src="/images/up-logo.png" class="h-[5rem]" alt=""></Link>
                     </div>
                 </div>
             </nav>
