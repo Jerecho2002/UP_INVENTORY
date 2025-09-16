@@ -40,8 +40,8 @@ const items = computed(() => page.props.items);
                 <td class="px-2">{{ item.asset.property_no }}</td>
                 <td class="px-2">{{ item.item_name }}</td>
                 <td class="px-2">{{ item.unit ?? 'N/A' }}</td>
-                <td class="px-2">{{ item.unit_cost ?? 'N/A' }}</td>
-                <td class="px-2">{{ item.quantity }}</td>
+                <td class="px-2">{{ item.unit_cost ?  `₱${item.unit_cost}` :'N/A' }}</td>
+                <td class="px-2">{{ `${item.quantity} pcs.` }}</td>
             </tr>
         </tbody>
     </table>
