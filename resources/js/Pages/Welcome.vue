@@ -1,9 +1,9 @@
 <script setup>
-    import TableItem from '@/Components/TableItem.vue';
-    import Inventory from '@/Layouts/Inventory.vue';
+    import InventoryTable from '@/Components/InventoryTable.vue';
+    import NavHeader from '@/Components/NavHeader.vue';
 </script>
 
 <template>
-    <Inventory />
-    <TableItem />
+    <NavHeader />
+    <InventoryTable />
 </template>
