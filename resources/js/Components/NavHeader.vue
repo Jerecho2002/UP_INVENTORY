@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script setup>
 import { Link } from "@inertiajs/vue3";
 </script>
@@ -23,4 +24,11 @@ import { Link } from "@inertiajs/vue3";
         </header>
     </div>
 
+=======
+<script>
+    import { Link } from '@inertiajs/vue3';
+</script>
+<template>
+    
+>>>>>>> dfc32ad43efcef130aae5526138ca4a9e080dc2c
 </template>
