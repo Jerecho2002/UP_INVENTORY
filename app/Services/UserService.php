@@ -20,7 +20,7 @@ class UserService
     }
 
     public function getPaginatedUsers($search = null)
-{
+    {
     return $this->repository->query()
         ->when($search, function ($query, $search) {
             $query->where('name', 'like', "%{$search}%")
@@ -28,7 +28,7 @@ class UserService
         })
         ->orderBy('name')
         ->paginate(10);
-}
+    }
 
     public function getUserById($id) {
         return $this->repository->find($id);
