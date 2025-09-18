@@ -17,6 +17,7 @@ use App\Http\Controllers\ProfileController;
 // });
 
 Route::get('/', [InventoryController::class, 'searchBar']);
+Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');

@@ -5,11 +5,9 @@
 </script>
 
 <template>
-    
-        
             <NavHeader/>
+            <div class="flex">
             <SideBar />
-            <!-- <InventoryTable /> -->
-      
-       
+            <InventoryTable />
+            </div>
 </template>

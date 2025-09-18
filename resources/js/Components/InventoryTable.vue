@@ -15,11 +15,20 @@ watch(
   }, 300)
 );
 
+function deleteItem(id){
+    if (confirm("Are you sure you want to delete this item?")){
+        router.delete(`/items/${id}`, {
+            preserveScroll: true,
+        })
+    }
+}
+
 const page = usePage();
 const items = computed(() => page.props.items);
 </script>
 
 <template>
+    <div class="flex-col">
     <div>
         <input type="search" placeholder="Search" v-model="search">
     </div>
@@ -32,6 +41,7 @@ const items = computed(() => page.props.items);
                 <th class="px-2">Unit</th>
                 <th class="px-2">Unit Cost</th>
                 <th class="px-2">Quantity</th>
+                <th class="px-2">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -47,6 +57,9 @@ const items = computed(() => page.props.items);
                 <td class="px-2">{{ item.unit ?? 'N/A' }}</td>
                 <td class="px-2">{{ item.unit_cost ?  `₱${item.unit_cost}` :'N/A' }}</td>
                 <td class="px-2">{{ `${item.quantity} pcs.` }}</td>
+                 <td class="px-2">
+                    <button @click="deleteItem(item.id)" class="text-red-600 hover:underline">Delete</button>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -60,5 +73,6 @@ const items = computed(() => page.props.items);
         <div>
             <p>Showing from {{ items.from }} to {{ items.to }} total of {{ items.total }}</p>
         </div>
+    </div>
     </div>
 </template>

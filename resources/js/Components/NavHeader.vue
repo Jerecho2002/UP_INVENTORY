@@ -5,8 +5,7 @@ import { Link } from "@inertiajs/vue3";
     <div>
         <header>
             <nav>
-                <div class="flex bg-[#850038] h-[6rem] border-t-4 border-[#0E6021]">
-                    
+                <div class="flex bg-[#850038] h-[11vh] border-t-4 border-[#0E6021]">
                     <div>
                         <button class="my-5 mx-7">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-[40px] w-[37px] text-white hover:text-gray-300 text-semibold" fill="none"
@@ -16,11 +15,8 @@ import { Link } from "@inertiajs/vue3";
                         </button>
                     </div>
                     <div>
-
-                    <div class="-ml-4">
-                        <Link><img src="/images/up-logo.png" class="h-[5rem] w-[5rem]" alt="Logo"></Link>
+                        <Link><img src="/images/up-logo.png" class="h-[4rem]" alt=""></Link>
                     </div>
-                </div>
                 </div>
             </nav>
         </header>
