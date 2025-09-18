@@ -15,7 +15,7 @@ const menuItems = [
 
 <template>
   <div>
-    <NavHeader />
+    <NavHeader />   
     <!-- kebab-case when passing props in template -->
      <div class="flex">
     <SideBar :menu-items="menuItems" />
