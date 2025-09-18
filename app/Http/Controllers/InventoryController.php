@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Services\InventoryService;
@@ -14,4 +15,13 @@ class InventoryController extends Controller
         'searchItem' => $request->search
     ]);
     }
+
+    public function destroy($id)
+    {
+        $item = Item::findOrFail($id);
+        $item->delete();
+
+        return redirect()->back()->with('success', 'Item deleted successfully.');
+    }
+
 }

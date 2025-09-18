@@ -13,9 +13,18 @@ const menuItems = [
 </script>
 
 <template>
+<<<<<<< HEAD
   <div>
     <NavHeader />
     <!-- kebab-case when passing props in template -->
     <SideBar :menu-items="menuItems" />
   </div>
 </template>
+=======
+            <NavHeader/>
+            <div class="flex">
+            <SideBar />
+            <InventoryTable />
+            </div>
+</template>
+>>>>>>> ac07c92950c973058e68c26a8ec56b603940a9af
