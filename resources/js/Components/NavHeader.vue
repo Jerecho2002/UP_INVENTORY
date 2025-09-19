@@ -7,7 +7,7 @@ import { Link } from "@inertiajs/vue3";
             <nav>
                 <div class="flex bg-[#850038] h-[11vh] border-t-4 border-[#0E6021]">
                     <div>
-                        <button class="my-5 mx-7">
+                        <button class="my-5 mx-8">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-[40px] w-[37px] text-white hover:text-gray-300 text-semibold" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -15,7 +15,7 @@ import { Link } from "@inertiajs/vue3";
                         </button>
                     </div>
                     <div>
-                        <Link><img src="/images/up-logo.png" class="h-[4rem]" alt=""></Link>
+                        <Link><img src="/images/up-logo.png" class="h-[5rem]" alt="Logo"></Link>
                     </div>
                 </div>
             </nav>
