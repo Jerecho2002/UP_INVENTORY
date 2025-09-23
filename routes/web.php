@@ -15,9 +15,18 @@ use App\Http\Controllers\ProfileController;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
+Route::middleware(['auth', 'role:staff,admin'])->group(function () {
+    Route::get('/', [InventoryController::class, 'searchBar']);
+    Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
+});
+Route::get('/dummy-auth', function () {
+    $user_id = 1;
+    // Log in user with ID 1
+    Auth::loginUsingId($user_id);
 
-Route::get('/', [InventoryController::class, 'searchBar']);
-Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
+    return 'User logged ' . $user_id . " ID";
+});
+
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');

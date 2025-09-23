@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Item;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -13,6 +14,8 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
+        Role::create(['name' => 'staff']);
+        Role::create(['name' => 'admin']);
         Item::factory()->count(10)->create();
     }
 }

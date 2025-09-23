@@ -20,7 +20,7 @@ class InventoryService{
                 $query->whereBetween('unit_cost', [(float) $min, (float) $max]);
             })
             // Limit the result to 5 items per page
-            ->paginate(5)
+            ->paginate(8)
             // Keep the query string (like ?search=value) in pagination links
             ->withQueryString();
     }
