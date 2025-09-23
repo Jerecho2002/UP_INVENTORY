@@ -17,7 +17,7 @@ class RoleMiddleware
 
         $userRole = $user->role?->name;
 
-        if ($userRole || !in_array($userRole, $roles)) {
+        if (!$userRole || !in_array($userRole, $roles)) {
             abort(403, 'Unauthorized action.');
         }
 

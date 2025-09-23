@@ -16,7 +16,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="py-7 text-lg font-semibold space-y-2 bg-white h-screen w-full sm:w-[16rem] md:w-[20rem] shadow-lg flex flex-col">
+    <div class="py-7 text-lg font-semibold space-y-2 bg-white h-screen w-full sm:w-[16rem] md:w-[15rem] shadow-lg flex flex-col">
         <!-- Menu -->
         <ul class="flex-1">
             <li v-for="item in props.menuItems" :key="item.name" class="rounded-md">

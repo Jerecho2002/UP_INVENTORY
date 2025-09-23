@@ -36,8 +36,7 @@ const toggleSidebar = () => {
 
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
-      <aside v-show="isSidebarOpen"
-        class="sm:flex sm:flex-col sm:w-64 md:w-72 bg-white shadow-lg transition-all duration-300">
+      <aside v-show="isSidebarOpen">
         <SideBar :menu-items="menuItems" />
       </aside>
 

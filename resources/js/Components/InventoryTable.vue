@@ -100,7 +100,7 @@ const userRole = computed(() => user.value?.role);
                         <td class="p-2 sm:p-3 md:p-4 align-middle whitespace-nowrap">{{ `${item.quantity} pcs.` }}</td>
                         <td class="p-2 sm:p-3 md:p-4 align-middle">
                             <button
-                            v-if="userRole.includes(['Taper'])" @click="deleteItem(item.id)"
+                            v-if="userRole.includes(['admin'])" @click="deleteItem(item.id)"
                                 class="text-red-600 hover:underline text-xs sm:text-sm">
                                 Delete
                             </button>

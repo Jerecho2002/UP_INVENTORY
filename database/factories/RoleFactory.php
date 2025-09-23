@@ -13,7 +13,7 @@ class RoleFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->jobTitle(), // Generates unique job titles like "Manager", "Developer", etc.
+            'name'       => fake()->randomElement(['admin', 'staff']),
             'created_at' => now(),
             'updated_at' => now(),
         ];
