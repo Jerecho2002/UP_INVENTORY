@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
         $user = $request->user();
 
@@ -15,7 +15,9 @@ class RoleMiddleware
             return redirect()->route('login');
         }
 
-        if ($user->role->name !== $role) {
+        $userRole = $user->role?->name;
+
+        if ($userRole || !in_array($userRole, $roles)) {
             abort(403, 'Unauthorized action.');
         }
 
