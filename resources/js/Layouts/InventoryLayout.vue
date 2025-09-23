@@ -4,7 +4,7 @@ import SideBar from '@/Components/SideBar.vue';
 import InventoryTable from '@/Components/InventoryTable.vue';
 
 const menuItems = [
-  { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "/dashboard"},
+  { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "/dashboard" },
   { name: "Inventory", icon: "fa-solid fa-boxes-packing", route: "/inventory" },
   { name: "Reports", icon: "fa-solid fa-file-export", route: "/reports" },
   { name: "Suppliers", icon: "fa-solid fa-handshake", route: "/suppliers" },
@@ -15,12 +15,11 @@ const menuItems = [
 
 <template>
   <div>
-    <NavHeader />   
+    <NavHeader />
     <!-- kebab-case when passing props in template -->
-     <div class="flex">
-    <SideBar :menu-items="menuItems" />
-    <InventoryTable />
+    <div class="flex">
+      <SideBar :menu-items="menuItems" />
+      <InventoryTable />
     </div>
   </div>
 </template>
-

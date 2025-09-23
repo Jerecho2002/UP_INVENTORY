@@ -16,19 +16,23 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="py-7 text-lg font-semibold space-y-2 bg-white h-screen w-[20rem] shadow-lg">
-        <ul>
+    <div class="py-7 text-lg font-semibold space-y-2 bg-white h-screen w-full sm:w-[16rem] md:w-[20rem] shadow-lg flex flex-col">
+        <!-- Menu -->
+        <ul class="flex-1">
             <li v-for="item in props.menuItems" :key="item.name" class="rounded-md">
                 <Link :href="item.route"
-                    class="flex items-center gap-3 text-[#3A3434] py-4 px-4 mx-3 rounded-md hover:bg-[#D9D9D9]">
+                    class="flex items-center gap-3 text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9]">
                 <i :class="item.icon"></i>
                 <span>{{ item.name }}</span>
                 </Link>
-            </li> 
+            </li>
         </ul>
 
-        <div>
-            <span class="text-xs mx-[3rem] text-[#8C8C8C]">EasyLearning © UP Cebu.</span>
+        <!-- Footer -->
+        <div class="mt-auto">
+            <span class="block text-center sm:text-left text-xs mx-2 sm:mx-[3rem] text-[#8C8C8C]">
+                EasyLearning © UP Cebu.
+            </span>
         </div>
     </div>
 
