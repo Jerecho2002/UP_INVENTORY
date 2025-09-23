@@ -5,15 +5,25 @@ import { debounce } from 'lodash';
 
 const props = defineProps({
     searchItem: String,
+    selectedCostRange: String,
 });
 
 const search = ref(props.searchItem || '');
+const selectedCostRange = ref(props.selectedCostRange || '');
+
 watch(
     search,
     debounce((output) => {
-        router.get('/', { search: output }, { preserveState: true });
-    }, 300)
+        router.get('/', { search: output, cost_range: selectedCostRange.value }, { preserveState: true });
+    })
 );
+
+watch(
+    selectedCostRange,
+    debounce((range) => {
+        router.get('/', { search: search.value, cost_range: range }, { preserveState: true });
+    })
+)
 
 function deleteItem(id) {
     if (confirm("Are you sure you want to delete this item?")) {
@@ -41,10 +51,10 @@ const items = computed(() => page.props.items);
             <div class="flex">
                 <div class="flex-col">
                     <p for="" class="text-xs ml-12">Unit Cost</p>
-                    <select name="" id="" class="mx-[3rem] h-[2rem] w-[6rem] text-xs rounded-md">
+                    <select v-model="selectedCostRange" class="mx-[3rem] h-[2rem] w-[6rem] text-xs rounded-md">
                         <option value="">Select</option>
-                        <option value="">₱50,000 - ₱0</option>
-                        <option value="">₱50,000 - ₱100,000</option>
+                        <option value="0-50000">₱50,000 - ₱0</option>
+                        <option value="50000-100000">₱50,000 - ₱100,000</option>
                     </select>
                 </div>
 

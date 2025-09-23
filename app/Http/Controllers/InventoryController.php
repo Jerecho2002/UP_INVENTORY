@@ -10,9 +10,10 @@ use App\Services\InventoryService;
 class InventoryController extends Controller
 {
     public function searchBar(Request $request, InventoryService $service){
+        $search = $request->input('search');
+        $costRange = $request->input('cost_range');
         return Inertia::render('Inventory', [
-        'items' => $service->getPaginatedInventory($request->search),
-        'searchItem' => $request->search
+        'items' => $service->getPaginatedInventory($search, $costRange),
     ]);
     }
 
