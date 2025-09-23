@@ -14,7 +14,8 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::factory()->count(2)->create();
+        Role::create(['name' => 'staff']);
+        Role::create(['name' => 'admin']);
         Item::factory()->count(10)->create();
     }
 }
