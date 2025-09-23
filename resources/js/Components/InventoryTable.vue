@@ -25,13 +25,15 @@ function deleteItem(id) {
 
 const page = usePage();
 const items = computed(() => page.props.items);
+const user = computed(() => page.props.auth.user);
+const userRole = computed(() => user.value?.role);
 </script>
 
 <template>
 
     <div class="flex-col mx-[2rem] w-full">
         <div class="flex justify-between my-5">
-            <h1 class="font-bold text-[20px] text-[#414141]">INVENTORY</h1>
+            <h1 class="font-bold text-[20px] text-[#414141] font-optima">INVENTORY</h1>
             <p class="text-[#8F8686] font-semibold text-sm">UPCEBU<span><i
                         class="fa-solid fa-chevron-right mx-3 text-sm"></i></span>Inventory</p>
         </div>
@@ -70,13 +72,13 @@ const items = computed(() => page.props.items);
                         'text-green-500': item.status === 1,
                         'text-yellow-500': item.status === 2
                     }">{{ item.property_ack_receipt.par_number }}</td>
-                    <td class="px-2">{{ item.asset.property_no }}</td>
-                    <td class="px-2">{{ item.item_name }}</td>
-                    <td class="px-2">{{ item.unit ?? 'N/A' }}</td>
-                    <td class="px-2">{{ item.unit_cost ? `₱${item.unit_cost}` : 'N/A' }}</td>
-                    <td class="px-2">{{ `${item.quantity} pcs.` }}</td>
-                    <td class="px-2">
-                        <button @click="deleteItem(item.id)" class="text-red-600 hover:underline">Delete</button>
+                    <td class="px-2 font-palatino">{{ item.asset.property_no }}</td>
+                    <td class="px-2 font-palatino">{{ item.item_name }}</td>
+                    <td class="px-2 font-palatino">{{ item.unit ?? 'N/A' }}</td>
+                    <td class="px-2 font-palatino">{{ item.unit_cost ? `₱${item.unit_cost}` : 'N/A' }}</td>
+                    <td class="px-2 font-palatino">{{ `${item.quantity} pcs.` }}</td>
+                    <td class="px-2 font-palatino">
+                        <button v-if="['Taper'].includes(userRole)" @click="deleteItem(item.id)" class="text-red-600 hover:underline">Delete</button>
                     </td>
                 </tr>
             </tbody>

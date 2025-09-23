@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasOne(UserProfile::class);
     }
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
      public function offices()
     {
         return $this->belongsToMany(Office::class, 'users_office', 'user_id', 'office_id')

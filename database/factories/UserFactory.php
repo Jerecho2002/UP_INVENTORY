@@ -16,6 +16,7 @@ class UserFactory extends Factory
             'email'    => $this->faker->unique()->safeEmail(),
             'password' => Hash::make('password'), // or bcrypt('password')
             'status'   => $this->faker->numberBetween(0, 1),
+            'role_id'   => $this->faker->numberBetween(1, 5),
             'created_at' => now(),
             'updated_at' => now(),
         ];
