@@ -15,7 +15,7 @@ class InventoryService{
             // $query here is the query builder, passed automatically into the closure
             ->when($search, fn($query, $search) => $query->search($search))
             // Limit the result to 5 items per page
-            ->paginate(5)
+            ->paginate(8)
             // Keep the query string (like ?search=value) in pagination links
             ->withQueryString();
     }

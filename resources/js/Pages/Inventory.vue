@@ -6,8 +6,8 @@
 <template>
    <Head title="UP | Inventory" />
     
-        <div class="bg-[#F3F3F3] w-full">
-            <InventoryLayout />
+        <div class="bg-[#F3F3F3]">
+            <InventoryLayout/>
         </div> 
 
 </template>

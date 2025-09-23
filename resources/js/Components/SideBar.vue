@@ -29,8 +29,8 @@ const props = defineProps({
         </ul>
 
         <!-- Footer -->
-        <div class="mt-auto">
-            <span class="block text-center sm:text-left text-xs mx-2 sm:mx-[3rem] text-[#8C8C8C]">
+        <div class="mt-auto sm:mt-auto">
+            <span class="block text-center sm:text-left text-xs sm:mx-[5rem] text-[#8C8C8C]">
                 EasyLearning © UP Cebu.
             </span>
         </div>
@@ -38,4 +38,3 @@ const props = defineProps({
 
 
 </template>
-` `
