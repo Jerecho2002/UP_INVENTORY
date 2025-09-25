@@ -1,4 +1,6 @@
 <script setup>
+import TableCell from './TableCell.vue';
+import Icons from './Icons.vue';
 import { usePage, Link, router } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 import { debounce } from 'lodash';
@@ -9,6 +11,7 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+   
 });
 
 const search = ref(props.searchItem || '');
@@ -29,6 +32,15 @@ const page = usePage();
 const items = computed(() => page.props.items);
 const user = computed(() => page.props.auth.user);
 const userRole = computed(() => user.value?.role);
+
+// function statusClass(status) {
+//   return {
+//     'text-red-500': status === 0,
+//     'text-green-500': status === 1,
+//     'text-yellow-500': status === 2
+//   }
+// }
+
 </script>
 
 <template>
@@ -88,24 +100,21 @@ const userRole = computed(() => user.value?.role);
 
                 <tbody class="text-gray-700">
                     <tr v-for="item in items.data" :key="item.id" class="even:bg-gray-200">
-                        <td :class="{
-                            'text-red-500': item.status === 0,
-                            'text-green-500': item.status === 1,
-                            'text-yellow-500': item.status === 2,
-                        }" class="p-2 sm:p-3 md:p-4 align-middle break-words">
-                            {{ item.property_ack_receipt.par_number }}</td>
-                        <td class="p-2 sm:p-3 md:p-4 align-middle break-words">{{ item.asset.property_no }}</td>
-                        <td class="p-2 sm:p-3 md:p-4 align-middle break-words">{{ item.item_name }}</td>
-                        <td class="p-2 sm:p-3 md:p-4 align-middle">{{ item.unit ?? 'N/A' }}</td>
-                        <td class="p-2 sm:p-3 md:p-4 align-middle">{{ item.unit_cost ? `₱${item.unit_cost}` : 'N/A' }}
-                        </td>
-                        <td class="p-2 sm:p-3 md:p-4 align-middle whitespace-nowrap">{{ `${item.quantity} pcs.` }}</td>
-                        <td class="p-2 sm:p-3 md:p-4 align-middle">
-                            <button v-if="userRole.includes(['admin'])" @click="deleteItem(item.id)"
-                                class="text-red-600 hover:underline text-xs sm:text-sm">
-                                Delete
-                            </button>
-                        </td>
+                        <TableCell> {{ item.property_ack_receipt.par_number }}</TableCell>
+                        <TableCell>{{ item.asset.property_no }}</TableCell>
+                        <TableCell>{{ item.item_name }}</TableCell>
+                        <TableCell>{{ item.unit ?? 'N/A' }}</TableCell>
+                        <TableCell>{{ item.unit_cost ? `₱${item.unit_cost}` : 'N/A' }}</TableCell>
+                        <TableCell extra="whitespace-nowrap">{{ `${item.quantity} pcs.` }}</TableCell>
+                        <TableCell>
+                        <Icons v-if="userRole.includes('admin')" :item="item"
+                            :actions="[
+                            { name: 'view', icon: 'fa-regular fa-eye' },
+                            { name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem },
+                            { name: 'edit', icon: 'fa-solid fa-pen-to-square' }
+                            ]"
+                        />
+                        </TableCell>
                     </tr>
                 </tbody>
             </table>
