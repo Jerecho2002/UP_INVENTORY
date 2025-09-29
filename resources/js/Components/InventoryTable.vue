@@ -64,7 +64,7 @@ const statusMap = {
     </div>
 
     <!-- Add button + filters + search -->
-    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[2rem]">
+    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
         <button
             class="flex gap-2 bg-[#3FA165] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
 
@@ -110,7 +110,7 @@ const statusMap = {
                     <tr v-for="item in items.data" :key="item.id" class="even:bg-gray-200">
 
                         <TableCell> {{ item.category }}</TableCell>
-                        <TableCell>{{ item.property.property_no }}</TableCell>
+                        <TableCell>{{ item.property.property_number }}</TableCell>
                         <TableCell>{{ item.item_name }}</TableCell>
                         <TableCell>{{ item.unit ?? 'N/A' }}</TableCell>
                         <TableCell>{{ item.unit_cost ? `₱${item.unit_cost}` : 'N/A' }}</TableCell>
@@ -120,8 +120,8 @@ const statusMap = {
                         <Icons v-if="userRole.includes('admin')" :item="item"
                             :actions="[
                             { name: 'view', icon: 'fa-regular fa-eye' },
-                            { name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem },
-                            { name: 'edit', icon: 'fa-solid fa-pen-to-square' }
+                            { name: 'edit', icon: 'fa-solid fa-pen-to-square' },
+                            { name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem }
                             ]"
                         />
                         </TableCell>

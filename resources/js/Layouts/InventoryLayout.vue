@@ -16,7 +16,7 @@ const menuItems = [
 const tableHeaders = [
   { name: "Property Records" },
   { name: "Property Number" },
-  { name: "Item Name" },
+  { name: "Item Name"},
   { name: "Unit" },
   { name: "Unit Cost" },
   { name: "Quantity" },
