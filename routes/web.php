@@ -20,7 +20,7 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
 });
 Route::get('/dummy-auth', function () {
-    $user_id = 9;
+    $user_id =11;
     // Log in user with ID 1
     Auth::loginUsingId($user_id);
 

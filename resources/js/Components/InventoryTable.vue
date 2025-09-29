@@ -35,7 +35,7 @@ const userRole = computed(() => user.value?.role);
 const canDelete = computed(() => ['admin'].includes(userRole.value));
 const statusMap = {
     0: { label: 'Inactive', class: 'text-red-700' },
-    1: { label: 'Active', class: 'text-green-700' },
+    1: { label: 'Active', class: 'text-[#14B449]' },
     2: { label: 'Pending', class: 'text-yellow-700' },
 };
 
@@ -117,7 +117,7 @@ const statusMap = {
                         <TableCell extra="whitespace-nowrap">{{ `${item.quantity} pcs.` }}</TableCell>
                         <TableCell :class="[statusMap[item.status].class, 'px-2 py-1 text-xs font-semibold']">{{ statusMap[item.status].label }}</TableCell>
                         <TableCell>
-                        <Icons v-if="userRole.includes('admin')" :item="item"
+                        <Icons v-if="canDelete" :item="item"
                             :actions="[
                             { name: 'view', icon: 'fa-regular fa-eye' },
                             { name: 'edit', icon: 'fa-solid fa-pen-to-square' },
