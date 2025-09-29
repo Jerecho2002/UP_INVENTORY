@@ -59,7 +59,7 @@ const userRole = computed(() => user.value?.role);
     </div>
 
     <!-- Add button + filters + search -->
-    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[2rem]">
+    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
         <button
             class="flex gap-2 bg-[#3FA165] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
             <i class="fa-solid fa-plus my-[1px]"></i>
@@ -110,8 +110,8 @@ const userRole = computed(() => user.value?.role);
                         <Icons v-if="userRole.includes('admin')" :item="item"
                             :actions="[
                             { name: 'view', icon: 'fa-regular fa-eye' },
-                            { name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem },
-                            { name: 'edit', icon: 'fa-solid fa-pen-to-square' }
+                            { name: 'edit', icon: 'fa-solid fa-pen-to-square' },
+                            { name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem }
                             ]"
                         />
                         </TableCell>

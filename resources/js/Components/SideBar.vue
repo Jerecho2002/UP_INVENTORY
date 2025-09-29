@@ -29,11 +29,12 @@ const props = defineProps({
         </ul>
 
         <!-- Footer -->
-        <div class="mt-auto sm:mt-auto">
-            <span class="block text-center sm:text-left text-xs sm:mx-[5rem] text-[#8C8C8C]">
+        <div class="mt-auto border-t border-gray-200 py-3">
+            <span class="block text-center text-xs text-gray-500">
                 EasyLearning © UP Cebu.
             </span>
         </div>
+
     </div>
 
 

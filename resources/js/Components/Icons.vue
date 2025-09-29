@@ -5,8 +5,8 @@ const props = defineProps({
     type: Array,
     default: () => [
       { name: 'view', icon: 'fa-regular fa-eye'},
-      { name: 'delete', icon: 'fa-solid fa-trash' },
       { name: 'edit', icon: 'fa-solid fa-pen-to-square'},
+      { name: 'delete', icon: 'fa-solid fa-trash' },
     ]
   }
 })
@@ -19,7 +19,7 @@ const props = defineProps({
       <i 
         :class="[action.icon, {
           'text-red-500': action.name === 'delete',
-          'text-blue-500': action.name === 'edit'
+          'text-[#54B3AB]': action.name === 'edit'
         }]"
       ></i>
     </button>
