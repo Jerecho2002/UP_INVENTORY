@@ -2,21 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\UsersOffice;
 use App\Models\User;
 use App\Models\Office;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserOfficeFactory extends Factory
 {
-    protected $model = UsersOffice::class;
-
-    public function definition()
+    public function definition(): array
     {
         return [
-            'user_id'   => User::factory(),
+            'user_id' => User::factory(),
             'office_id' => Office::factory(),
-            'status'    => $this->faker->numberBetween(0, 2),
+            'status' => $this->faker->boolean ? 1 : 0,
         ];
     }
 }

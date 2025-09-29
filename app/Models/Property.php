@@ -2,20 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Asset extends Model
+class Property extends Model
 {
     use HasFactory;
-    protected $table = 'assets';
-    public $timestamps = false;
-
     protected $fillable = [
-        'property_no',
-        'description',
-        'unit',
-        'unit_cost',
+        'property_number',
         'date_acquired',
         'fund_source_id',
         'pr_id',
@@ -23,11 +17,8 @@ class Asset extends Model
         'invoice_id',
         'supplier_id',
         'location_id',
-        'sticker_code',
-        'warranty_months',
-        'remark',
-        'status',
-        'created_by'
+        'remarks',
+        'status'
     ];
 
     public function fundSource()
@@ -60,14 +51,13 @@ class Asset extends Model
         return $this->belongsTo(Location::class);
     }
 
-    public function creator()
+    public function inventoryItems()
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->hasMany(InventoryItem::class);
     }
 
-    public function items()
+    public function acknowledgementReceipts()
     {
-        return $this->hasMany(Item::class);
+        return $this->hasMany(AcknowledgementReceipt::class);
     }
 }
-

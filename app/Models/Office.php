@@ -2,20 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Office extends Model
 {
     use HasFactory;
-    protected $table = 'offices';
-    public $timestamps = false;
-
     protected $fillable = ['office_name', 'status'];
 
-    public function users()
+    public $timestamps = false;
+
+    public function locations()
     {
-        return $this->belongsToMany(User::class, 'users_office', 'office_id', 'user_id')
-                    ->withPivot('status');
+        return $this->hasMany(Location::class);
+    }
+
+    public function accountablePersons()
+    {
+        return $this->hasMany(AccountablePerson::class);
+    }
+
+    public function userOffices()
+    {
+        return $this->hasMany(UserOffice::class);
     }
 }

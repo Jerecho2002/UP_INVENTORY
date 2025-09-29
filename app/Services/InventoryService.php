@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Item;
+use App\Models\InventoryItem;
 use Illuminate\Http\Request;
 
 class InventoryService{
@@ -10,7 +10,7 @@ class InventoryService{
     {
         // Start a query and eager-load 'asset' and 'propertyAckReceipt' relationships
         // This returns an Eloquent query builder instance
-        return Item::with('asset', 'propertyAckReceipt')
+        return InventoryItem::with('property', 'acknowledgementReceipts')
             // Apply the 'search' scope only if $search has a value
             // $query here is the query builder, passed automatically into the closure
             ->when($search, fn($query, $search) => $query->search($search))

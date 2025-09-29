@@ -20,6 +20,7 @@ const tableHeaders = [
   { name: "Unit" },
   { name: "Unit Cost" },
   { name: "Quantity" },
+  { name: "Status" },
   { name: "Action" },
 ];
 

@@ -2,63 +2,55 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+    protected $fillable = ['email', 'password', 'status', 'role_id'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $hidden = ['password'];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    public function profile()
-    {
-        return $this->hasOne(UserProfile::class);
-    }
-
+    // Relationships
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
-     public function offices()
+    public function invoices()
     {
-        return $this->belongsToMany(Office::class, 'users_office', 'user_id', 'office_id')
-                    ->withPivot('status');
+        return $this->hasMany(Invoice::class, 'created_by');
     }
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    public function purchaseRequests()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(PurchaseRequest::class, 'created_by');
+    }
+
+    public function purchaseOrders()
+    {
+        return $this->hasMany(PurchaseOrder::class, 'created_by');
+    }
+
+    public function acknowledgementReceipts()
+    {
+        return $this->hasMany(AcknowledgementReceipt::class, 'created_by');
+    }
+
+    public function accountablePersons()
+    {
+        return $this->hasMany(AccountablePerson::class);
+    }
+
+    public function userProfiles()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function userOffices()
+    {
+        return $this->hasMany(UserOffice::class);
     }
 }

@@ -2,21 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\AccountablePerson;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Office;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AccountablePersonFactory extends Factory
 {
-    protected $model = AccountablePerson::class;
-
-    public function definition()
+    public function definition(): array
     {
         return [
             'office_id' => Office::factory(),
-            'user_id'   => User::factory(),
-            'status'    => $this->faker->numberBetween(0, 2),
+            'status' => $this->faker->boolean ? 1 : 0,
+            'user_id' => User::factory(),
         ];
     }
 }
