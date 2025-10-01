@@ -2,27 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class FundSource extends Model
 {
     use HasFactory;
-    protected $table = 'fund_sources';
-    public $timestamps = false;
-
     protected $fillable = ['code', 'description', 'status'];
 
-    // 🔁 Reverse Relationships
+    public $timestamps = false;
 
-    public function assets()
+    // Relationships
+    public function properties()
     {
-        return $this->hasMany(Asset::class);
+        return $this->hasMany(Property::class);
     }
 
-    public function propertyAckReceipts()
+    public function acknowledgementReceipts()
     {
-        return $this->hasMany(PropertyAckReceipt::class);
+        return $this->hasMany(AcknowledgementReceipt::class);
     }
 }
-

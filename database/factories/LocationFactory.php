@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Location;
+use App\Models\Office;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LocationFactory extends Factory
 {
-    protected $model = Location::class;
-
-    public function definition()
+    public function definition(): array
     {
         return [
             'location_name' => $this->faker->unique()->city(),
-            'status'        => $this->faker->numberBetween(0, 2),
+            'office_id' => Office::factory(),
+            'status' => $this->faker->boolean ? 1 : 0,
         ];
     }
 }

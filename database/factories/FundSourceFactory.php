@@ -2,19 +2,16 @@
 
 namespace Database\Factories;
 
-use App\Models\FundSource;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FundSourceFactory extends Factory
 {
-    protected $model = FundSource::class;
-
-    public function definition()
+    public function definition(): array
     {
         return [
-            'code'        => $this->faker->unique()->lexify('FS-????'),
-            'description' => $this->faker->optional()->sentence(),
-            'status'      => $this->faker->numberBetween(0, 2),
+            'code' => strtoupper($this->faker->unique()->bothify('FS###')),
+            'description' => $this->faker->sentence(4),
+            'status' => $this->faker->boolean ? 1 : 0,
         ];
     }
 }

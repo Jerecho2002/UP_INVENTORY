@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {
     use HasFactory;
-    protected $table = 'invoices';
-    public $timestamps = false;
-
     protected $fillable = ['invoice_number', 'invoice_date', 'supplier_id', 'status', 'created_by'];
 
+    // Relationships
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
@@ -22,5 +20,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-}
 
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
+    }
+}

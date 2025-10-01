@@ -4,15 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration {
     public function up(): void
     {
-        Schema::create('users_profile', function (Blueprint $table) {
-            $table->increments('id');                                // int unsigned PK
+        Schema::create('user_profiles', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->string('full_name', 100);
             $table->string('contact_number', 100);
@@ -22,11 +18,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('users_profile');
+        Schema::dropIfExists('user_profiles');
     }
 };

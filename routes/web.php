@@ -16,11 +16,33 @@ use App\Http\Controllers\ProfileController;
 //     ]);
 // });
 Route::middleware(['auth', 'role:staff,admin'])->group(function () {
-    Route::get('/', [InventoryController::class, 'searchBar']);
+    Route::get('/', [InventoryController::class, 'searchBar'])->name('inventory.index');
     Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
 });
+
+Route::get('/report', function () {
+    return inertia("Reports");
+})->name("reports.index");
+
+Route::get('/dashboard', function () {
+    return inertia("Dashboard");
+})->name("dashboard.index");
+
+Route::get('/suppliers', function () {
+    return inertia("Suppliers");
+})->name("suppliers.index");
+
+Route::get('/purchase', function () {
+    return inertia("Purchase");
+})->name("purchase.index");
+
+Route::get('/item_disposal', function () {
+    return inertia("ItemDisposal");
+})->name("item_disposal.index");
+
 Route::get('/dummy-auth', function () {
     $user_id = 1;
+
     // Log in user with ID 1
     Auth::loginUsingId($user_id);
 
