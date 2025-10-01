@@ -12,7 +12,8 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-
+    columns: Array,
+    rows: Object,
 });
 
 const search = ref(props.searchItem || '');
@@ -46,19 +47,9 @@ const userRole = computed(() => user.value?.role);
 const canDelete = computed(() => ['admin'].includes(userRole.value));
 const canEdit = computed(() => ['admin'].includes(userRole.value));
 
-const statusMap = {
-    0: { label: 'Inactive', class: 'text-red-700' },
-    1: { label: 'Active', class: 'text-[#14B449]' },
-    2: { label: 'Pending', class: 'text-yellow-700' },
-};
-
-// function statusClass(status) {
-//   return {
-//     'text-red-500': status === 0,
-//     'text-green-500': status === 1,
-//     'text-yellow-500': status === 2
-//   }
-// }
+function getValue(obj, path) {
+  return path.split('.').reduce((acc, key) => acc?.[key], obj) ?? 'N/A'
+}
 </script>
 
 <template>
@@ -81,10 +72,10 @@ const statusMap = {
             <div class="flex flex-col w-full sm:w-auto">
                 <label class="text-xs font-bold mb-1 sm:mb-0">Unit Cost</label>
 
-                <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border">
+                <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border" v-model="selectedCostRange">
                     <option value="">Select</option>
-                    <option value="">₱0 - ₱50,000</option>
-                    <option value="">₱50,000 Above</option>
+                    <option value="0-50000">₱0 - ₱50,000</option>
+                    <option value="50000-100000">₱50,000 Above</option>
                 </select>
             </div>
 
@@ -101,9 +92,9 @@ const statusMap = {
             <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
                 <thead class="bg-[#850038]">
                     <tr class="text-white">
-                        <th v-for="table in props.tableHeaders" :key="table.name"
+                        <th v-for="col in columns" :key="col.key"
                             class="p-2 sm:p-3 md:p-4 align-middle first:rounded-tl-lg last:rounded-tr-lg">
-                            {{ table.name }}
+                            {{ col.label }}
                         </th>
                     </tr>
                 </thead>
@@ -111,14 +102,10 @@ const statusMap = {
                 <tbody class="text-gray-700">
                     <tr v-for="item in items.data" :key="item.id" class="even:bg-gray-200">
 
-                        <TableCell> {{ item.category }}</TableCell>
-                        <TableCell>{{ item.property.property_number }}</TableCell>
-                        <TableCell>{{ item.item_name }}</TableCell>
-                        <TableCell>{{ item.unit ?? 'N/A' }}</TableCell>
-                        <TableCell>{{ item.unit_cost ? `₱${item.unit_cost}` : 'N/A' }}</TableCell>
-                        <TableCell extra="whitespace-nowrap">{{ `${item.quantity} pcs.` }}</TableCell>
-                        <TableCell :class="[statusMap[item.status].class, 'px-2 py-1 text-xs font-semibold']">{{
-                            statusMap[item.status].label }}</TableCell>
+                        <TableCell v-for="col in columns" :key="col.key">
+                            <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
+                            <span v-else>{{ getValue(item, col.key) }}</span>
+                        </TableCell>
                         <TableCell>
                             <Icons :item="item" :actions="[
                                 { name: 'view', icon: 'fa-regular fa-eye' },
@@ -126,7 +113,6 @@ const statusMap = {
                                 ...(canDelete ? [{ name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem }] : []),
                             ]" />
                         </TableCell>
-
                     </tr>
                 </tbody>
             </table>
