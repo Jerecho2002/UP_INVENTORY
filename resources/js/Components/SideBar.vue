@@ -21,7 +21,8 @@ const props = defineProps({
         <ul class="flex-1">
             <li v-for="item in props.menuItems" :key="item.name" class="rounded-md">
                 <Link :href="route(item.route)"
-                    class="flex items-center gap-3 text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9]">
+                    class="flex items-center gap-3 text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9]"
+                     :class="{ 'bg-[#D9D9D9] font-semibold': route().current(item.route) }">
                 <i :class="item.icon"></i>
                 <span>{{ item.name }}</span>
                 </Link>
@@ -31,7 +32,7 @@ const props = defineProps({
         <!-- Footer -->
         <div class="mt-auto border-t border-gray-200 py-3">
             <span class="block text-center text-xs text-gray-500">
-                EasyLearning © UP Cebu.
+                EasyLearning © UP Cebu. 
             </span>
         </div>
 

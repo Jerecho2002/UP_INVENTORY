@@ -53,8 +53,8 @@ const statusMap = {
 
 <template>
     <div class="flex flex-col">
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <!-- HEAD TITLE -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 m-2">
             <h1 class="font-bold text-lg sm:text-xl md:text-2xl text-[#1b1b1b]">INVENTORY</h1>
             <p class="text-gray-500 font-semibold text-xs sm:text-sm">
                 UPCEBU
@@ -67,7 +67,7 @@ const statusMap = {
     </div>
 
     <!-- Add button + filters + search -->
-    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
+    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem] m-2">
         <button
             class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
 
