@@ -66,14 +66,16 @@ const statusMap = {
     <!-- Add button + filters + search -->
     <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
         <button
-            class="flex gap-2 bg-[#3FA165] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
+            class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
 
             <!-- <i class="fa-solid fa-plus"></i> -->
 
-            <i class="fa-solid fa-plus my-[1px]"></i>
+            <i class="fa-solid fa-plus my-[3px] "></i>
 
             <span class="font-bold">Add Item</span>
         </button>
+
+        <!-- UNIT COST FILTER -->
 
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
             <div class="flex flex-col w-full sm:w-auto">
@@ -121,7 +123,7 @@ const statusMap = {
                             :actions="[
                             { name: 'view', icon: 'fa-regular fa-eye' },
                             { name: 'edit', icon: 'fa-solid fa-pen-to-square' },
-                            { name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem }
+                            { name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem } 
                             ]"
                         />
                         </TableCell>

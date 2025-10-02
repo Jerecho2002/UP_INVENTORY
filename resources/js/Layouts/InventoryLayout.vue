@@ -42,7 +42,7 @@ const toggleSidebar = () => {
       </aside>
 
       <!-- Main -->
-      <main class="flex-1 p-4 sm:p-7 md:p-8 overflow-hidden">
+      <main class="flex-1 sm:p-7 md:p-8 overflow-hidden">
         <div class="w-full h-full">
           <InventoryTable :table-headers="tableHeaders" />
         </div>

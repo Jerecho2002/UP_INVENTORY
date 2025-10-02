@@ -15,7 +15,7 @@ const props = defineProps({
 <template>
   <div class="flex gap-2">
     <button 
-      v-for="action in actions" :key="action.name" @click="action.handler(item.id)" class="hover:text-gray-500">
+      v-for="action in actions" :key="action.name" @click="action.handler(item.id)" class="hover:text-gray-500 text-[20px]">
       <i 
         :class="[action.icon, {
           'text-red-500': action.name === 'delete',
