@@ -1,22 +1,25 @@
 <script setup>
-
+defineProps({
+    title: String,
+    icon: String,
+    bgColor: { type: String, default: 'bg-[#06B6D4]' },
+    textColor: { type: String, default: 'text-[#06B6D4]' }
+});
 </script>
 
 <template>
 
-    <div class="flex flex-col md:flex-row gap-4 m-2">
-        <div class="bg-white w-[18rem] rounded-lg">
-            <div class="bg-[#06B6D4] rounded-tl-lg rounded-tr-lg p-4">
-                <h1 class="text-white text-xl font-bold">Total Items</h1>
-            </div>
-            <div>
-                <i class="fa-solid fa-cart-shopping"></i>
-            </div>
+    <div class="bg-white w-full sm:w-[16rem] rounded-lg shadow-lg">
+        <!-- Header -->
+        <div :class="['p-4 rounded-tl-lg rounded-tr-lg', bgColor]">
+            <h1 class="text-white text-base sm:text-lg md:text-xl font-bold">
+                {{ title }}
+            </h1>
         </div>
-
-        <div class="div">s</div>
-        <div class="div">s</div>
-        <div class="div">s</div>
+        <!-- Icon -->
+        <div class="p-6 text-2xl sm:text-3xl flex  sm:justify-start" :class="textColor">
+            <i :class="icon"></i>
+        </div>
     </div>
 
 </template>

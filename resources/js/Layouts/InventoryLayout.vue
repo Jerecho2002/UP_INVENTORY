@@ -3,6 +3,7 @@ import { ref } from "vue";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
+import PageHeader from "@/Components/PageHeader.vue";
 
 const menuItems = [
   { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "dashboard.index" },
@@ -43,6 +44,8 @@ const toggleSidebar = () => {
 
       <!-- Main --> 
       <main class="flex-1 sm:p-7 md:p-8 overflow-hidden">
+        <!-- HEADT TITLE -->
+        <PageHeader title="Inventory" />
         <div class="w-full h-full">
           <InventoryTable :table-headers="tableHeaders" />
         </div>

@@ -3,6 +3,7 @@ import { ref } from "vue";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import ItemOverview from "@/Components/ItemOverview.vue";
+import PageHeader from "@/Components/PageHeader.vue";
 
 const menuItems = [
   { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "dashboard.index" },
@@ -31,24 +32,37 @@ const toggleSidebar = () => {
         <SideBar :menu-items="menuItems" />
       </aside>
 
-      <!-- Main -->
+      <!-- MAIN -->
       <main class="flex-1 sm:p-7 md:p-8 overflow-hidden">
-        <div class="flex flex-col">
-          <!-- HEAD TITLE -->
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 m-3">
-            <h1 class="font-bold text-lg sm:text-xl md:text-2xl text-[#1b1b1b]">DASHBOARD</h1>
-            <p class="text-gray-500 font-semibold text-xs sm:text-sm">
-              UPCEBU
-              <span>
-                <i class="fa-solid fa-chevron-right mx-1 sm:mx-2 text-xs sm:text-sm"></i>
-              </span>
-              Dashboard
-            </p>
-          </div>
-        </div>
-        <div class="w-full h-screen text-left text-xs sm:text-sm mt-[1rem]">
-          <ItemOverview />
-        </div>
+        <PageHeader title="Dashboard" />
+          <div class="w-full h-screen text-left text-xs sm:text-sm mt-[1rem]">
+            <div class="flex flex-col md:flex-row gap-4 m-2">
+                <ItemOverview 
+                    title="Total Items" 
+                    icon="fa-solid fa-cart-shopping" 
+                    bgColor="bg-[#06B6D4]" 
+                    textColor="text-[#06B6D4]"
+                />
+                <ItemOverview 
+                    title="Item Distribution" 
+                    icon="fa-solid fa-hand-holding-hand" 
+                    bgColor="bg-[#8B5CF6]" 
+                    textColor="text-[#8B5CF6]"
+                />
+                <ItemOverview 
+                    title="Low Stock Items" 
+                    icon="fa-solid fa-triangle-exclamation" 
+                    bgColor="bg-[#F59E0B]" 
+                    textColor="text-[#F59E0B]"
+                />
+                <ItemOverview 
+                    title="Out of Stock Items" 
+                    icon="fa-solid fa-ban" 
+                    bgColor="bg-[#DC2626]" 
+                    textColor="text-[#DC2626]"
+                />
+            </div>
+          </div>  
       </main>
     </div>
   </div>
