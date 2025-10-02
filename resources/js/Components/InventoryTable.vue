@@ -11,7 +11,7 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-   
+
 });
 
 const search = ref(props.searchItem || '');
@@ -32,7 +32,10 @@ const page = usePage();
 const items = computed(() => page.props.items);
 const user = computed(() => page.props.auth.user);
 const userRole = computed(() => user.value?.role);
+
 const canDelete = computed(() => ['admin'].includes(userRole.value));
+const canEdit = computed(() => ['admin'].includes(userRole.value));
+
 const statusMap = {
     0: { label: 'Inactive', class: 'text-red-700' },
     1: { label: 'Active', class: 'text-[#14B449]' },
@@ -117,15 +120,14 @@ const statusMap = {
                         <TableCell>{{ item.unit ?? 'N/A' }}</TableCell>
                         <TableCell>{{ item.unit_cost ? `₱${item.unit_cost}` : 'N/A' }}</TableCell>
                         <TableCell extra="whitespace-nowrap">{{ `${item.quantity} pcs.` }}</TableCell>
-                        <TableCell :class="[statusMap[item.status].class, 'px-2 py-1 text-xs font-semibold']">{{ statusMap[item.status].label }}</TableCell>
+                        <TableCell :class="[statusMap[item.status].class, 'px-2 py-1 text-xs font-semibold']">{{
+                            statusMap[item.status].label }}</TableCell>
                         <TableCell>
-                        <Icons v-if="canDelete" :item="item"
-                            :actions="[
-                            { name: 'view', icon: 'fa-regular fa-eye' },
-                            { name: 'edit', icon: 'fa-solid fa-pen-to-square' },
-                            { name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem } 
-                            ]"
-                        />
+                            <Icons :item="item" :actions="[
+                                { name: 'view', icon: 'fa-regular fa-eye' },
+                                ...(canEdit ? [{ name: 'edit', icon: 'fa-solid fa-pen-to-square' }] : []),
+                                ...(canDelete ? [{ name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem }] : []),
+                            ]" />
                         </TableCell>
 
                     </tr>
