@@ -2,11 +2,13 @@
 import { ref } from "vue";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
+import PageHeader from "@/Components/PageHeader.vue";
+import ReportFilterForm from "@/Components/ReportFilterForm.vue";
 
 const menuItems = [
   { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "dashboard.index" },
   { name: "Inventory", icon: "fa-solid fa-boxes-packing", route: "inventory.index" },
-  { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index"},
+  { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
   { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
   { name: "Purchase", icon: "fa-solid fa-box-open", route: "purchase.index" },
   { name: "Item Disposal", icon: "fa-solid fa-recycle", route: "item_disposal.index" },
@@ -19,7 +21,7 @@ const toggleSidebar = () => {
 </script>
 
 <template>
-    <div class="h-screen flex flex-col bg-gray-100 overflow-hidden">
+  <div class="h-screen flex flex-col bg-gray-100 overflow-hidden">
     <!-- Pass toggle event -->
     <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />
 
@@ -28,6 +30,15 @@ const toggleSidebar = () => {
       <aside v-show="isSidebarOpen">
         <SideBar :menu-items="menuItems" />
       </aside>
+      <!-- MAIN -->
+      <main class="flex-1 sm:p-7 md:p-8 m-2">
+        <div>
+          <PageHeader title="Reports" />
+          <div class="mt-[3rem]">
+            <ReportFilterForm />
+          </div>
+        </div>
+      </main>
 
     </div>
   </div>

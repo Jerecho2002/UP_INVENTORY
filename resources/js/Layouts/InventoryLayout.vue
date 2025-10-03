@@ -54,7 +54,7 @@ const toggleSidebar = () => {
       </aside>
 
       <!-- Main --> 
-      <main class="flex-1 sm:p-7 md:p-8 overflow-hidden">
+      <main class="flex-1 sm:p-7 md:p-8 overflow-hidden m-2">
         <!-- HEADT TITLE -->
         <PageHeader title="Inventory" />
         <div class="w-full h-full">

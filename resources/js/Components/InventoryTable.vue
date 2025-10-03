@@ -49,7 +49,7 @@ function getValue(obj, path) {
 <template>
 
     <!-- Add button + filters + search -->
-    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem] m-2">
+    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
         <button
             class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
             <!-- <i class="fa-solid fa-plus"></i> -->
@@ -65,7 +65,6 @@ function getValue(obj, path) {
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
             <div class="flex flex-col w-full sm:w-auto">
                 <label class="text-xs font-bold mb-1 sm:mb-0">Unit Cost</label>
-
                 <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border"
                     v-model="selectedCostRange">
                     <option value="">Select</option>
@@ -74,9 +73,15 @@ function getValue(obj, path) {
                 </select>
             </div>
 
-            <div class="w-full sm:w-auto mt-3">
-                <input type="search" placeholder="Search" v-model="search"
-                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full px-3 border text-sm" />
+            <div class="w-full sm:w-auto mt-3 relative">
+                <!-- Search Icon -->
+                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+
+                <!-- Search Input -->
+                <input type="search" placeholder="Search stock item" v-model="search"
+                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm" />
             </div>
         </div>
     </div>
