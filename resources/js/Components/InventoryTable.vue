@@ -67,11 +67,11 @@ const statusMap = {
 
         <!-- UNIT COST FILTER -->
 
-        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto ">
             <div class="flex flex-col w-full sm:w-auto">
                 <label class="text-xs font-bold mb-1 sm:mb-0">Unit Cost</label>
 
-                <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border">
+                <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-[#403B3B] border">
                     <option value="">Select</option>
                     <option value="">₱0 - ₱50,000</option>
                     <option value="">₱50,000 Above</option>
@@ -87,7 +87,7 @@ const statusMap = {
     <div>
 
         <!-- Table (horizontal scroll on small screens) -->
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto m-2">
             <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
                 <thead class="bg-[#850038]">
                     <tr class="text-white">

@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
+import PageHeader from "@/Components/PageHeader.vue";
 
 const menuItems = [
   { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "dashboard.index" },
@@ -20,15 +21,18 @@ const toggleSidebar = () => {
 
 <template>
     <div class="h-screen flex flex-col bg-gray-100 overflow-hidden">
-    <!-- Pass toggle event -->
-    <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />
+      <!-- Pass toggle event -->
+      <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />
 
-    <div class="flex flex-1 overflow-hidden">
-      <!-- Sidebar -->
-      <aside v-show="isSidebarOpen">
-        <SideBar :menu-items="menuItems" />
-      </aside>
-
+      <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside v-show="isSidebarOpen">
+          <SideBar :menu-items="menuItems" />
+        </aside>
+         <!-- MAIN -->
+         <main class="flex-1 sm:p-7 md:p-8">
+            <PageHeader title="Reports"/>
+         </main>
+      </div>
     </div>
-  </div>
 </template>

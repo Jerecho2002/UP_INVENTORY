@@ -33,10 +33,10 @@ const toggleSidebar = () => {
       </aside>
 
       <!-- MAIN -->
-      <main class="flex-1 sm:p-7 md:p-8 overflow-hidden">
+      <main class="flex-1 sm:p-7 md:p-8">
         <PageHeader title="Dashboard" />
           <div class="w-full h-screen text-left text-xs sm:text-sm mt-[1rem]">
-            <div class="flex flex-col md:flex-row gap-4 m-2">
+            <div class="flex flex-col md:flex-row gap-4">
                 <ItemOverview 
                     title="Total Items" 
                     icon="fa-solid fa-cart-shopping" 
