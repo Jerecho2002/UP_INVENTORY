@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->date('date_released')->nullable();
             $table->timestamps();
 
-            $table->foreign('item_id')->references('id')->on('inventory_items');
+            $table->foreign('item_id') ->references('id')->on('inventory_items') ->cascadeOnDelete() ->cascadeOnUpdate();
         });
     }
 
