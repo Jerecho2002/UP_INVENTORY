@@ -41,7 +41,8 @@ Route::get('/item_disposal', function () {
 })->name("item_disposal.index");
 
 Route::get('/dummy-auth', function () {
-    $user_id =11;
+    $user_id = 1;
+
     // Log in user with ID 1
     Auth::loginUsingId($user_id);
 

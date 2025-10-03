@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // ✅ Seed roles only once
-        $roles = ['admin', 'staff', 'manager', 'user'];
+        $roles = ['admin', 'staff'];
         foreach ($roles as $role) {
             Role::firstOrCreate(['name' => $role]);
         }

@@ -7,20 +7,31 @@ import { debounce } from 'lodash';
 
 const props = defineProps({
     searchItem: String,
+    selectedCostRange: String,
     tableHeaders: {
         type: Array,
         required: true,
     },
-
+    columns: Array,
+    rows: Object,
 });
 
 const search = ref(props.searchItem || '');
+const selectedCostRange = ref(props.selectedCostRange || '');
+
 watch(
     search,
     debounce((output) => {
-        router.get('/', { search: output }, { preserveState: true });
-    }, 300)
+        router.get('/', { search: output, cost_range: selectedCostRange.value }, { preserveState: true });
+    })
 );
+
+watch(
+    selectedCostRange,
+    debounce((range) => {
+        router.get('/', { search: search.value, cost_range: range }, { preserveState: true });
+    })
+)
 
 function deleteItem(id) {
     if (confirm('Are you sure you want to delete this item?')) {
@@ -36,29 +47,19 @@ const userRole = computed(() => user.value?.role);
 const canDelete = computed(() => ['admin'].includes(userRole.value));
 const canEdit = computed(() => ['admin'].includes(userRole.value));
 
-const statusMap = {
-    0: { label: 'Inactive', class: 'text-red-700' },
-    1: { label: 'Active', class: 'text-[#14B449]' },
-    2: { label: 'Pending', class: 'text-yellow-700' },
-};
-
-// function statusClass(status) {
-//   return {
-//     'text-red-500': status === 0,
-//     'text-green-500': status === 1,
-//     'text-yellow-500': status === 2
-//   }
-// }
+function getValue(obj, path) {
+    return path.split('.').reduce((acc, key) => acc?.[key], obj) ?? 'N/A'
+}
 </script>
 
 <template>
 
     <!-- Add button + filters + search -->
-    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem] m-2">
+    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
         <button
             class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
-
             <!-- <i class="fa-solid fa-plus"></i> -->
+
 
             <i class="fa-solid fa-plus my-[3px] "></i>
 
@@ -67,33 +68,41 @@ const statusMap = {
 
         <!-- UNIT COST FILTER -->
 
-        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto ">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
             <div class="flex flex-col w-full sm:w-auto">
                 <label class="text-xs font-bold mb-1 sm:mb-0">Unit Cost</label>
 
-                <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-[#403B3B] border">
+
+                <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border"
+                    v-model="selectedCostRange">
                     <option value="">Select</option>
-                    <option value="">₱0 - ₱50,000</option>
-                    <option value="">₱50,000 Above</option>
+                    <option value="0-50000">₱0 - ₱50,000</option>
+                    <option value="50000-100000">₱50,000 Above</option>
                 </select>
             </div>
 
-            <div class="w-full sm:w-auto mt-3">
-                <input type="search" placeholder="Search" v-model="search"
-                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full px-3 border text-sm" />
+            <div class="w-full sm:w-auto mt-3 relative">
+                <!-- Search Icon -->
+                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+
+                <!-- Search Input -->
+                <input type="search" placeholder="Search stock item" v-model="search"
+                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm" />
             </div>
         </div>
     </div>
     <div>
 
         <!-- Table (horizontal scroll on small screens) -->
-        <div class="overflow-x-auto m-2">
+        <div class="overflow-x-auto">
             <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
                 <thead class="bg-[#850038]">
                     <tr class="text-white">
-                        <th v-for="table in props.tableHeaders" :key="table.name"
+                        <th v-for="col in columns" :key="col.key"
                             class="p-2 sm:p-3 md:p-4 align-middle first:rounded-tl-lg last:rounded-tr-lg">
-                            {{ table.name }}
+                            {{ col.label }}
                         </th>
                     </tr>
                 </thead>
@@ -101,14 +110,10 @@ const statusMap = {
                 <tbody class="text-gray-700">
                     <tr v-for="item in items.data" :key="item.id" class="even:bg-gray-200">
 
-                        <TableCell> {{ item.category }}</TableCell>
-                        <TableCell>{{ item.property.property_number }}</TableCell>
-                        <TableCell>{{ item.item_name }}</TableCell>
-                        <TableCell>{{ item.unit ?? 'N/A' }}</TableCell>
-                        <TableCell>{{ item.unit_cost ? `₱${item.unit_cost}` : 'N/A' }}</TableCell>
-                        <TableCell extra="whitespace-nowrap">{{ `${item.quantity} pcs.` }}</TableCell>
-                        <TableCell :class="[statusMap[item.status].class, 'px-2 py-1 text-xs font-semibold']">{{
-                            statusMap[item.status].label }}</TableCell>
+                        <TableCell v-for="col in columns" :key="col.key">
+                            <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
+                            <span v-else>{{ getValue(item, col.key) }}</span>
+                        </TableCell>
                         <TableCell>
                             <Icons :item="item" :actions="[
                                 { name: 'view', icon: 'fa-regular fa-eye' },
@@ -116,7 +121,6 @@ const statusMap = {
                                 ...(canDelete ? [{ name: 'delete', icon: 'fa-solid fa-trash', handler: deleteItem }] : []),
                             ]" />
                         </TableCell>
-
                     </tr>
                 </tbody>
             </table>

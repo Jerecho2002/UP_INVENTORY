@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
@@ -25,6 +26,32 @@ const tableHeaders = [
   { name: "Action" }, 
 ];
 
+const columns = [
+  { label: "Property Records", key: 'category' },
+  { label: "Property Number", key: 'property.property_number' },
+  { label: "Item Name", key: 'item_name' },
+  { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
+  { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
+  { label: "Status", key: 'status', 
+  format: (status) => {
+      let label = 'Unknown', cls = 'text-gray-500';
+      if(status === 0) {
+        label = 'Inactive'; cls = 'text-red-700';
+      } else if(status === 1) {
+        label = 'Active'; cls = 'text-[#14B449]';
+      } else if(status === 2) {
+        label = 'Pending'; cls = 'text-yellow-700';
+      }
+      return `<span class="${cls}">${label}</span>`;
+    }
+  },
+  { label: "Action", key: 'action' },
+];
+
+
+const page = usePage();
+const items = computed(() => page.props.items);
+
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
@@ -43,11 +70,11 @@ const toggleSidebar = () => {
       </aside>
 
       <!-- Main --> 
-      <main class="flex-1 sm:p-7 md:p-8 overflow-hidden">
+      <main class="flex-1 sm:p-7 md:p-8 overflow-hidden m-2">
         <!-- HEADT TITLE -->
         <PageHeader title="Inventory" />
         <div class="w-full h-full">
-          <InventoryTable :table-headers="tableHeaders" />
+          <InventoryTable :columns="columns" :rows="items" />
         </div>
       </main>
     </div>
