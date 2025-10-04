@@ -38,7 +38,7 @@ const columns = [
       if(status === 0) {
         label = 'Inactive'; cls = 'text-red-700';
       } else if(status === 1) {
-        label = 'Active'; cls = 'text-[#14B449]';
+        label = 'Active'; cls = 'text-[#119E26]';
       } else if(status === 2) {
         label = 'Pending'; cls = 'text-yellow-700';
       }
@@ -71,7 +71,7 @@ const toggleSidebar = () => {
 
       <!-- Main --> 
       <main class="flex-1 sm:p-7 md:p-8 overflow-hidden m-2">
-        <!-- HEADT TITLE -->
+        <!-- HEAD TITLE -->
         <PageHeader title="Inventory" />
         <div class="w-full h-full">
           <InventoryTable :columns="columns" :rows="items" />
