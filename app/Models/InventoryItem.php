@@ -36,14 +36,23 @@ class InventoryItem extends Model
             'id'              // local key on properties
         );
     }
-    
+
     public function scopeSearch($query, $term)
     {
+        if (!$term) {
+            return $query;
+        }
+
         return $query->where(function ($q) use ($term) {
             $q->where('item_name', 'like', "%{$term}%")
                 ->orWhere('unit', 'like', "%{$term}%")
-                ->orWhereHas('property', fn($q) =>
-                    $q->where('property_number', 'like', "%{$term}%"));
+                ->orWhereHas('property', function ($q) use ($term) {
+                    $q->where('property_number', 'like', "%{$term}%")
+                        ->orWhereHas('location', function ($q) use ($term) {
+                            $q->where('location_name', 'like', "%{$term}%");
+                        });
+                });
         });
     }
+
 }

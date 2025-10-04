@@ -5,23 +5,16 @@ namespace App\Services;
 use App\Models\InventoryItem;
 use Illuminate\Http\Request;
 
-class InventoryService
+class DashboardService
 {
-    public function getPaginatedInventory($search = null, $costRange = null)
+    public function getPaginatedInventory($search = null)
     {
         // Start a query and eager-load 'property' and 'acknowledgementReceipts' relationships
         // This returns an Eloquent query builder instance
-        return InventoryItem::with('property', 'acknowledgementReceipts')
+        return InventoryItem::with('property.location')
 
             // Apply search filter only if $search has a value
             ->when($search, fn($query, $search) => $query->search($search))
-
-            // Apply cost range filter only if $costRange has a value
-            ->when($costRange, function ($query, $costRange) {
-                // Expecting "min-max" format (e.g., "100-500")
-                [$min, $max] = explode('-', $costRange);
-                $query->whereBetween('unit_cost', [(float) $min, (float) $max]);
-            })
 
             // Limit the result to 8 items per page
             ->paginate(8)

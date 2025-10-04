@@ -15,17 +15,6 @@ const menuItems = [
   { name: "Item Disposal", icon: "fa-solid fa-recycle", route: "item_disposal.index" },
 ];
 
-const tableHeaders = [
-  { name: "Property Records" },
-  { name: "Property Number" },
-  { name: "Item Name" },
-  { name: "Unit" },
-  { name: "Unit Cost" },
-  { name: "Quantity" },
-  { name: "Status" },
-  { name: "Action" }, 
-];
-
 const columns = [
   { label: "Property Records", key: 'category' },
   { label: "Property Number", key: 'property.property_number' },
@@ -33,21 +22,16 @@ const columns = [
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
   { label: "Status", key: 'status', 
-  format: (status) => {
+    format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500';
-      if(status === 0) {
-        label = 'Inactive'; cls = 'text-red-700';
-      } else if(status === 1) {
-        label = 'Active'; cls = 'text-[#119E26]';
-      } else if(status === 2) {
-        label = 'Pending'; cls = 'text-yellow-700';
-      }
+      if (status === 0) { label = 'Inactive'; cls = 'text-red-700'; }
+      else if (status === 1) { label = 'Active'; cls = 'text-[#14B449]'; }
+      else if (status === 2) { label = 'Pending'; cls = 'text-yellow-700'; }
       return `<span class="${cls}">${label}</span>`;
     }
   },
-  { label: "Action", key: 'action' },
-];
-
+  { label: "Action", key: "action" } // keep key, but don’t inject HTML
+]
 
 const page = usePage();
 const items = computed(() => page.props.items);

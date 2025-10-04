@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\InventoryController;
 use App\Models\Item;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InventoryController;
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -18,15 +19,13 @@ use App\Http\Controllers\ProfileController;
 Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::get('/', [InventoryController::class, 'searchBar'])->name('inventory.index');
     Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
+
+    Route::get('/dashboard', [DashboardController::class, 'searchBar'])->name('dashboard.index');
 });
 
 Route::get('/report', function () {
     return inertia("Reports");
 })->name("reports.index");
-
-Route::get('/dashboard', function () {
-    return inertia("Dashboard");
-})->name("dashboard.index");
 
 Route::get('/suppliers', function () {
     return inertia("Suppliers");
