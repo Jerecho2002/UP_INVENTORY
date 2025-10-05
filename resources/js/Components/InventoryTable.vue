@@ -3,6 +3,10 @@ import TableCell from './TableCell.vue';
 import { usePage, Link, router } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 import { debounce } from 'lodash';
+import AddModal from "./Modals/AddModal.vue";
+import ViewModal from './Modals/ViewModal.vue';
+import EditModal from './Modals/EditModal.vue';
+import DeleteModal from './Modals/DeleteModal.vue';
 
 const props = defineProps({
     searchItem: String,
@@ -17,7 +21,7 @@ const selectedCostRange = ref(props.selectedCostRange || '');
 watch(
     search,
     debounce((output) => {
-        router.get('/', { search: output, cost_range: selectedCostRange.value }, { preserveState: true, only: ['items']});
+        router.get('/', { search: output, cost_range: selectedCostRange.value }, { preserveState: true, only: ['items'] });
     })
 );
 
@@ -28,11 +32,11 @@ watch(
     })
 )
 
-function deleteItem(id) {
-    if (confirm('Are you sure you want to delete this item?')) {
-        router.delete(`/items/${id}`, { preserveScroll: true });
-    }
-}
+// function deleteItem(id) {
+//     if (confirm('Are you sure you want to delete this item?')) {
+//         router.delete(`/items/${id}`, { preserveScroll: true });
+//     }
+// }
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -44,30 +48,81 @@ const canEdit = computed(() => ['admin'].includes(userRole.value));
 function getValue(obj, path) {
     return path.split('.').reduce((acc, key) => acc?.[key], obj) ?? 'N/A'
 }
+
+const addModalRef = ref(null);
+const viewModalRef = ref(null);
+const editModalRef = ref(null);
+const deleteModalRef = ref(null);
+
+
 </script>
 
 <template>
 
     <!-- Add button + filters + search -->
     <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
-        <button
-            class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
-            <!-- <i class="fa-solid fa-plus"></i> -->
+        <AddModal ref="addModalRef">
+            <!-- Add Item Button -->
+            <template #AddItemButton>
+                <button @click="addModalRef.openModal()"
+                    class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
+                    <i class="fa-solid fa-plus my-[3px]"></i>
+                    <span class="font-bold">Add Item</span>
+                </button>
+            </template>
 
+            <!--ADD FORM CONTENT -->
+            <template #InventoryForm>
+                <form @submit.prevent="submitItem" class="flex flex-col gap-3">
 
-            <i class="fa-solid fa-plus my-[3px] "></i>
+                    <!-- HEAD TITLE ADD ITEM MODAL FORM-->
+                    <div class="font-bold text-2xl">
+                        <h2>Add New Item</h2>
+                    </div>
 
-            <span class="font-bold">Add Item</span>
-        </button>
+                    <!-- <div>
+                    <label class="text-sm font-semibold text-gray-700">Item Name</label>
+                    <input type="text"
+                        class="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#0E6021] outline-none"
+                        placeholder="Enter item name" required />
+                </div>
+
+                <div>
+                    <label class="text-sm font-semibold text-gray-700">Quantity</label>
+                    <input type="number"
+                        class="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#0E6021] outline-none"
+                        placeholder="Enter quantity" required />
+                </div> -->
+                    <div class="flex justify-end gap-2 mt-4">
+                        <button type="button" @click="addModalRef.closeModal()"
+                            class="px-3 py-2 text-sm rounded-md  bg-[#F03636] text-white border border-gray-300 hover:bg-[#ec4848]">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="px-3 py-2 text-sm rounded-md bg-[#0E6021] text-white hover:bg-[#2a9754]">
+                            Add
+                        </button>
+                    </div>
+                </form>
+            </template>
+        </AddModal>
 
         <!-- UNIT COST FILTER -->
 
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
             <div class="flex flex-col w-full sm:w-auto">
+                <label class="text-xs font-bold mb-1 sm:mb-0">Location</label>
+                <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border">
+                    <option value="">Select</option>
+                    <option value="0-50000">₱0 - ₱50,000</option>
+                    <option value="50000-100000">₱50,000 Above</option>
+                </select>
+            </div>
+            <div class="flex flex-col w-full sm:w-auto">
                 <label class="text-xs font-bold mb-1 sm:mb-0">Unit Cost</label>
                 <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border"
                     v-model="selectedCostRange">
-                    <option value="">Select</option>
+                    <option value="">Select All</option>
                     <option value="0-50000">₱0 - ₱50,000</option>
                     <option value="50000-100000">₱50,000 Above</option>
                 </select>
@@ -110,15 +165,90 @@ function getValue(obj, path) {
 
                             <!-- For Action column -->
                             <template v-else>
-                                <button class="text-blue-600 mx-1" title="View" @click="viewItem(item)">
-                                    <i class="fa-regular fa-eye"></i>
-                                </button>
-                                <button class="text-green-600 mx-1" title="Edit" @click="editItem(item)">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                <button class="text-red-600 mx-1" title="Delete" @click="deleteItem(item.id)">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
+                                <div class="flex items-center gap-1">
+                                    <!-- VIEW MODAL -->
+                                    <ViewModal ref="viewModalRef">
+                                        <template #ViewItemButton="{ open }">
+                                            <button type="button" class="text-blue-600 mx-1" title="View" @click="open">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </button>
+                                        </template>
+                                    </ViewModal>
+
+                                    <!-- EDIT MODAL -->
+                                    <EditModal ref="editModalRef">
+                                        <template #EditItemButton="{ open }">
+                                            <button type="button" class="text-green-600 mx-1" title="Edit"
+                                                @click="open">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                        </template>
+                                        <!--EDIT FORM CONTENT -->
+                                        <template #EditInventory="{ close }">
+                                            <form @submit.prevent="submitItem" class="flex flex-col gap-3">
+
+                                                <!-- HEAD TITLE ADD ITEM MODAL FORM-->
+                                                <div class="font-bold text-2xl">
+                                                    <h2>Edit Item</h2>
+                                                </div>
+
+                                                <!-- <div>
+                                                    <label class="text-sm font-semibold text-gray-700">Item Name</label>
+                                                    <input type="text"
+                                                        class="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#0E6021] outline-none"
+                                                        placeholder="Enter item name" required />
+                                                </div>
+
+                                                <div>
+                                                    <label class="text-sm font-semibold text-gray-700">Quantity</label>
+                                                    <input type="number"
+                                                        class="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#0E6021] outline-none"
+                                                        placeholder="Enter quantity" required />
+                                                </div> -->
+
+                                                <div class="flex justify-end gap-2 mt-4">
+                                                    <button type="button" @click="close"
+                                                        class="px-3 py-2 text-sm rounded-md  bg-[#F03636] text-white border border-gray-300 hover:bg-[#ec4848]">
+                                                        Cancel
+                                                    </button>
+                                                    <button type="submit"
+                                                        class="px-3 py-2 text-sm rounded-md bg-[#0E6021] text-white hover:bg-[#2a9754]">
+                                                        Add
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </template>
+                                    </EditModal>
+
+                                    <!-- DELETE MODAL -->
+                                    <DeleteModal :delete-url="`/items/${item.id}`">
+                                        <template #DeleteItemButton="{ open }">
+                                            <button type="button" class="text-red-600 mx-1" title="Delete"
+                                                @click="open">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </template>
+
+                                        <template #DeleteItem="{ close, confirm, message }">
+                                            <div class="text-center">
+                                                <h2 class="text-lg font-bold text-gray-800 mb-3">Confirm Deletion</h2>
+                                                <p class="text-gray-600 mb-5 text-sm">{{ message }}</p>
+
+                                                <div class="flex justify-center gap-3">
+                                                    <button @click="close"
+                                                        class="px-4 py-2 rounded-md text-sm bg-gray-200 hover:bg-gray-300 font-medium">
+                                                        Cancel
+                                                    </button>
+                                                    <button @click="confirm"
+                                                        class="px-4 py-2 rounded-md text-sm bg-red-600 hover:bg-red-700 text-white font-medium">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </DeleteModal>
+
+                                </div>
                             </template>
                         </TableCell>
                     </tr>

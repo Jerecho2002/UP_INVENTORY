@@ -43,11 +43,16 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
 
 <template>
   <div class="h-screen flex flex-col bg-gray-100 overflow-hidden">
+    <!-- NAVHEADER -->
     <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />
+    
+    <!-- SIDERBAR -->
     <div class="flex flex-1 overflow-hidden">
       <aside v-show="isSidebarOpen">
         <SideBar :menu-items="menuItems" />
       </aside>
+    
+    <!-- MAIN CONTENT -->
       <main class="flex-1 sm:p-7 md:p-8 overflow-hidden">
         <PageHeader title="Dashboard" />
         <div class="w-full h-screen text-left text-xs sm:text-sm mt-[1rem]">
@@ -62,6 +67,7 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
           </div>
         </div>
       </main>
+
     </div>
   </div>
 </template>
