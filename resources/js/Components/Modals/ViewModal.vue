@@ -24,11 +24,8 @@ defineExpose({ openModal, closeModal });
         <i class="fa-solid fa-xmark"></i>
       </button>
 
-      <h2 class="text-lg font-bold text-gray-800 mb-4">Item Details</h2>
-
-      <p class="text-sm text-gray-600">
-        This is your item view modal content.
-      </p>
+  <!-- BODY CONTENT MODAL -->
+   <slot name="ViewBodyContent" :close="closeModal"></slot>
     </div>
   </div>
 </template>
