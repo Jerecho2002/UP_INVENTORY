@@ -9,7 +9,7 @@ class DashboardService
 {
     public function getPaginatedInventory($search = null)
     {
-        // Start a query and eager-load 'property' and 'acknowledgementReceipts' relationships
+        // Start a query and eager-load 'properties.location' relationships
         // This returns an Eloquent query builder instance
         return InventoryItem::with('property.location')
 

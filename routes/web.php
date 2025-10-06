@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use App\Models\Item;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -21,11 +22,8 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
 
     Route::get('/dashboard', [DashboardController::class, 'searchBar'])->name('dashboard.index');
+    Route::get('/report', [ReportController::class, 'searchBar'])->name('reports.index');
 });
-
-Route::get('/report', function () {
-    return inertia("Reports");
-})->name("reports.index");
 
 Route::get('/suppliers', function () {
     return inertia("Suppliers");

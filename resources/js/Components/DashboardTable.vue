@@ -16,9 +16,9 @@ watch(
   search,
   debounce((output) => {
     router.get(route('dashboard.index'), { search: output }, {
-      preserveState: true,      // Keep local state
-      replace: true,            // Replace history instead of pushing
-      preserveScroll: true,     // Don't reset scroll
+      preserveState: true,    
+      replace: true,          
+      preserveScroll: true,    
     });
   }, 300)
 );
