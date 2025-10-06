@@ -20,12 +20,12 @@ defineExpose({ openModal, closeModal });
 
   <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="bg-white w-[90%] max-w-md rounded-lg shadow-2xl  p-6 relative animate-fadeIn">
-      <button @click="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-lg">
-        <i class="fa-solid fa-xmark"></i>
+      <button @click="closeModal" class="absolute top-4 right-4 flex items-center justify-center w-6 h-6 rounded-full bg-black text-white transition-colors duration-200">
+        <i class="fa-solid fa-xmark text-sm"></i>
       </button>
 
-  <!-- BODY CONTENT MODAL -->
-   <slot name="ViewBodyContent" :close="closeModal"></slot>
+      <!-- BODY CONTENT MODAL -->
+      <slot name="ViewBodyContent" :close="closeModal"></slot>
     </div>
   </div>
 </template>

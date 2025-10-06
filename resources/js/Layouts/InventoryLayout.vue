@@ -33,6 +33,44 @@ const columns = [
   { label: "Action", key: "action" } // keep key, but don’t inject HTML
 ]
 
+const itemDetails = [
+  { label: "Item Name:", value:"Dell Desktop"},
+  { label: "Property Records:", value:"223-2021-05-200"},
+  { label: "Property Number:", value:"223-215-001"},
+  { label: "Supplier:", value:"MICRO-D INTERNATIONAL, INC."},
+  { label: "Description:", value:"awdawdawdawjwldjalwjdlawjdlajwldawlwdwdasdasdasdasddfgdfgdfgdfgdfgdfkjgdflgldfkgldfgkldflgdflkgdlkfgkldflkgasd"},
+  { label: "Quantity:", value:"1"},
+  { label: "Unit:", value:"Unit"},
+  { label: "Unit Cost:", value:"₱99,800.00"},
+  { label: "Total Amount:", value:"₱99.800.00"},
+  { label: "Status:", value:"status",
+      format: (status) => {
+      let label = 'Unknown', cls = 'text-gray-500';
+      if (status === 0) { label = 'Inactive'; cls = 'text-red-700'; }
+      else if (status === 1) { label = 'Active'; cls = 'text-[#14B449]'; }
+      else if (status === 2) { label = 'Pending'; cls = 'text-yellow-700'; }
+      return `<span class="${cls}">${label}</span>`;
+    } 
+  },
+];
+
+const inputFields = [
+  { label: "PAR/ICS NUMBER", model: "par_ics_number", placeholder: "000-0000-00-000", type: "text" },
+  { label: "PROPERTY NUMBER", model: "property_number", placeholder: "000-0000-(000-000)", type: "text" },
+  { label: "ITEM NAME", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
+];
+
+const quantityCostFields = [
+  { label: "QUANTITY", model: "quantity", placeholder: "0" },
+  { label: "UNIT COST", model: "unit_cost", placeholder: "0" },
+];
+
+const dropdownFields = [
+  { label: "UNIT", model: "unit", options: ["Unit", "PC", "Box"] },
+  { label: "OFFICE", model: "office", options: ["Budget Office", "ITC Office", "ILC", "CMO Office"] },
+  { label: "SUPPLIER", model: "supplier", options: ["Dwinar Computer Center", "DCNC Sales And Services Corp.", "JCE Marketing", "European Union (Makati)"] },
+];
+
 const page = usePage();
 const items = computed(() => page.props.items);
 
@@ -58,7 +96,14 @@ const toggleSidebar = () => {
         <!-- HEAD TITLE -->
         <PageHeader title="Inventory" />
         <div class="w-full h-full">
-          <InventoryTable :columns="columns" :rows="items" />
+          <InventoryTable 
+          :columns="columns" 
+          :rows="items" 
+          :item-details="itemDetails" 
+          :input-fields="inputFields"
+          :quantity-cost-fields="quantityCostFields"
+          :dropdown-fields="dropdownFields"
+          />
         </div>
       </main>
     </div>
