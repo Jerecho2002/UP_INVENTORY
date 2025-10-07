@@ -32,13 +32,14 @@ function getValue(obj, path) {
 <template>
     <div>
 
-        <div class="w-full sm:w-auto mt-3">
+        <div class="sm:w-auto mt-3 m-2">
             <input type="search" placeholder="Search" v-model="search"
-                class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full px-3 border text-sm" />
+                class="w-full sm:w-52 md:w-96 h-9 sm:h-10 rounded-full px-3 border text-sm"/>
         </div>
+        
         <!-- Table (horizontal scroll on small screens) -->
-        <div class="overflow-x-auto">
-            <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
+        <div>
+            <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm m-2">
                 <thead class="bg-[#850038]">
                     <tr class="text-white">
                         <th v-for="col in columns" :key="col.key"

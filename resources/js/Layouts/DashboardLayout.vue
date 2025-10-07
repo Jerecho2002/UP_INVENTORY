@@ -53,10 +53,10 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
       </aside>
     
     <!-- MAIN CONTENT -->
-      <main class="flex-1 sm:p-7 md:p-8 overflow-hidden">
+      <main class="flex-1 sm:p-7 md:p-8 overflow-auto">
         <PageHeader title="Dashboard" />
         <div class="w-full h-screen text-left text-xs sm:text-sm mt-[1rem]">
-          <div class="flex flex-col md:flex-row gap-4 m-2">
+          <div class="flex flex-col md:flex-row gap-4 m-2 ">
             <ItemOverview title="Total Items" icon="fa-solid fa-cart-shopping" bgColor="bg-[#06B6D4]" textColor="text-[#06B6D4]" />
             <ItemOverview title="Item Distribution" icon="fa-solid fa-hand-holding-hand" bgColor="bg-[#8B5CF6]" textColor="text-[#8B5CF6]" />
             <ItemOverview title="Low Stock Items" icon="fa-solid fa-triangle-exclamation" bgColor="bg-[#F59E0B]" textColor="text-[#F59E0B]" />
