@@ -45,9 +45,9 @@ defineExpose({ openModal, closeModal });
     <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
         <div class="bg-white w-[90%] max-w-md rounded-lg shadow-2xl p-6 relative animate-fadeIn">
             <!-- Close (X) -->
-            <button @click="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-lg">
+            <!-- <button @click="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-lg">
                 <i class="fa-solid fa-xmark"></i>
-            </button>
+            </button> -->
 
             <!-- Slot for content -->
             <slot name="DeleteItem" :close="closeModal" :confirm="confirmDelete" :message="props.message"></slot>

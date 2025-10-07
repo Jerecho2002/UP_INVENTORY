@@ -110,7 +110,7 @@ function getValue(obj, path) {
         </div>
         <!-- Table (horizontal scroll on small screens) -->
         <div class="overflow-x-auto">
-            <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
+            <table class="w-full table-auto border-collapse text-left mt-7 bg-white text-xs sm:text-sm">
                 <thead class="bg-[#850038]">
                     <tr class="text-white">
                         <th v-for="col in columns" :key="col.key"

@@ -13,6 +13,10 @@ const props = defineProps({
     selectedCostRange: String,
     columns: Array,
     rows: Object,
+    itemDetails: Array,
+    inputFields: Array,
+    quantityCostFields: Array,
+    dropdownFields: Array,
 });
 
 const search = ref(props.searchItem || '');
@@ -71,6 +75,12 @@ const supplierOptions = [
     "JCE Marketing",
     "European Union (Makati)",
 ];
+const unitCostOptions = [
+    { label: "₱0 - ₱50,000", value: "0-50000" },
+    { label: "₱50,000 Above", value: "50000-100000" },
+];
+
+
 
 // COMPUTED TOTAL AMOUNT
 const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
@@ -106,66 +116,52 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
                     <!-- Form Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Left Side -->
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold mb-1">PAR/ICS NUMBER</label>
-                                <input type="text" v-model="itemForm.par_ics_number" placeholder="000-0000-00-000"
-                                    readonly
-                                    class="w-full rounded-md border border-gray-300 px-3 py-4 bg-[#F8F8F8] text-sm focus:ring-0 cursor-not-allowed" />
-                            </div>
+                        <div class="space-y-6">
+                            <!-- Dynamic Input Fields -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+                                <div class="space-y-5">
+                                    <div v-for="field in inputFields" :key="field.model" class="flex flex-col">
+                                        <label class="block text-xs font-semibold mb-1 text-gray-700">
+                                            {{ field.label }}
+                                        </label>
+                                        <input :type="field.type" v-model="itemForm[field.model]"
+                                            :placeholder="field.placeholder"
+                                            class="w-full sm:w-[21.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                    </div>
 
-                            <div>
-                                <label class="block text-xs font-semibold mb-1">PROPERTY NUMBER</label>
-                                <input type="text" v-model="itemForm.property_number" placeholder="000-0000-(000-000)"
-                                    class="w-full rounded-md border border-gray-300 px-3 py-4 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]" />
-                            </div>
 
-                            <div>
-                                <label class="block text-xs font-semibold mb-1">ITEM NAME</label>
-                                <input type="text" v-model="itemForm.item_name" placeholder="Laptops, Ceiling Fan..."
-                                    class="w-full rounded-md border border-gray-300 px-3 py-4 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]" />
-                            </div>
+                                    <!-- Quantity + Unit Cost -->
+                                    <div class="flex gap-4 sm:gap-6 w-full">
+                                        <div v-for="field in quantityCostFields" :key="field.model"
+                                            class="flex flex-col flex-1 min-w-[6rem] sm:min-w-[8rem] md:min-w-[10rem] lg:min-w-[10rem]">
+                                            <label class="block text-xs font-semibold mb-1 text-gray-700">
+                                                {{ field.label }}
+                                            </label>
 
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-semibold mb-1">QUANTITY</label>
-                                    <input type="number" v-model.number="itemForm.quantity" placeholder="0"
-                                        class="w-full rounded-md border border-gray-300 px-3 py-4 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold mb-1">UNIT COST</label>
-                                    <input type="number" v-model.number="itemForm.unit_cost" placeholder="0"
-                                        class="w-full rounded-md border border-gray-300 px-3 py-4 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]" />
-                                </div>
-                            </div>
+                                            <input type="number" v-model.number="itemForm[field.model]"
+                                                :placeholder="field.placeholder"
+                                                class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800  focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
+                                        </div>
+                                    </div>
 
-                            <div class="grid grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-xs font-semibold mb-1">UNIT</label>
-                                    <select v-model="itemForm.unit"
-                                        class="w-full rounded-md border border-gray-300 px-3 py-4 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]">
-                                        <option disabled value="">Select</option>
-                                        <option v-for="unit in unitOptions" :key="unit" :value="unit">{{ unit }}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold mb-1">SUPPLIER</label>
-                                    <select v-model="itemForm.supplier"
-                                        class="w-full rounded-md border border-gray-300 px-3 py-4 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]">
-                                        <option disabled value="">Select</option>
-                                        <option v-for="supplier in supplierOptions" :key="supplier" :value="supplier">{{
-                                            supplier }}</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold mb-1">CATEGORY</label>
-                                    <select v-model="itemForm.supplier"
-                                        class="w-full rounded-md border border-gray-300 px-3 py-4 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]">
-                                        <option disabled value="">Select</option>
-                                        <option v-for="supplier in supplierOptions" :key="supplier" :value="supplier">{{
-                                            supplier }}</option>
-                                    </select>
+
+                                    <!-- Unit / Office / Supplier -->
+                                    <div class="flex gap-3">
+                                        <div v-for="dropdown in dropdownFields" :key="dropdown.model"
+                                            class="flex flex-col">
+                                            <label class="block text-xs font-semibold mb-1 text-gray-700">
+                                                {{ dropdown.label }}
+                                            </label>
+                                            <select v-model="itemForm[dropdown.model]"
+                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                                <option disabled value="">Select</option>
+                                                <option v-for="option in dropdown.options" :key="option"
+                                                    :value="option">
+                                                    {{ option }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +171,7 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
                             <div>
                                 <label class="block text-xs font-semibold mb-1">DESCRIPTION</label>
                                 <textarea v-model="itemForm.description" placeholder="Input a description"
-                                    class="w-full h-40 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038] resize-none"></textarea>
+                                    class="w-full h-40 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]"></textarea>
                             </div>
 
                             <div class="mt-4 text-sm font-semibold">
@@ -199,26 +195,27 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
             </template>
         </AddModal>
 
-        <!-- UNIT COST FILTER -->
-
+        <!-- OFFICE FILTER -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
             <div class="flex flex-col w-full sm:w-auto">
-                <label class="text-xs font-bold mb-1 sm:mb-0">Location</label>
-                <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border">
+                <label class="text-xs font-bold mb-1 sm:mb-0">Office</label>
+                <select v-model="itemForm.office"
+                    class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border">
                     <option value="">Select</option>
-                    <option>Budget Office</option>
-                    <option>ITC Office</option>
-                    <option>ILC</option>
-                    <option>CMO Office</option>
+                    <option v-for="office in officeOptions" :key="office" :value="office">{{ office }}</option>
+
                 </select>
+
             </div>
+            <!-- UNIT COST FILTER -->
             <div class="flex flex-col w-full sm:w-auto">
                 <label class="text-xs font-bold mb-1 sm:mb-0">Unit Cost</label>
-                <select class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border"
-                    v-model="selectedCostRange">
+                <select v-model="selectedCostRange"
+                    class="h-8 sm:h-9 w-full sm:w-36 text-xs rounded-md text-gray-600 border focus:ring-2 focus:ring-[#850038] outline-none">
                     <option value="">Select All</option>
-                    <option value="0-50000">₱0 - ₱50,000</option>
-                    <option value="50000-">₱50,000 Above</option>
+                    <option v-for="(option, index) in unitCostOptions" :key="index" :value="option.value">
+                        {{ option.label }}
+                    </option>
                 </select>
             </div>
 
@@ -269,20 +266,35 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
                                             </button>
                                         </template>
                                         <!-- VIEW FORM CONTENT -->
-                                        <template #ViewBodyContent="{ close }">
+                                        <template #ViewBodyContent>
                                             <div class="font-bold text-2xl mb-4 text-[#850038]">
                                                 <h2>Item Details</h2>
                                             </div>
 
-                                            <div class="flex justify-end gap-2 mt-4">
-                                                <button type="button" @click="close"
-                                                    class="px-3 py-2 text-sm rounded-md  bg-[#F03636] text-white border border-gray-300 hover:bg-[#ec4848]">
-                                                    Cancel
-                                                </button>
-                                                <button type="submit"
-                                                    class="px-3 py-2 text-sm rounded-md bg-[#0E6021] text-white hover:bg-[#2a9754]">
-                                                    Add
-                                                </button>
+                                            <!-- ITEM DETAILS LEFT -->
+                                            <div class="grid grid-cols-1 md:grid-cols-1 gap-2">
+                                                <div class="space-y-3 mt-5">
+                                                    <!-- Loop through each detail -->
+                                                    <div v-for="detail in itemDetails" :key="detail.label"
+                                                        class="flex md:items-start gap-3">
+                                                        <!-- LABEL -->
+                                                        <label
+                                                            class="w-40 shrink-0 font-semibold text-gray-700 text-left">
+                                                            {{ detail.label }}
+                                                        </label>
+
+                                                        <!-- VALUE (plain text) -->
+                                                        <p v-if="!detail.format"
+                                                            class="text-gray-800 leading-snug break-words whitespace-normal max-w-[calc(100%-10rem)]">
+                                                            {{ detail.value }}
+                                                        </p>
+
+                                                        <!-- VALUE (formatted) -->
+                                                        <div v-else v-html="detail.format(detail.value)"
+                                                            class="text-gray-800 leading-snug break-words whitespace-normal max-w-[calc(100%-10rem)]">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </template>
                                     </ViewModal>
@@ -298,34 +310,95 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
                                         <!--EDIT FORM CONTENT -->
                                         <template #EditInventory="{ close }">
                                             <form @submit.prevent="submitItem" class="flex flex-col gap-3">
+                                                <!-- Header -->
+                                                <h2 class="text-2xl font-bold text-[#850038] mb-6">Edit Item</h2>
 
-                                                <!-- HEAD TITLE ADD ITEM MODAL FORM-->
-                                                <div class="font-bold text-2xl">
-                                                    <h2>Edit Item</h2>
+                                                <!-- Form Grid -->
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                    <!-- Left Side -->
+                                                    <div class="space-y-6">
+                                                        <!-- Dynamic Input Fields -->
+                                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+                                                            <div class="space-y-5">
+                                                                <div v-for="field in inputFields" :key="field.model"
+                                                                    class="flex flex-col">
+                                                                    <label
+                                                                        class="block text-xs font-semibold mb-1 text-gray-700">
+                                                                        {{ field.label }}
+                                                                    </label>
+                                                                    <input :type="field.type"
+                                                                        v-model="itemForm[field.model]"
+                                                                        :placeholder="field.placeholder"
+                                                                        class="w-full sm:w-[21.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                                                </div>
+
+
+                                                                <!-- Quantity + Unit Cost -->
+                                                                <div class="flex gap-4 sm:gap-6 w-full">
+                                                                    <div v-for="field in quantityCostFields"
+                                                                        :key="field.model"
+                                                                        class="flex flex-col flex-1 min-w-[6rem] sm:min-w-[8rem] md:min-w-[10rem] lg:min-w-[10rem]">
+                                                                        <label
+                                                                            class="block text-xs font-semibold mb-1 text-gray-700">
+                                                                            {{ field.label }}
+                                                                        </label>
+
+                                                                        <input type="number"
+                                                                            v-model.number="itemForm[field.model]"
+                                                                            :placeholder="field.placeholder"
+                                                                            class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800  focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <!-- Unit / Office / Supplier -->
+                                                                <div class="flex gap-3">
+                                                                    <div v-for="dropdown in dropdownFields"
+                                                                        :key="dropdown.model" class="flex flex-col">
+                                                                        <label
+                                                                            class="block text-xs font-semibold mb-1 text-gray-700">
+                                                                            {{ dropdown.label }}
+                                                                        </label>
+                                                                        <select v-model="itemForm[dropdown.model]"
+                                                                            class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                                                            <option disabled value="">Select</option>
+                                                                            <option v-for="option in dropdown.options"
+                                                                                :key="option" :value="option">
+                                                                                {{ option }}
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!-- Right Side -->
+                                                    <div class="flex flex-col justify-between">
+                                                        <div>
+                                                            <label
+                                                                class="block text-xs font-semibold mb-1">DESCRIPTION</label>
+                                                            <textarea v-model="itemForm.description"
+                                                                placeholder="Input a description"
+                                                                class="w-full h-40 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]"></textarea>
+                                                        </div>
+
+                                                        <div class="mt-4 text-sm font-semibold">
+                                                            <p>Total Amount:</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                                <!-- <div>
-                                                    <label class="text-sm font-semibold text-gray-700">Item Name</label>
-                                                    <input type="text"
-                                                        class="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#0E6021] outline-none"
-                                                        placeholder="Enter item name" required />
-                                                </div>
-
-                                                <div>
-                                                    <label class="text-sm font-semibold text-gray-700">Quantity</label>
-                                                    <input type="number"
-                                                        class="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-[#0E6021] outline-none"
-                                                        placeholder="Enter quantity" required />
-                                                </div> -->
-
-                                                <div class="flex justify-end gap-2 mt-4">
+                                                <!-- Buttons -->
+                                                <div class="flex justify-end items-center gap-4 mt-8">
                                                     <button type="button" @click="close"
-                                                        class="px-3 py-2 text-sm rounded-md  bg-[#F03636] text-white border border-gray-300 hover:bg-[#ec4848]">
+                                                        class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">
                                                         Cancel
                                                     </button>
-                                                    <button type="submit"
-                                                        class="px-3 py-2 text-sm rounded-md bg-[#0E6021] text-white hover:bg-[#2a9754]">
-                                                        Add
+                                                    <button
+                                                        class="bg-[#54B3AB] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">
+                                                        Confirm
                                                     </button>
                                                 </div>
                                             </form>
@@ -343,8 +416,10 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
 
                                         <template #DeleteItem="{ close, confirm, message }">
                                             <div class="text-center">
-                                                <h2 class="text-lg font-bold text-gray-800 mb-3">Confirm Deletion</h2>
-                                                <p class="text-gray-600 mb-5 text-sm">{{ message }}</p>
+                                                <div class="text-4xl  text-[#FF0000]">
+                                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                                </div>
+                                                <p class="text-gray-600 mb-6 text-lg mt-2">{{ message }}</p>
 
                                                 <div class="flex justify-center gap-3">
                                                     <button @click="close"
@@ -352,8 +427,9 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
                                                         Cancel
                                                     </button>
                                                     <button @click="confirm"
-                                                        class="px-4 py-2 rounded-md text-sm bg-red-600 hover:bg-red-700 text-white font-medium">
-                                                        Delete
+                                                        class="px-4 py-2 rounded-md items-center flex gap-2 text-sm bg-red-600 hover:bg-red-700 text-white font-medium">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        <h2>Delete</h2>
                                                     </button>
                                                 </div>
                                             </div>
