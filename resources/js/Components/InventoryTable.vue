@@ -54,7 +54,7 @@ const deleteModalRef = ref(null);
 
 
 const itemForm = reactive({
-    par_ics_number: "",
+    category: "",
     property_number: "",
     item_name: "",
     quantity: 0,
@@ -235,8 +235,8 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
 
     <div>
         <!-- Table (horizontal scroll on small screens) -->
-        <div class="overflow-x-auto">
-            <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
+        <div>
+            <table class="overflow-x-auto w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
                 <thead class="bg-[#850038]">
                     <tr class="text-white">
                         <th v-for="col in columns" :key="col.key"
