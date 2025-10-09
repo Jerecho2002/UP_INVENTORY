@@ -166,7 +166,6 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
                             </div>
                         </div>
 
-
                         <!-- Right Side -->
                         <div class="flex flex-col justify-between">
                             <div>

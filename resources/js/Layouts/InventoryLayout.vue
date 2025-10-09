@@ -18,6 +18,7 @@ const menuItems = [
 const columns = [
   { label: "Property Records", key: 'category' },
   { label: "Property Number", key: 'property.property_number' },
+  { label: "Office Name", key: 'property.location.office.office_name' },
   { label: "Item Name", key: 'item_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
