@@ -34,7 +34,7 @@ function getValue(obj, path) {
 
         <div class="sm:w-auto mt-3 mb-2 flex justify-end">
             <input type="search" placeholder="Search" v-model="search"
-                class="w-full sm:w-52 md:w-96 h-9 sm:h-10 rounded-full px-3 border text-sm" />
+                class="w-full sm:w-52 md:w-96 h-9 sm:h-10 rounded-full px-3 border text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
         </div>
 
         <!-- Table (horizontal scroll on small screens) -->
