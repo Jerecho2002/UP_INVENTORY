@@ -67,7 +67,7 @@ const itemForm = reactive({
 
 // DROPDOWN LISTS
 
-const unitOptions = ["Unit", "PC"];
+// const unitOptions = ["Unit", "PC"];
 const officeOptions = ["Budget Office", "ITC Office", "ILC", "CMO Office"];
 const supplierOptions = [
     "Dwinar Computer Center",
@@ -204,7 +204,6 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
                     class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border">
                     <option value="">Select</option>
                     <option v-for="office in officeOptions" :key="office" :value="office">{{ office }}</option>
-
                 </select>
 
             </div>
@@ -227,7 +226,7 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
                 </span>
 
                 <!-- Search Input -->
-                <input type="search" placeholder="Search stock item" v-model="search"
+                <input type="search" placeholder="Search item" v-model="search"
                     class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm" />
             </div>
         </div>

@@ -8,6 +8,7 @@ import PageHeader from "@/Components/PageHeader.vue";
 import DashboardTable from "@/Components/DashboardTable.vue";
 import BarChartCard from "@/Components/BarChartCard.vue";
 import SupplierChartCard from "@/Components/SupplierChartCard.vue";
+import UserActivity from "@/Components/UserActivity.vue";
 
 const menuItems = [
   { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "dashboard.index" },
@@ -51,6 +52,10 @@ const supplierChart = [
   { name: 'Cancelled', icon: 'fa-solid fa-circle text-[#FA2C19]' },
 ];
 
+const dropdownSupplierChart = [
+  { model: "supplier", options: ["Budget Office", "ITC Office", "ILC", "CMO Office"] }
+];
+
 const page = usePage();
 const items = computed(() => page.props.items);
 
@@ -88,8 +93,17 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
           </div>
 
           <!-- RIGHT -->
-          <div class="w-full md:w-[25rem]">
-            <SupplierChartCard title="Supplier Statistics" :supplier-chart="supplierChart" />
+          <div class="block w-full md:w-[25rem] space-y-4">
+            <div>
+              <SupplierChartCard 
+              title="Supplier Statistics" 
+              :supplier-chart="supplierChart"
+              :dropdown-supplier-list="dropdownSupplierChart"
+              />
+            </div>
+            <div>
+              <UserActivity title="Recent Activity"/>
+            </div>
           </div>
         </div>
       </main>
