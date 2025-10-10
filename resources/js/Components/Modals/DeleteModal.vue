@@ -34,6 +34,7 @@ function confirmDelete() {
   });
 }
 
+
 defineExpose({ openModal, closeModal });
 </script>
 

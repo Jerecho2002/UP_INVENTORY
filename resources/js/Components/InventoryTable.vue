@@ -48,6 +48,7 @@ const addModalRef = ref(null);
 const editModalRef = ref(null);
 const selectedViewItem = ref(null);
 
+<<<<<<< HEAD
 const { data: itemForm, post, reset, setData, errors } = useForm({
   property_id: "",
   item_name: "",
@@ -58,6 +59,19 @@ const { data: itemForm, post, reset, setData, errors } = useForm({
   unit_cost: 0,
   total_amount: 0,
   status: "",
+=======
+
+const itemForm = reactive({
+    category: "",
+    property_number: "",
+    item_name: "",
+    quantity: 0,
+    unit_cost: 0,
+    unit: "",
+    office: "",
+    supplier: "",
+    description: "",
+>>>>>>> d97727ad8502a1324e431e207b11eb5769db8563
 });
 
 const calculateTotalAmount = () => {
@@ -127,7 +141,7 @@ function openAddModal() {
 
 const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
 
-const unitOptions = ["Unit", "PC"];
+// const unitOptions = ["Unit", "PC"];
 const officeOptions = ["Budget Office", "ITC Office", "ILC", "CMO Office"];
 const supplierOptions = [
     "Dwinar Computer Center",
@@ -235,7 +249,6 @@ function getValue(obj, path) {
                     class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border">
                     <option value="">Select</option>
                     <option v-for="office in officeOptions" :key="office" :value="office">{{ office }}</option>
-
                 </select>
 
             </div>
@@ -258,7 +271,7 @@ function getValue(obj, path) {
                 </span>
 
                 <!-- Search Input -->
-                <input type="search" placeholder="Search stock item" v-model="search"
+                <input type="search" placeholder="Search item" v-model="search"
                     class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm" />
             </div>
         </div>
@@ -266,8 +279,8 @@ function getValue(obj, path) {
 
     <div>
         <!-- Table (horizontal scroll on small screens) -->
-        <div class="overflow-x-auto">
-            <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
+        <div>
+            <table class="overflow-x-auto w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
                 <thead class="bg-[#850038]">
                     <tr class="text-white">
                         <th v-for="col in columns" :key="col.key"
