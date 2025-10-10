@@ -226,7 +226,7 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
 
                 <!-- Search Input -->
                 <input type="search" placeholder="Search item" v-model="search"
-                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm" />
+                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm focus:ring-[#850038] focus:outline-none focus:border-[#850038]"/>
             </div>
         </div>
     </div>
