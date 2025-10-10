@@ -14,7 +14,7 @@ const itemForm = reactive({
 </script>
 
 <template>
-  <div class="bg-white rounded-2xl shadow-lg p-4">
+  <div class="bg-white rounded-xl shadow-lg p-4">
     <h2 class="font-bold mb-2 text-lg">{{ title }}</h2>
 
     <!-- CHART -->
