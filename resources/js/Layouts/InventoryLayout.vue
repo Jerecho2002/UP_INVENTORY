@@ -18,7 +18,6 @@ const menuItems = [
 const columns = [
   { label: "Property Records", key: 'category' },
   { label: "Property Number", key: 'property.property_number' },
-  { label: "Office Name", key: 'property.location.office.office_name' },
   { label: "Item Name", key: 'item_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
@@ -34,36 +33,49 @@ const columns = [
   { label: "Action", key: "action" } // keep key, but don’t inject HTML
 ]
 
-const itemDetails = [
-  { label: "Item Name:", value:"Dell Desktop"},
-  { label: "Property Records:", value:"223-2021-05-200"},
-  { label: "Property Number:", value:"223-215-001"},
-  { label: "Supplier:", value:"MICRO-D INTERNATIONAL, INC."},
-  { label: "Description:", value:"awdawdawdawjwldjalwjdlawjdlajwldawlwdwdasdasdasdasddfgdfgdfgdfgdfgdfkjgdflgldfkgldfgkldflgdflkgdlkfgkldflkgasd"},
-  { label: "Quantity:", value:"1"},
-  { label: "Unit:", value:"Unit"},
-  { label: "Unit Cost:", value:"₱99,800.00"},
-  { label: "Total Amount:", value:"₱99.800.00"},
-  { label: "Status:", value:"status",
-      format: (status) => {
-      let label = 'Unknown', cls = 'text-gray-500';
-      if (status === 0) { label = 'Inactive'; cls = 'text-red-700'; }
-      else if (status === 1) { label = 'Active'; cls = 'text-[#14B449]'; }
-      else if (status === 2) { label = 'Pending'; cls = 'text-yellow-700'; }
+const viewItems = [
+  { label: "Property Records", key: "category" },
+  { label: "Property Number", key: "property.property_number" },
+  { label: "Item Name", key: "item_name" },
+  { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
+  { label: "Unit Cost", key: "unit_cost", format: (val) => (val ? `₱${val}` : "N/A") },
+  {
+    label: "Status",
+    key: "status",
+    format: (status) => {
+      let label = "Unknown",
+        cls = "text-gray-500";
+      if (status === 0) {
+        label = "Inactive";
+        cls = "text-red-700";
+      } else if (status === 1) {
+        label = "Active";
+        cls = "text-[#14B449]";
+      } else if (status === 2) {
+        label = "Pending";
+        cls = "text-yellow-700";
+      }
       return `<span class="${cls}">${label}</span>`;
-    } 
+    },
   },
+];
+
+const editItems = [
+  { label: "Property Records", key: "category" },
+  { label: "Property Number", key: "property.property_number" },
+  { label: "Item Name", key: "item_name" },
+  { label: "Description", key: "description" },
+];
+
+const quantityCostFields = [
+  { label: "Quantity", key: "quantity" },
+  { label: "Unit Cost", key: "unit_cost" },
 ];
 
 const inputFields = [
   { label: "PAR/ICS NUMBER", model: "par_ics_number", placeholder: "000-0000-00-000", type: "text" },
   { label: "PROPERTY NUMBER", model: "property_number", placeholder: "000-0000-(000-000)", type: "text" },
   { label: "ITEM NAME", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
-];
-
-const quantityCostFields = [
-  { label: "QUANTITY", model: "quantity", placeholder: "0" },
-  { label: "UNIT COST", model: "unit_cost", placeholder: "0" },
 ];
 
 const dropdownFields = [
@@ -79,6 +91,7 @@ const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
+
 </script>
 
 <template>
@@ -100,7 +113,8 @@ const toggleSidebar = () => {
           <InventoryTable 
           :columns="columns" 
           :rows="items" 
-          :item-details="itemDetails" 
+          :view-items="viewItems"
+          :edit-items="editItems"
           :input-fields="inputFields"
           :quantity-cost-fields="quantityCostFields"
           :dropdown-fields="dropdownFields"
