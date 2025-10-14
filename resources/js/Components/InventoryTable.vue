@@ -103,7 +103,7 @@ const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
                 <button @click="addModalRef.openModal()"
                     class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
                     <i class="fa-solid fa-plus my-[3px]"></i>
-                    <span class="font-bold">Add Item</span>
+                    <span class="font-bold">Add Item</span> 
                 </button>
             </template>
 
