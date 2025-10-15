@@ -48,7 +48,6 @@ const addModalRef = ref(null);
 const editModalRef = ref(null);
 const selectedViewItem = ref(null);
 
-<<<<<<< HEAD
 const { data: itemForm, post, reset, setData, errors } = useForm({
   property_id: "",
   item_name: "",
@@ -59,19 +58,6 @@ const { data: itemForm, post, reset, setData, errors } = useForm({
   unit_cost: 0,
   total_amount: 0,
   status: "",
-=======
-
-const itemForm = reactive({
-    category: "",
-    property_number: "",
-    item_name: "",
-    quantity: 0,
-    unit_cost: 0,
-    unit: "",
-    office: "",
-    supplier: "",
-    description: "",
->>>>>>> d97727ad8502a1324e431e207b11eb5769db8563
 });
 
 const calculateTotalAmount = () => {
@@ -232,7 +218,7 @@ function getValue(obj, path) {
 
         <!-- Buttons -->
         <div class="flex justify-end items-center gap-4 mt-8">
-          <button type="button" @click="addModalRef.value.closeModal()"
+          <button type="button" @click="addModalRef.closeModal()"
             class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">Cancel</button>
           <button type="submit"
             class="bg-[#0E6021] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">Add</button>
