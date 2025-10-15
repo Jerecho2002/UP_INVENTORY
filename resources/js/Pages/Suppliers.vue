@@ -4,7 +4,7 @@
 </script>
 
 <template>
-   <Head title="UP | Inventory" />
+   <Head title="UP | Suppliers" />
     
         <div class="bg-[#F3F3F3]">
             <SupplierLayout/>

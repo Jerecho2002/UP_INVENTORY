@@ -149,15 +149,15 @@ function getValue(obj, path) {
 
     <!-- Add button + filters + search -->
     <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
-          <AddModal ref="addModalRef">
-    <!-- Add Item Button -->
-    <template #AddItemButton>
-      <button @click="openAddModal"
-        class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
-        <i class="fa-solid fa-plus my-[3px]"></i>
-        <span class="font-bold">Add Item</span>
-      </button>
-    </template>
+        <AddModal ref="addModalRef">
+            <!-- Add Item Button -->
+            <template #AddItemButton>
+                <button @click="addModalRef.openModal()"
+                    class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
+                    <i class="fa-solid fa-plus my-[3px]"></i>
+                    <span class="font-bold">Add Item</span> 
+                </button>
+            </template>
 
     <!-- ADD FORM CONTENT -->
     <template #InventoryForm>
@@ -258,7 +258,7 @@ function getValue(obj, path) {
 
                 <!-- Search Input -->
                 <input type="search" placeholder="Search item" v-model="search"
-                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm" />
+                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm focus:ring-[#850038] focus:outline-none focus:border-[#850038]"/>
             </div>
         </div>
     </div>
