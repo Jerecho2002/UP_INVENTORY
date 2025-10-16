@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\InventoryItem;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Models\InventoryItem;
+use App\Models\ItemClassification;
 use App\Services\InventoryService;
 
 class InventoryController extends Controller
@@ -12,8 +13,11 @@ class InventoryController extends Controller
     public function searchBar(Request $request, InventoryService $service){
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
+        $itemClassifications = ItemClassification::all();
+        
         return Inertia::render('Inventory', [
         'items' => $service->getPaginatedInventory($search, $costRange),
+        'itemClassifications' => $itemClassifications,
     ]);
     }
 
@@ -22,6 +26,7 @@ class InventoryController extends Controller
         // Validate incoming request
         $request->validate([
             'property_id' => 'required|integer',
+            'item_classification_id' => 'required|integer',
             'item_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
@@ -38,6 +43,7 @@ class InventoryController extends Controller
         // Create a new InventoryItem using mass assignment
         InventoryItem::create([
             'property_id' => $request->property_id,
+            'item_classification_id' => $request->item_classification_id,
             'item_name' => $request->item_name,
             'description' => $request->description,
             'category' => $request->category,

@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('inventory_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('property_id');
+            $table->unsignedBigInteger('item_classification_id');
             $table->string('item_name', 255)->nullable();
             $table->string('description', 255)->nullable();
             $table->string('category', 20)->nullable();
@@ -21,6 +22,7 @@ return new class extends Migration {
             $table->timestamps();
 
             $table->foreign('property_id')->references('id')->on('properties')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('item_classification_id')->references('id')->on('item_classifications')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

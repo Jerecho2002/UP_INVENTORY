@@ -21,8 +21,8 @@ defineExpose({ openModal, closeModal });
 
   <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="bg-white w-full max-w-4xl rounded-lg drop-shadow-2xl p-6 relative animate-fadeIn">
-      <!-- Wrap the slot content in a form event listener -->
-      <slot name="InventoryForm"></slot>
+      <!-- Pass the close function (and optional submit handler) -->
+      <slot name="InventoryForm" :closeModal="closeModal"></slot>
     </div>
   </div>
 </template>

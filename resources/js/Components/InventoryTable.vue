@@ -12,7 +12,8 @@ const props = defineProps({
     searchItem: String,
     selectedCostRange: String,
     columns: Array,
-    rows: Object,
+    rows: Array,
+    itemClass: Array,
     viewItems: Array,
     editItems: Array,
     inputFields: Array,
@@ -48,84 +49,73 @@ const addModalRef = ref(null);
 const editModalRef = ref(null);
 const selectedViewItem = ref(null);
 
-const { data: itemForm, post, reset, setData, errors } = useForm({
-  property_id: "",
-  item_name: "",
-  description: "",
-  category: "",
-  quantity: 0,
-  unit: "",
-  unit_cost: 0,
-  total_amount: 0,
-  status: "",
+const form = useForm({
+    property_id: "",
+    item_classification_id: "",
+    item_name: "",
+    description: "",
+    category: "",
+    quantity: "",
+    unit: "",
+    unit_cost: "",
+    total_amount: "",
+    status: "",
 });
 
 const calculateTotalAmount = () => {
-  itemForm.total_amount = itemForm.quantity * itemForm.unit_cost;
+    form.total_amount = form.quantity * form.unit_cost;
 };
+
+watch(
+    () => [form.quantity, form.unit_cost],
+    calculateTotalAmount
+);
 
 // Method to handle form submission
-const handleAddItem = () => {
-  // calculate total
-  itemForm.total_amount = itemForm.quantity * itemForm.unit_cost;
-
-  post(route('items.store'), {
-    onSuccess: () => {
-      addModalRef.value?.closeModal();
-      reset();
-    },
-    onError: (error) => console.log(error),
-  });
+const handleAddItem = (closeModal) => {
+    form.post(route("items.store"), {
+        onSuccess: () => {
+            closeModal(),
+            form.reset();
+        }
+    });
 };
-
 
 function openViewModal(item, open) {
     selectedViewItem.value = item; // store clicked row’s data
     open(); // call the modal’s exposed openModal()
 }
 
-function openEditModal(item, open) {
-    // Reset the itemForm fields before filling it with item data
-    Object.keys(itemForm).forEach((key) => {
-        itemForm[key] = ''; // Clear any previous values
-    });
+// function openEditModal(item, open) {
+//     // Reset the itemForm fields before filling it with item data
+//     Object.keys(itemForm).forEach((key) => {
+//         itemForm[key] = ''; // Clear any previous values
+//     });
 
-    // Populate itemForm with values from the selected item
-    props.editItems.forEach((col) => {
-        const flatKey = col.key.split('.').pop(); // Flatten nested keys
-        itemForm[flatKey] = getValue(item, col.key) ?? ''; // Populate form with item data
-    });
+//     // Populate itemForm with values from the selected item
+//     props.editItems.forEach((col) => {
+//         const flatKey = col.key.split('.').pop(); // Flatten nested keys
+//         itemForm[flatKey] = getValue(item, col.key) ?? ''; // Populate form with item data
+//     });
 
-    // Populate quantity and unit cost fields
-    props.quantityCostFields.forEach((field) => {
-        const flatKey = field.key.split('.').pop();
-        itemForm[flatKey] = getValue(item, field.key) ?? ''; // Populate itemForm for quantity/unit cost
-    });
+//     // Populate quantity and unit cost fields
+//     props.quantityCostFields.forEach((field) => {
+//         const flatKey = field.key.split('.').pop();
+//         itemForm[flatKey] = getValue(item, field.key) ?? ''; // Populate itemForm for quantity/unit cost
+//     });
 
-    // Populate dropdowns (unit, office, supplier)
-    props.dropdownFields.forEach((dropdown) => {
-        itemForm[dropdown.model] = getValue(item, dropdown.model) ?? ''; // Populate dropdown values
-    });
+//     // Populate dropdowns (unit, office, supplier)
+//     props.dropdownFields.forEach((dropdown) => {
+//         itemForm[dropdown.model] = getValue(item, dropdown.model) ?? ''; // Populate dropdown values
+//     });
 
-    // Populate description field
-    itemForm.description = getValue(item, 'description') ?? ''; // Populate description field
+//     // Populate description field
+//     itemForm.description = getValue(item, 'description') ?? ''; // Populate description field
 
-    // Open the modal after populating the form data
-    open();
-}
+//     // Open the modal after populating the form data
+//     open();
+// }
 
-
-function openAddModal() {
-    Object.keys(itemForm).forEach((key) => {
-        itemForm[key] = '';  // Reset each form field to its default value (empty string or 0)
-    });
-
-    if (addModalRef.value) {
-        addModalRef.value.openModal(); // Call the openModal method using .value
-    }
-}
-
-const totalAmount = computed(() => itemForm.quantity * itemForm.unit_cost);
 
 // const unitOptions = ["Unit", "PC"];
 const officeOptions = ["Budget Office", "ITC Office", "ILC", "CMO Office"];
@@ -143,10 +133,10 @@ const unitCostOptions = [
 function getValue(obj, path) {
     return path.split('.').reduce((acc, key) => acc?.[key], obj) ?? 'N/A'
 }
+
 </script>
 
 <template>
-
     <!-- Add button + filters + search -->
     <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
         <AddModal ref="addModalRef">
@@ -155,89 +145,139 @@ function getValue(obj, path) {
                 <button @click="addModalRef.openModal()"
                     class="flex gap-2 bg-[#0E6021] rounded-md text-white px-3 py-2 text-xs sm:text-sm hover:bg-[#2a9754] w-full sm:w-auto justify-center">
                     <i class="fa-solid fa-plus my-[3px]"></i>
-                    <span class="font-bold">Add Item</span> 
+                    <span class="font-bold">Add Item</span>
                 </button>
             </template>
 
-    <!-- ADD FORM CONTENT -->
-    <template #InventoryForm>
-      <form @submit.prevent="handleAddItem" class="flex flex-col gap-3">
-        <!-- Header -->
-        <h2 class="text-2xl font-bold text-[#850038] mb-6">Add Item</h2>
+            <!-- ADD FORM CONTENT -->
+            <template #InventoryForm="{ closeModal }">
+                <form @submit.prevent="handleAddItem(closeModal)" class="flex flex-col gap-3">
+                    <!-- Header -->
+                    <h2 class="text-2xl font-bold text-[#850038] mb-6">Add Item</h2>
 
-        <!-- Form Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Left Side -->
-          <div class="space-y-6">
-            <!-- Dynamic Input Fields -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
-              <div class="space-y-5">
-                <div v-for="field in inputFields" :key="field.model" class="flex flex-col">
-                  <label class="block text-xs font-semibold mb-1 text-gray-700">{{ field.label }}</label>
-                  <input :type="field.type" v-model="itemForm[field.model]" :placeholder="field.placeholder"
-                    class="w-full sm:w-[21.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                </div>
+                    <!-- Form Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Left Side -->
+                        <div class="space-y-6">
+                            <!-- Dynamic Input Fields -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+                                <div class="space-y-5">
+                                    <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
+                                        <label class="block text-xs font-semibold mb-1 text-gray-700">{{ ip.label
+                                        }}</label>
+                                        <input v-model="form[ip.model]" :key="ip.model" type="text"
+                                            :placeholder="ip.placeholder"
+                                            class="w-full sm:w-[21.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                        <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">
+                                            {{ form.errors[ip.model] }}
+                                        </div>
+                                    </div>
 
-                <!-- Quantity + Unit Cost -->
-                <div class="flex gap-4 sm:gap-6 w-full">
-                  <div v-for="field in quantityCostFields" :key="field.model" class="flex flex-col flex-1 min-w-[6rem] sm:min-w-[8rem] md:min-w-[10rem] lg:min-w-[10rem]">
-                    <label class="block text-xs font-semibold mb-1 text-gray-700">{{ field.label }}</label>
-                    <input type="number" v-model.number="itemForm[field.model]" :placeholder="field.placeholder"
-                      class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800 focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
-                  </div>
-                </div>
+                                    <div class="flex flex-col">
+                                        <div class="flex flex-col">
+                                            <label class="block text-xs font-semibold mb-1 text-gray-700">Property
+                                                Number</label>
+                                            <select v-model="form.property_id"
+                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                                <option value="">Select</option>
+                                                <option v-for="item in rows.data" :key="item.id"
+                                                    :value="item.property_id">{{ item.property.property_number }}
+                                                </option>
+                                            </select>
+                                            <div v-if="form.errors.property_id" class="text-red-500 text-sm">
+                                                {{ form.errors.property_id }}
+                                            </div>
+                                        </div>
+                                    </div>
 
-                <!-- Unit / Office / Supplier -->
-                <div class="flex gap-3">
-                  <div v-for="dropdown in dropdownFields" :key="dropdown.model" class="flex flex-col">
-                    <label class="block text-xs font-semibold mb-1 text-gray-700">{{ dropdown.label }}</label>
-                    <select v-model="itemForm[dropdown.model]"
-                      class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                      <option disabled value="">Select</option>
-                      <option v-for="option in dropdown.options" :key="option" :value="option">{{ option }}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                                    <div class="flex flex-col">
+                                        <div class="flex flex-col">
+                                            <label
+                                                class="block text-xs font-semibold mb-1 text-gray-700">Categories</label>
+                                            <select v-model="form.item_classification_id"
+                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                                <option value="">Select</option>
+                                                <option v-for="itc in itemClass" :key="itc.id" :value="itc.id">
+                                                   {{ itc.classification_name || 'N/A' }}
+                                                </option>
+                                            </select>
+                                            <!-- <div v-if="form.errors.item_classification_id" class="text-red-500 text-sm">
+                                                {{ form.errors.item_classification_id }}
+                                            </div> -->
+                                        </div>
+                                    </div>
 
-          <!-- Right Side -->
-          <div class="flex flex-col justify-between">
-            <div>
-              <label class="block text-xs font-semibold mb-1">DESCRIPTION</label>
-              <textarea v-model="itemForm.description" placeholder="Input a description"
-                class="w-full h-40 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]"></textarea>
-            </div>
+                                    <!-- Quantity + Unit Cost -->
+                                    <div class="flex gap-4 sm:gap-6 w-full">
+                                        <div v-for="qcf in quantityCostFields"
+                                            class="flex flex-col flex-1 min-w-[6rem] sm:min-w-[8rem] md:min-w-[10rem] lg:min-w-[10rem]">
+                                            <label class="block text-xs font-semibold mb-1 text-gray-700">{{ qcf.label
+                                            }}</label>
+                                            <input v-model="form[qcf.model]" :key="qcf.model" :type="qcf.type"
+                                                :placeholder="qcf.placeholder"
+                                                class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800 focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
+                                            <div v-if="form.errors[qcf.model]" class="text-red-500 text-sm">
+                                                {{ form.errors[qcf.model] }}
+                                            </div>
+                                        </div>
+                                    </div>
 
-            <div class="mt-4 text-sm font-semibold">
-              <p>Total Amount: ₱{{ itemForm.total_amount }}</p>
-            </div>
-          </div>
-        </div>
+                                    <!-- UNIT / STATUS -->
+                                    <div v-for="df in dropdownFields" class="flex gap-3">
+                                        <div class="flex flex-col">
+                                            <label class="block text-xs font-semibold mb-1 text-gray-700">{{ df.label
+                                            }}</label>
+                                            <select v-model="form[df.model]"
+                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                                <option value="">Select</option>
+                                                <option v-for="op in df.options" :key="op.value" :value="op.value">{{
+                                                    op.label }}</option>
+                                            </select>
+                                            <div v-if="form.errors[df.model]" class="text-red-500 text-sm">
+                                                {{ form.errors[df.model] }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- Buttons -->
-        <div class="flex justify-end items-center gap-4 mt-8">
-          <button type="button" @click="addModalRef.closeModal()"
-            class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">Cancel</button>
-          <button type="submit"
-            class="bg-[#0E6021] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">Add</button>
-        </div>
-      </form>
-    </template>
-  </AddModal>
+                        <!-- Right Side -->
+                        <div class="flex flex-col justify-between">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">DESCRIPTION</label>
+                                <textarea v-model="form.description" placeholder="Input a description"
+                                    class="w-full h-40 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]"></textarea>
+                                <div v-if="form.errors.description" class="text-red-500 text-sm">
+                                    {{ form.errors.description }}
+                                </div>
+                            </div>
 
-        <!-- OFFICE FILTER -->
+                            <div class="mt-4 text-sm font-semibold">
+                                <label class="block text-xs font-semibold mb-1">Total Amount</label>
+                                <input v-model="form.total_amount" readonly placeholder="₱0.00"
+                                    class="block text-xs font-semibold mb-1 text-gray-700 border border-none pointer-events-none"></input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex justify-end items-center gap-4 mt-8">
+                        <button type="button" @click="closeModal"
+                            class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="bg-[#0E6021] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">
+                            Add
+                        </button>
+                    </div>
+                </form>
+            </template>
+        </AddModal>
+
+
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
-            <div class="flex flex-col w-full sm:w-auto">
-                <label class="text-xs font-bold mb-1 sm:mb-0">Office</label>
-                <select v-model="itemForm.office"
-                    class="h-8 sm:h-9 w-full sm:w-28 text-xs rounded-md text-gray-600 border">
-                    <option value="">Select</option>
-                    <option v-for="office in officeOptions" :key="office" :value="office">{{ office }}</option>
-                </select>
-
-            </div>
             <!-- UNIT COST FILTER -->
             <div class="flex flex-col w-full sm:w-auto">
                 <label class="text-xs font-bold mb-1 sm:mb-0">Unit Cost</label>
@@ -258,7 +298,7 @@ function getValue(obj, path) {
 
                 <!-- Search Input -->
                 <input type="search" placeholder="Search item" v-model="search"
-                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm focus:ring-[#850038] focus:outline-none focus:border-[#850038]"/>
+                    class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
             </div>
         </div>
     </div>
@@ -333,7 +373,7 @@ function getValue(obj, path) {
                                     </ViewModal>
 
                                     <!-- EDIT MODAL -->
-                                    <EditModal ref="editModalRef">
+                                    <!-- <EditModal ref="editModalRef">
                                         <template #EditItemButton="{ open }">
                                             <button type="button" class="text-[#54B3AB] hover:text[#54B3AB] mx-1"
                                                 title="Edit" @click="() => openEditModal(item, open)">
@@ -341,20 +381,20 @@ function getValue(obj, path) {
                                             </button>
                                         </template>
 
-                                        <!-- EDIT FORM CONTENT -->
+                                        
                                         <template #EditInventory="{ close }">
                                             <form @submit.prevent="submitItem" class="flex flex-col gap-3">
-                                                <!-- Header -->
+                                                
                                                 <h2 class="text-2xl font-bold text-[#850038] mb-6">Edit Item</h2>
 
-                                                <!-- Form Grid -->
+                                               
                                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                    <!-- LEFT SIDE -->
+                                                    
                                                     <div class="space-y-6">
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
                                                             <div class="space-y-5">
 
-                                                                <!-- ✅ Dynamic fields from editItems -->
+                                                                
                                                                 <div v-for="col in editItems" :key="col.label"
                                                                     class="flex flex-col">
                                                                     <label
@@ -371,7 +411,7 @@ function getValue(obj, path) {
                                                                         transition duration-150 disabled:bg-gray-200
                                                                         disabled:text-gray-500 disabled:cursor-not-allowed" />
                                                                 </div>
-                                                                <!-- QUANTITY + UNIT COST -->
+                                                                
                                                                 <div class="flex gap-4 sm:gap-6 w-full">
                                                                     <div v-for="field in quantityCostFields"
                                                                         :key="field.label"
@@ -386,7 +426,7 @@ function getValue(obj, path) {
                                                                     </div>
                                                                 </div>
 
-                                                                <!-- UNIT / OFFICE / SUPPLIER -->
+                                                                
                                                                 <div class="flex gap-3">
                                                                     <div v-for="dropdown in dropdownFields"
                                                                         :key="dropdown.model" class="flex flex-col">
@@ -408,7 +448,7 @@ function getValue(obj, path) {
                                                         </div>
                                                     </div>
 
-                                                    <!-- RIGHT SIDE -->
+                                                    
                                                     <div class="flex flex-col justify-between">
                                                         <div>
                                                             <label
@@ -424,7 +464,7 @@ function getValue(obj, path) {
                                                     </div>
                                                 </div>
 
-                                                <!-- BUTTONS -->
+                                                
                                                 <div class="flex justify-end items-center gap-4 mt-8">
                                                     <button type="button" @click="close"
                                                         class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">
@@ -437,7 +477,7 @@ function getValue(obj, path) {
                                                 </div>
                                             </form>
                                         </template>
-                                    </EditModal>
+                                    </EditModal> -->
 
 
                                     <!-- DELETE MODAL -->

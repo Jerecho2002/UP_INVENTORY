@@ -20,6 +20,7 @@ use App\Models\AccountablePerson;
 use App\Models\AcknowledgementItem;
 use App\Models\InventoryTransaction;
 use App\Models\AcknowledgementReceipt;
+use App\Models\ItemClassification;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,6 +38,7 @@ class DatabaseSeeder extends Seeder
         $fundSources = FundSource::factory(3)->create();
         $offices = Office::factory(3)->create();
         $locations = Location::factory(5)->create();
+        $itemClassifications = ItemClassification::factory(13)->create();
 
         // ✅ Invoices
         $invoices = Invoice::factory(5)->create([
@@ -69,6 +71,7 @@ class DatabaseSeeder extends Seeder
         // ✅ Inventory Items
         $inventoryItems = InventoryItem::factory(30)->create([
             'property_id' => fn() => $properties->random()->id,
+            'item_classification_id' => fn() => $itemClassifications->random()->id,
         ]);
 
         // ✅ Inventory Transactions

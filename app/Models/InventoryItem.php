@@ -10,6 +10,7 @@ class InventoryItem extends Model
     use HasFactory;
     protected $fillable = [
         'property_id',
+        'item_classification_id',
         'item_name',
         'description',
         'category',
@@ -36,6 +37,12 @@ class InventoryItem extends Model
             'id'              // local key on properties
         );
     }
+
+    public function itemClassification()
+    {
+        return $this->belongsTo(ItemClassification::class, 'item_classification_id');
+    }
+
 
     public function scopeSearch($query, $term)
     {

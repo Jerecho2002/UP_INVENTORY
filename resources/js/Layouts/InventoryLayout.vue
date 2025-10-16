@@ -68,26 +68,32 @@ const editItems = [
 ];
 
 const quantityCostFields = [
-  { label: "Quantity", key: "quantity" },
-  { label: "Unit Cost", key: "unit_cost" },
+  { label: "Quantity", model: "quantity", placeholder: "0", type: "number"},
+  { label: "Unit Cost", model: "unit_cost", placeholder: "0", type: "number"},
 ];
 
 const inputFields = [
-  { label: "PAR/ICS NUMBER", model: "par_ics_number", placeholder: "000-0000-00-000", type: "text" },
-  { label: "PROPERTY NUMBER", model: "property_number", placeholder: "000-0000-(000-000)", type: "text" },
+  { label: "PAR/ICS NUMBER", model: "category", placeholder: "000-0000-00-000", type: "text" },
   { label: "ITEM NAME", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
 ];
 
 const dropdownFields = [
-  { label: "UNIT", model: "unit", options: ["Unit", "PC", "Box"] },
-  { label: "OFFICE", model: "office", options: ["Budget Office", "ITC Office", "ILC", "CMO Office"] },
-  { label: "SUPPLIER", model: "supplier", options: ["Dwinar Computer Center", "DCNC Sales And Services Corp.", "JCE Marketing", "European Union (Makati)"] },
+  { label: "UNIT", model: "unit", options: 
+                                            [{label: "Unit", value: "Unit"},
+                                             {label: "PC", value: "PC"}, 
+                                             {label: "Box", value: "Box"}]},
+  { label: "STATUS", model: "status", options: 
+                                            [{label: "Active", value: "1"},
+                                             {label: "Inactive", value: "0"},]},
 ];
 
-
+const classificationDropdown = [
+  { label: "Categories" }
+]
 
 const page = usePage();
 const items = computed(() => page.props.items);
+const itemClassifications = computed(() => page.props.itemClassifications);
 
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
@@ -114,7 +120,8 @@ const toggleSidebar = () => {
         <div class="w-full h-full">
           <InventoryTable 
           :columns="columns" 
-          :rows="items" 
+          :rows="items"
+          :itemClass="itemClassifications" 
           :view-items="viewItems"
           :edit-items="editItems"
           :input-fields="inputFields"
