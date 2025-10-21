@@ -24,7 +24,7 @@ const columns = [
   { label: "Description", key: 'description' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
-  { label: "Location", key: 'property.location.location_name' },
+  { label: "Location", key: 'location.location_name' },
   {
     label: "Status", key: 'status',
     format: (status) => {

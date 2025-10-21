@@ -10,7 +10,7 @@ class InventoryTransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'item_id' => InventoryItem::factory(),
+            'inventory_item_id' => InventoryItem::factory(),
             'quantity' => $this->faker->numberBetween(1, 10),
             'date_released' => $this->faker->date(),
         ];

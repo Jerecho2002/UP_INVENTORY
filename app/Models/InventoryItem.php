@@ -9,8 +9,11 @@ class InventoryItem extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'property_id',
         'item_classification_id',
+        'fund_source_id',
+        'invoice_id',
+        'supplier_id',
+        'location_id',
         'item_name',
         'description',
         'category',
@@ -18,24 +21,37 @@ class InventoryItem extends Model
         'unit',
         'unit_cost',
         'total_amount',
+        'pr_number',
+        'po_number',
+        'property_number',
+        'remarks',
+        'date_acquired',
         'status'
     ];
 
-    public function property()
+    public function fundSource()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(FundSource::class);
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 
     public function acknowledgementReceipts()
     {
-        return $this->hasManyThrough(
-            AcknowledgementReceipt::class,
-            Property::class,
-            'id',             // FK on properties
-            'property_id',    // FK on acknowledgement_receipts
-            'property_id',    // FK on items
-            'id'              // local key on properties
-        );
+        return $this->hasMany(AcknowledgementReceipt::class);
     }
 
     public function itemClassification()
@@ -53,11 +69,9 @@ class InventoryItem extends Model
         return $query->where(function ($q) use ($term) {
             $q->where('item_name', 'like', "%{$term}%")
                 ->orWhere('unit', 'like', "%{$term}%")
-                ->orWhereHas('property', function ($q) use ($term) {
-                    $q->where('property_number', 'like', "%{$term}%")
-                        ->orWhereHas('location', function ($q) use ($term) {
-                            $q->where('location_name', 'like', "%{$term}%");
-                        });
+                ->orWhere('property_number', 'like', "%{$term}%")
+                ->orWhereHas('location', function ($q) use ($term) {
+                    $q->where('location_name', 'like', "%{$term}%");
                 });
         });
     }

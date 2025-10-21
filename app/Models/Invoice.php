@@ -21,8 +21,8 @@ class Invoice extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function properties()
+    public function inventoryItems()
     {
-        return $this->hasMany(Property::class);
+        return $this->hasMany(InventoryItem::class);
     }
 }

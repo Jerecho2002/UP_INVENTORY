@@ -18,13 +18,8 @@ class Supplier extends Model
         return $this->hasMany(Invoice::class);
     }
 
-    public function purchaseOrders()
+    public function inventoryItems()
     {
-        return $this->hasMany(PurchaseOrder::class);
-    }
-
-    public function properties()
-    {
-        return $this->hasMany(Property::class);
+        return $this->hasMany(InventoryItem::class);
     }
 }

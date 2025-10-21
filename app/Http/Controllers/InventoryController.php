@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\Invoice;
+use App\Models\Location;
+use App\Models\Supplier;
+use App\Models\FundSource;
 use Illuminate\Http\Request;
 use App\Models\InventoryItem;
 use App\Models\ItemClassification;
@@ -14,10 +18,18 @@ class InventoryController extends Controller
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $itemClassifications = ItemClassification::all();
+        $suppliers = Supplier::all();
+        $locations = Location::all();
+        $invoices = Invoice::all();
+        $fundSources = FundSource::all();
         
         return Inertia::render('Inventory', [
         'items' => $service->getPaginatedInventory($search, $costRange),
         'itemClassifications' => $itemClassifications,
+        'suppliers' => $suppliers,
+        'locations' => $locations,
+        'invoices' => $invoices,
+        'fundSources' => $fundSources,
     ]);
     }
 

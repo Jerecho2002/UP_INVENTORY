@@ -9,12 +9,12 @@ return new class extends Migration {
     {
         Schema::create('inventory_transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('item_id')->nullable();
+            $table->unsignedBigInteger('inventory_item_id')->nullable();
             $table->integer('quantity')->nullable();
             $table->date('date_released')->nullable();
             $table->timestamps();
 
-            $table->foreign('item_id') ->references('id')->on('inventory_items') ->cascadeOnDelete() ->cascadeOnUpdate();
+            $table->foreign('inventory_item_id') ->references('id')->on('inventory_items') ->cascadeOnDelete() ->cascadeOnUpdate();
         });
     }
 

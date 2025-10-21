@@ -11,7 +11,7 @@ class DashboardService
     {
         // Start a query and eager-load 'properties.location' relationships
         // This returns an Eloquent query builder instance
-        return InventoryItem::with('property.location')
+        return InventoryItem::with('location')
 
             // Apply search filter only if $search has a value
             ->when($search, fn($query, $search) => $query->search($search))

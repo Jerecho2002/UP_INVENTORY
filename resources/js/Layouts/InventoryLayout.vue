@@ -17,7 +17,7 @@ const menuItems = [
 
 const columns = [
   { label: "Property Records", key: 'category' },
-  { label: "Property Number", key: 'property.property_number' },
+  { label: "Property Number", key: 'property_number' },
   { label: "Item Name", key: 'item_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
@@ -35,7 +35,7 @@ const columns = [
 
 const viewItems = [
   { label: "Property Records", key: "category" },
-  { label: "Property Number", key: "property.property_number" },
+  { label: "Property Number", key: "property_number" },
   { label: "Item Name", key: "item_name" },
   { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
   { label: "Unit Cost", key: "unit_cost", format: (val) => (val ? `₱${val}` : "N/A") },
@@ -87,13 +87,13 @@ const dropdownFields = [
                                              {label: "Inactive", value: "0"},]},
 ];
 
-const classificationDropdown = [
-  { label: "Categories" }
-]
-
 const page = usePage();
 const items = computed(() => page.props.items);
 const itemClassifications = computed(() => page.props.itemClassifications);
+const suppliers = computed(() => page.props.suppliers);
+const locations = computed(() => page.props.locations);
+const invoices = computed(() => page.props.invoices);
+const fundSources = computed(() => page.props.fundSources);
 
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
@@ -121,7 +121,11 @@ const toggleSidebar = () => {
           <InventoryTable 
           :columns="columns" 
           :rows="items"
-          :itemClass="itemClassifications" 
+          :itemClass="itemClassifications"
+          :suppliers="suppliers"
+          :locations="locations"
+          :invoices="invoices"
+          :fundSources="fundSources"
           :view-items="viewItems"
           :edit-items="editItems"
           :input-fields="inputFields"

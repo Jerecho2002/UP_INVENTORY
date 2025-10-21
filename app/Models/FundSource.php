@@ -13,9 +13,9 @@ class FundSource extends Model
     public $timestamps = false;
 
     // Relationships
-    public function properties()
+    public function inventoryItems()
     {
-        return $this->hasMany(Property::class);
+        return $this->hasMany(InventoryItem::class);
     }
 
     public function acknowledgementReceipts()

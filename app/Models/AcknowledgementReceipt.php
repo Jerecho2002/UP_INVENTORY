@@ -12,11 +12,16 @@ class AcknowledgementReceipt extends Model
         'par_date',
         'accountable_persons_id',
         'issued_by_id',
+        'inventory_item_id',
         'fund_source_id',
-        'property_id',
         'remarks',
         'created_by'
     ];
+
+    public function inventoryItems()
+    {
+        return $this->belongsTo(InventoryItem::class, 'inventory_item_id');
+    }
 
     public function accountablePerson()
     {
@@ -33,18 +38,14 @@ class AcknowledgementReceipt extends Model
         return $this->belongsTo(FundSource::class);
     }
 
-    public function property()
-    {
-        return $this->belongsTo(Property::class);
-    }
-
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function items()
+    public function acknowledgementItems()
     {
         return $this->hasMany(AcknowledgementItem::class, 'acknowledgement_id');
     }
+
 }

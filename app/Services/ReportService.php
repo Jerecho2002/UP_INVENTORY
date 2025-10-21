@@ -8,7 +8,7 @@ class ReportService
 {
     public function getPaginatedInventory($search = null, $status = null, $from = null, $to = null)
     {
-        return InventoryItem::with('property.location')
+        return InventoryItem::with('location')
             ->when($search, fn($query, $search) => $query->search($search))
             ->when($status !== null && $status !== '', fn($query) => 
                 $query->where('status', $status)

@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->unsignedInteger('accountable_persons_id');
             $table->unsignedInteger('issued_by_id');
             $table->unsignedInteger('fund_source_id');
-            $table->unsignedInteger('property_id')->nullable();
+            $table->unsignedBigInteger('inventory_item_id')->nullable();
             $table->string('remarks', 255)->nullable();
             $table->unsignedInteger('created_by');
             $table->timestamps();
@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->foreign('accountable_persons_id')->references('id')->on('accountable_persons')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('issued_by_id')->references('id')->on('accountable_persons')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('fund_source_id')->references('id')->on('fund_sources')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('property_id')->references('id')->on('properties')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('inventory_item_id')->references('id')->on('inventory_items')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }

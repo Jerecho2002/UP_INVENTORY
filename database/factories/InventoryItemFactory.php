@@ -2,7 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Property;
+use App\Models\Invoice;
+use App\Models\Location;
+use App\Models\Supplier;
+use App\Models\FundSource;
+use App\Models\ItemClassification;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InventoryItemFactory extends Factory
@@ -13,7 +17,11 @@ class InventoryItemFactory extends Factory
         $qty = $this->faker->numberBetween(1, 20);
 
         return [
-            'property_id' => Property::factory(),
+            'item_classification_id' => ItemClassification::factory(),
+            'supplier_id' => Supplier::factory(),
+            'location_id' => Location::factory(),
+            'invoice_id' => Invoice::factory(),
+            'fund_source_id' => FundSource::factory(),
             'item_name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
             'category' => $this->faker->randomElement([
@@ -24,6 +32,11 @@ class InventoryItemFactory extends Factory
             'unit' => $this->faker->randomElement(['pcs', 'box', 'unit']),
             'unit_cost' => $unitCost,
             'total_amount' => $qty * $unitCost,
+            'property_number' => strtoupper($this->faker->unique()->bothify('PROP###')),
+            'pr_number' => strtoupper($this->faker->unique()->bothify('PR###')),
+            'po_number' => strtoupper($this->faker->unique()->bothify('PO###')),
+            'remarks' => strtoupper($this->faker->unique()->bothify('RM###')),
+            'date_acquired' => $this->faker->date('Y-m-d', 'now'),
             'status' => $this->faker->boolean ? 1 : 0,
         ];
     }

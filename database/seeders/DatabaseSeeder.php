@@ -46,37 +46,18 @@ class DatabaseSeeder extends Seeder
             'created_by'  => fn() => $users->random()->id,
         ]);
 
-        // ✅ Purchase Requests
-        $purchaseRequests = PurchaseRequest::factory(5)->create([
-            'created_by' => fn() => $users->random()->id,
-        ]);
-
-        // ✅ Purchase Orders
-        $purchaseOrders = PurchaseOrder::factory(5)->create([
-            'supplier_id'         => fn() => $suppliers->random()->id,
-            'purchase_request_id' => fn() => $purchaseRequests->random()->id,
-            'created_by'          => fn() => $users->random()->id,
-        ]);
-
-        // ✅ Properties
-        $properties = Property::factory(20)->create([
-            'fund_source_id' => fn() => $fundSources->random()->id,
-            'pr_id'          => fn() => $purchaseRequests->random()->id,
-            'po_id'          => fn() => $purchaseOrders->random()->id,
-            'invoice_id'     => fn() => $invoices->random()->id,
-            'supplier_id'    => fn() => $suppliers->random()->id,
-            'location_id'    => fn() => $locations->random()->id,
-        ]);
-
         // ✅ Inventory Items
         $inventoryItems = InventoryItem::factory(30)->create([
-            'property_id' => fn() => $properties->random()->id,
             'item_classification_id' => fn() => $itemClassifications->random()->id,
+            'supplier_id' => fn() => $suppliers->random()->id,
+            'location_id' => fn() => $locations->random()->id,
+            'invoice_id' => fn() => $invoices->random()->id,
+            'fund_source_id' => fn() => $fundSources->random()->id,
         ]);
 
         // ✅ Inventory Transactions
         InventoryTransaction::factory(15)->create([
-            'item_id' => fn() => $inventoryItems->random()->id,
+            'inventory_item_id' => fn() => $inventoryItems->random()->id,
         ]);
 
         // ✅ Accountable Persons
@@ -90,7 +71,7 @@ class DatabaseSeeder extends Seeder
             'accountable_persons_id' => fn() => $accountablePersons->random()->id,
             'issued_by_id'           => fn() => $accountablePersons->random()->id,
             'fund_source_id'         => fn() => $fundSources->random()->id,
-            'property_id'            => fn() => $properties->random()->id,
+            'inventory_item_id'      => fn() => $inventoryItems->random()->id,
             'created_by'             => fn() => $users->random()->id,
         ]);
 

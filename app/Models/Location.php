@@ -17,8 +17,8 @@ class Location extends Model
         return $this->belongsTo(Office::class);
     }
 
-    public function properties()
+    public function inventoryItems()
     {
-        return $this->hasMany(Property::class);
+        return $this->hasMany(InventoryItem::class);
     }
 }
