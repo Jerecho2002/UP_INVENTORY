@@ -75,9 +75,18 @@ const quantityCostFields = [
 const inputFields = [
   { label: "PAR/ICS NUMBER", model: "category", placeholder: "000-0000-00-000", type: "text" },
   { label: "ITEM NAME", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
+  { label: "PROPERTY NUMBER", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
 
-const dropdownFields = [
+const firstDropdown = [
+  { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
+  { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name"},
+  { label: "Locations", model: "location_id", name: "locations", option: "location_name"},
+  { label: "Invoices", model: "invoice_id", name: "invoices", option: "invoice_number"},
+  { label: "Fund Sources", model: "fund_source_id", name: "fundSources", option: "code"},
+]
+
+const secondDropdown = [
   { label: "UNIT", model: "unit", options: 
                                             [{label: "Unit", value: "Unit"},
                                              {label: "PC", value: "PC"}, 
@@ -130,7 +139,8 @@ const toggleSidebar = () => {
           :edit-items="editItems"
           :input-fields="inputFields"
           :quantity-cost-fields="quantityCostFields"
-          :dropdown-fields="dropdownFields"
+          :firstDropdown="firstDropdown"
+          :secondDropdown="secondDropdown"
           />
         </div>
       </main>
