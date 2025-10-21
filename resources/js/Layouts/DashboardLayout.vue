@@ -10,14 +10,6 @@ import BarChartCard from "@/Components/BarChartCard.vue";
 import SupplierChartCard from "@/Components/SupplierChartCard.vue";
 import UserActivity from "@/Components/UserActivity.vue";
 
-const menuItems = [
-  { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "dashboard.index" },
-  { name: "Inventory", icon: "fa-solid fa-boxes-packing", route: "inventory.index" },
-  { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
-  { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
-  { name: "Purchase", icon: "fa-solid fa-box-open", route: "purchase.index" },
-  { name: "Item Disposal", icon: "fa-solid fa-recycle", route: "item_disposal.index" },
-];
 
 const columns = [
   { label: "Item Name", key: 'item_name' },
@@ -71,7 +63,7 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
     <!-- SIDERBAR -->
     <div class="flex flex-1 overflow-hidden">
       <aside v-show="isSidebarOpen">
-        <SideBar :menu-items="menuItems" />
+        <SideBar/>
       </aside>
 
       <!-- MAIN CONTENT -->
