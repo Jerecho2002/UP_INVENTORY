@@ -22,7 +22,8 @@ const props = defineProps({
     editItems: Array,
     inputFields: Array,
     quantityCostFields: Array,
-    dropdownFields: Array,
+    firstDropdown: Array,
+    secondDropdown: Array,
 });
 
 const search = ref(props.searchItem || '');
@@ -174,10 +175,6 @@ function getValue(obj, path) {
                             <!-- Dynamic Input Fields -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
                                 <div class="space-y-5">
-                                    <div>
-                                        <input type="text">
-                                    </div>
-                                    
                                     <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
                                         <label class="block text-xs font-semibold mb-1 text-gray-700">{{ ip.label
                                         }}</label>
@@ -189,96 +186,20 @@ function getValue(obj, path) {
                                         </div>
                                     </div>
 
+                                    <!-- First Dropdown -->
                                     <div class="flex flex-col">
-                                        <div class="flex flex-col">
-                                            <label class="block text-xs font-semibold mb-1 text-gray-700">Property
-                                                Number</label>
-                                            <select v-model="form.property_number"
-                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                                <option value="">Select</option>
-                                                <option v-for="item in rows.data" :key="item.id"
-                                                    :value="item.property_number">{{ item.property_number }}
-                                                </option>
-                                            </select>
-                                            <div v-if="form.errors.property_number" class="text-red-500 text-sm">
-                                                {{ form.errors.property_number }}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex flex-col">
-                                        <div class="flex flex-col">
+                                        <div v-for="fdp in firstDropdown" class="flex flex-col">
                                             <label
-                                                class="block text-xs font-semibold mb-1 text-gray-700">Categories</label>
-                                            <select v-model="form.item_classification_id"
+                                                class="block text-xs font-semibold mb-1 text-gray-700">{{ fdp.label }}</label>
+                                            <select v-model="form[fdp.model]" :key="fdp.model"
                                                 class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                                 <option value="">Select</option>
-                                                <option v-for="itc in itemClass" :key="itc.id" :value="itc.id">
-                                                   {{ itc.classification_name || 'N  /A' }}
+                                                <option v-for="item in props[fdp.name]" :key="item.id" :value="item.id">
+                                                   {{ item[fdp.option] || 'N/A' }}
                                                 </option>
                                             </select>
-                                            <div v-if="form.errors.item_classification_id" class="text-red-500 text-sm">
-                                                {{ form.errors.item_classification_id }}
-                                            </div>
-                                        </div>
-
-                                        <div class="flex flex-col">
-                                            <label
-                                                class="block text-xs font-semibold mb-1 text-gray-700">Suppliers</label>
-                                            <select v-model="form.supplier_id"
-                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                                <option value="">Select</option>
-                                                <option v-for="sp in suppliers" :key="sp.id" :value="sp.id">
-                                                   {{ sp.supplier_name || 'N/A' }}
-                                                </option>
-                                            </select>
-                                            <div v-if="form.errors.supplier_id" class="text-red-500 text-sm">
-                                                {{ form.errors.supplier_id }}
-                                            </div>
-                                        </div>
-
-                                        <div class="flex flex-col">
-                                            <label
-                                                class="block text-xs font-semibold mb-1 text-gray-700">Locations</label>
-                                            <select v-model="form.location_id"
-                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                                <option value="">Select</option>
-                                                <option v-for="loc in locations" :key="loc.id" :value="loc.id">
-                                                   {{ loc.location_name || 'N/A' }}
-                                                </option>
-                                            </select>
-                                            <div v-if="form.errors.location_id" class="text-red-500 text-sm">
-                                                {{ form.errors.location_id }}
-                                            </div>
-                                        </div>
-
-                                        <div class="flex flex-col">
-                                            <label
-                                                class="block text-xs font-semibold mb-1 text-gray-700">Invoices</label>
-                                            <select v-model="form.invoice_id"
-                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                                <option value="">Select</option>
-                                                <option v-for="inv in invoices" :key="inv.id" :value="inv.id">
-                                                   {{ inv.invoice_number || 'N/A' }}
-                                                </option>
-                                            </select>
-                                            <div v-if="form.errors.invoice_id" class="text-red-500 text-sm">
-                                                {{ form.errors.invoice_id }}
-                                            </div>
-                                        </div>
-
-                                        <div class="flex flex-col">
-                                            <label
-                                                class="block text-xs font-semibold mb-1 text-gray-700">Fund Source</label>
-                                            <select v-model="form.fund_source_id"
-                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                                <option value="">Select</option>
-                                                <option v-for="fund in fundSources" :key="fund.id" :value="fund.id">
-                                                   {{ fund.code || 'N/A' }}
-                                                </option>
-                                            </select>
-                                            <div v-if="form.errors.fund_source_id" class="text-red-500 text-sm">
-                                                {{ form.errors.fund_source_id }}
+                                            <div v-if="form.errors[fdp.model]" class="text-red-500 text-sm">
+                                                {{ form.errors[fdp.model] }}
                                             </div>
                                         </div>
                                     </div>
@@ -298,19 +219,19 @@ function getValue(obj, path) {
                                         </div>
                                     </div>
 
-                                    <!-- UNIT / STATUS -->
-                                    <div v-for="df in dropdownFields" :key="df.label" class="flex gap-3">
+                                    <!-- Second Dropdown -->
+                                    <div v-for="sdf in secondDropdown" class="flex gap-3">
                                         <div class="flex flex-col">
-                                            <label class="block text-xs font-semibold mb-1 text-gray-700">{{ df.label
+                                            <label class="block text-xs font-semibold mb-1 text-gray-700">{{ sdf.label
                                             }}</label>
-                                            <select v-model="form[df.model]"
+                                            <select v-model="form[sdf.model]"
                                                 class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                                 <option value="">Select</option>
-                                                <option v-for="op in df.options" :key="op.value" :value="op.value">{{
+                                                <option v-for="op in sdf.options" :key="op.value" :value="op.value">{{
                                                     op.label }}</option>
                                             </select>
-                                            <div v-if="form.errors[df.model]" class="text-red-500 text-sm">
-                                                {{ form.errors[df.model] }}
+                                            <div v-if="form.errors[sdf.model]" class="text-red-500 text-sm">
+                                                {{ form.errors[sdf.model] }}
                                             </div>
                                         </div>
                                     </div>
