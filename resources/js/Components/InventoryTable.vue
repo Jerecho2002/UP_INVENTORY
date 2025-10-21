@@ -186,7 +186,7 @@ function getValue(obj, path) {
                                             class="w-full sm:w-[21.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                         <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">
                                             {{ form.errors[ip.model] }}
-                                        </div>``
+                                        </div>
                                     </div>
 
                                     <div class="flex flex-col">
