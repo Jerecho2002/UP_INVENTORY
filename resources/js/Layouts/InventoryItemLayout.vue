@@ -29,6 +29,13 @@ const columns = [
 const viewItems = [
   { label: "Property Records", key: "category" },
   { label: "Property Number", key: "property_number" },
+  { label: "Supplier", key: "supplier.supplier_name" },
+  { label: "Location", key: "location.location_name" },
+  { label: "Invoice", key: "invoice.invoice_number" },
+  { label: "Fund Source", key: "fund_source.code" },
+  { label: "PR Number", key: "pr_number" },
+  { label: "PO Number", key: "po_number" },
+  { label: "Remarks", key: "remarks" },
   { label: "Item Name", key: "item_name" },
   { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
   { label: "Unit Cost", key: "unit_cost", format: (val) => (val ? `₱${val}` : "N/A") },
@@ -70,6 +77,12 @@ const inputFields = [
   { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
   { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
+
+const requestFields = [
+  { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
+  { label: "Purchase Orders", model: "po_number", placeholder: "PO-###", type: "text" },
+  { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
+]
 
 const firstDropdown = [
   { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
@@ -134,6 +147,7 @@ const toggleSidebar = () => {
           :quantity-cost-fields="quantityCostFields"
           :firstDropdown="firstDropdown"
           :secondDropdown="secondDropdown"
+          :requestFields="requestFields"
           />
         </div>
       </main>

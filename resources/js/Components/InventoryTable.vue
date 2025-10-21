@@ -24,6 +24,7 @@ const props = defineProps({
     quantityCostFields: Array,
     firstDropdown: Array,
     secondDropdown: Array,
+    requestFields: Array,
 });
 
 const search = ref(props.searchItem || '');
@@ -201,12 +202,18 @@ function getValue(obj, path) {
                                         </div>
                                     </div>
 
-                                    <!-- PR AND PO -->
+                                    <!-- Request Fields -->
                                     <div>
-                                        <div>
-                                            <label>PR Number</label>
-                                            <input type="text">
+                                        <div v-for="rf in requestFields" :key="rf.model" class="flex flex-col">
+                                        <label class="block text-sm font-bold mb-1 ">{{ rf.label
+                                            }}</label>
+                                        <input v-model="form[rf.model]" :key="rf.model" type="text"
+                                            :placeholder="rf.placeholder"
+                                            class="w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                        <div v-if="form.errors[rf.model]" class="text-red-500 text-sm">
+                                            {{ form.errors[rf.model] }}
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -252,7 +259,7 @@ function getValue(obj, path) {
                                 </div>
                                 <div>
                                     <label class="block text-sm font-bold mb-1">Date Acquired</label>
-                                    <input class="rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" type="date" name="" id="">
+                                    <input v-model="form.date_aquired" class="rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" type="date" name="" id="">
                                 </div>
                             </div>
 
