@@ -186,7 +186,7 @@ function getValue(obj, path) {
                                             class="w-full sm:w-[21.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                         <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">
                                             {{ form.errors[ip.model] }}
-                                        </div>
+                                        </div>``
                                     </div>
 
                                     <div class="flex flex-col">
@@ -214,7 +214,7 @@ function getValue(obj, path) {
                                                 class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                                 <option value="">Select</option>
                                                 <option v-for="itc in itemClass" :key="itc.id" :value="itc.id">
-                                                   {{ itc.classification_name || 'N/A' }}
+                                                   {{ itc.classification_name || 'N  /A' }}
                                                 </option>
                                             </select>
                                             <div v-if="form.errors.item_classification_id" class="text-red-500 text-sm">
@@ -285,7 +285,7 @@ function getValue(obj, path) {
 
                                     <!-- Quantity + Unit Cost -->
                                     <div class="flex gap-4 sm:gap-6 w-full">
-                                        <div v-for="qcf in quantityCostFields"
+                                        <div v-for="qcf in quantityCostFields" :key="qcf.quantityCostFields"
                                             class="flex flex-col flex-1 min-w-[6rem] sm:min-w-[8rem] md:min-w-[10rem] lg:min-w-[10rem]">
                                             <label class="block text-xs font-semibold mb-1 text-gray-700">{{ qcf.label
                                             }}</label>
@@ -299,7 +299,7 @@ function getValue(obj, path) {
                                     </div>
 
                                     <!-- UNIT / STATUS -->
-                                    <div v-for="df in dropdownFields" class="flex gap-3">
+                                    <div v-for="df in dropdownFields" :key="df.label" class="flex gap-3">
                                         <div class="flex flex-col">
                                             <label class="block text-xs font-semibold mb-1 text-gray-700">{{ df.label
                                             }}</label>
@@ -332,7 +332,7 @@ function getValue(obj, path) {
                             <div class="mt-4 text-sm font-semibold">
                                 <label class="block text-xs font-semibold mb-1">Total Amount</label>
                                 <input v-model="form.total_amount" readonly placeholder="₱0.00"
-                                    class="block text-xs font-semibold mb-1 text-gray-700 border border-none pointer-events-none"></input>
+                                    class="block text-xs font-semibold mb-1 text-gray-700 border border-none pointer-events-none">
                             </div>
                         </div>
                     </div>

@@ -17,9 +17,13 @@ use App\Http\Controllers\InventoryController;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
+
+
+
 Route::middleware(['auth', 'role:staff,admin'])->group(function () {
-    Route::get('/', [InventoryController::class, 'searchBar'])->name('inventory.index');
-    Route::post('/items/store', [InventoryController::class, 'store'])->name('items.store');
+    Route::get('/inventory', [InventoryController::class, 'searchBar'])->name('inventory.index');
+    Route::post('/items/store', [InventoryController::class, 'sto
+    re'])->name('items.store');     
     Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
 
     Route::get('/dashboard', [DashboardController::class, 'searchBar'])->name('dashboard.index');
@@ -37,6 +41,7 @@ Route::get('/purchase', function () {
 Route::get('/item_disposal', function () {
     return inertia("ItemDisposal");
 })->name("item_disposal.index");
+
 
 Route::get('/dummy-auth', function () {
     $user_id = 11;
