@@ -89,7 +89,7 @@ const handleAddItem = (closeModal) => {
     form.post(route("items.store"), {
         onSuccess: () => {
             closeModal(),
-            form.reset();
+                form.reset();
         }
     });
 };
@@ -164,52 +164,34 @@ function getValue(obj, path) {
 
             <!-- ADD FORM CONTENT -->
             <template #InventoryForm="{ closeModal }">
-                <form @submit.prevent="handleAddItem(closeModal)" class="flex flex-col gap-3">
+                <form @submit.prevent="handleAddItem(closeModal)" class="flex flex-col gap-3 sm:overflow-y-auto">
                     <!-- Header -->
                     <h2 class="text-2xl font-bold text-[#850038] mb-6">Add Item</h2>
 
                     <!-- Form Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">     
                         <!-- Left Side -->
-                        <div class="space-y-6">
+                        <div class="space-y-6 col-span-1 md:col-span-1">
                             <!-- Dynamic Input Fields -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-6">
                                 <div class="space-y-5">
                                     <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
-                                        <label class="block text-xs font-semibold mb-1 text-gray-700">{{ ip.label
-                                        }}</label>
+                                        <label class="block text-sm font-bold mb-1 ">{{ ip.label
+                                            }}</label>
                                         <input v-model="form[ip.model]" :key="ip.model" type="text"
                                             :placeholder="ip.placeholder"
-                                            class="w-full sm:w-[21.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                            class="w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                         <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">
                                             {{ form.errors[ip.model] }}
-                                        </div>
-                                    </div>
-
-                                    <!-- First Dropdown -->
-                                    <div class="flex flex-col">
-                                        <div v-for="fdp in firstDropdown" class="flex flex-col">
-                                            <label
-                                                class="block text-xs font-semibold mb-1 text-gray-700">{{ fdp.label }}</label>
-                                            <select v-model="form[fdp.model]" :key="fdp.model"
-                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                                <option value="">Select</option>
-                                                <option v-for="item in props[fdp.name]" :key="item.id" :value="item.id">
-                                                   {{ item[fdp.option] || 'N/A' }}
-                                                </option>
-                                            </select>
-                                            <div v-if="form.errors[fdp.model]" class="text-red-500 text-sm">
-                                                {{ form.errors[fdp.model] }}
-                                            </div>
                                         </div>
                                     </div>
 
                                     <!-- Quantity + Unit Cost -->
                                     <div class="flex gap-4 sm:gap-6 w-full">
                                         <div v-for="qcf in quantityCostFields" :key="qcf.quantityCostFields"
-                                            class="flex flex-col flex-1 min-w-[6rem] sm:min-w-[8rem] md:min-w-[10rem] lg:min-w-[10rem]">
-                                            <label class="block text-xs font-semibold mb-1 text-gray-700">{{ qcf.label
-                                            }}</label>
+                                            class="flex flex-col flex-1 min-w-[8rem] sm:min-w-[10rem] md:min-w-[15rem] lg:min-w-[14.3rem]">
+                                            <label class="block text-sm font-bold mb-1">{{ qcf.label
+                                                }}</label>
                                             <input v-model="form[qcf.model]" :key="qcf.model" :type="qcf.type"
                                                 :placeholder="qcf.placeholder"
                                                 class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800 focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
@@ -219,20 +201,11 @@ function getValue(obj, path) {
                                         </div>
                                     </div>
 
-                                    <!-- Second Dropdown -->
-                                    <div v-for="sdf in secondDropdown" class="flex gap-3">
-                                        <div class="flex flex-col">
-                                            <label class="block text-xs font-semibold mb-1 text-gray-700">{{ sdf.label
-                                            }}</label>
-                                            <select v-model="form[sdf.model]"
-                                                class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                                <option value="">Select</option>
-                                                <option v-for="op in sdf.options" :key="op.value" :value="op.value">{{
-                                                    op.label }}</option>
-                                            </select>
-                                            <div v-if="form.errors[sdf.model]" class="text-red-500 text-sm">
-                                                {{ form.errors[sdf.model] }}
-                                            </div>
+                                    <!-- PR AND PO -->
+                                    <div>
+                                        <div>
+                                            <label>PR Number</label>
+                                            <input type="text">
                                         </div>
                                     </div>
                                 </div>
@@ -241,19 +214,61 @@ function getValue(obj, path) {
 
                         <!-- Right Side -->
                         <div class="flex flex-col justify-between">
+
+                            <!-- First Dropdown -->
+                            <div class="flex flex-col md:flex-row gap-2 mb-3">
+                                <div v-for="fdp in firstDropdown" :key="fdp.name" class="flex flex-col">
+                                    <label class="block text-sm font-bold mb-1">{{ fdp.label
+                                        }}</label>
+                                    <select v-model="form[fdp.model]" :key="fdp.model"
+                                        class="w-full sm:w-[6.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                        <option value="">Select</option>
+                                        <option v-for="item in props[fdp.name]" :key="item.id" :value="item.id">
+                                            {{ item[fdp.option] || 'N/A' }}
+                                        </option>
+                                    </select>
+                                    <div v-if="form.errors[fdp.model]" class="text-red-500 text-sm">
+                                        {{ form.errors[fdp.model] }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Second Dropdown -->
+                            <div class="flex flex-col md:flex-row gap-3 mb-3">
+                                <div v-for="sdf in secondDropdown" :key="sdf.label" class="flex gap-3">
+                                    <div>
+                                        <label class="block text-sm font-bold mb-1">{{ sdf.label
+                                            }}</label>
+                                        <select v-model="form[sdf.model]"
+                                            class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                            <option value="">Select</option>
+                                            <option v-for="op in sdf.options" :key="op.value" :value="op.value">{{
+                                                op.label }}</option>
+                                        </select>
+                                        <div v-if="form.errors[sdf.model]" class="text-red-500 text-sm">
+                                            {{ form.errors[sdf.model] }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold mb-1">Date Acquired</label>
+                                    <input class="rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" type="date" name="" id="">
+                                </div>
+                            </div>
+
                             <div>
-                                <label class="block text-xs font-semibold mb-1">DESCRIPTION</label>
+                                <label class="block text-md font-semibold mb-1">Description</label>
                                 <textarea v-model="form.description" placeholder="Input a description"
-                                    class="w-full h-40 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-2 focus:ring-[#850038]"></textarea>
+                                    class="w-full h-36 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"></textarea>
                                 <div v-if="form.errors.description" class="text-red-500 text-sm">
                                     {{ form.errors.description }}
                                 </div>
                             </div>
 
-                            <div class="mt-4 text-sm font-semibold">
-                                <label class="block text-xs font-semibold mb-1">Total Amount</label>
+                            <div class="flex flex-col md:flex-row items-center text-sm font-semibold">
+                                <label class="block text-base font-bold">Total Amount:</label>
                                 <input v-model="form.total_amount" readonly placeholder="₱0.00"
-                                    class="block text-xs font-semibold mb-1 text-gray-700 border border-none pointer-events-none">
+                                    class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none">
                             </div>
                         </div>
                     </div>

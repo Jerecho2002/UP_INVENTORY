@@ -66,9 +66,9 @@ const quantityCostFields = [
 ];
 
 const inputFields = [
-  { label: "PAR/ICS NUMBER", model: "category", placeholder: "000-0000-00-000", type: "text" },
-  { label: "ITEM NAME", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
-  { label: "PROPERTY NUMBER", model: "property_number", placeholder: "PROP-####.", type: "text" },
+  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text" },
+  { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
+  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
 
 const firstDropdown = [
@@ -80,11 +80,11 @@ const firstDropdown = [
 ]
 
 const secondDropdown = [
-  { label: "UNIT", model: "unit", options: 
+  { label: "Unit", model: "unit", options: 
                                             [{label: "Unit", value: "Unit"},
                                              {label: "PC", value: "PC"}, 
                                              {label: "Box", value: "Box"}]},
-  { label: "STATUS", model: "status", options: 
+  { label: "Status", model: "status", options: 
                                             [{label: "Active", value: "1"},
                                              {label: "Inactive", value: "0"},]},
 ];
