@@ -22,7 +22,7 @@ class InventoryController extends Controller
         $invoices = Invoice::all();
         $fundSources = FundSource::all();
         
-        return inertia('Inventory', [
+        return inertia('Inventory/InventoryItem', [
         'items' => $service->getPaginatedInventory($search, $costRange),
         'itemClassifications' => $itemClassifications,
         'suppliers' => $suppliers,
@@ -32,6 +32,25 @@ class InventoryController extends Controller
     ]);
     }
 
+    public function InventoryTransactions(Request $request, InventoryService $service){
+        $search = $request->input('search');
+        $costRange = $request->input('cost_range');
+        $itemClassifications = ItemClassification::all();
+        $suppliers = Supplier::all();
+        $locations = Location::all();
+        $invoices = Invoice::all();
+        $fundSources = FundSource::all();
+        
+        return inertia('Inventory/InventoryTransaction', [
+        'items' => $service->getPaginatedInventory($search, $costRange),
+        'itemClassifications' => $itemClassifications,
+        'suppliers' => $suppliers,
+        'locations' => $locations,
+        'invoices' => $invoices,
+        'fundSources' => $fundSources,
+    ]);
+    }
+    
     public function store(Request $request)
     {
         // Validate incoming request
