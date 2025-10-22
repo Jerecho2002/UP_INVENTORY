@@ -59,13 +59,6 @@ const viewItems = [
   },
 ];
 
-const editItems = [
-  { label: "Property Records", key: "category" },
-  { label: "Property Number", key: "property_number" },
-  { label: "Item Name", key: "item_name" },
-  { label: "Description", key: "description" },
-];
-
 const quantityCostFields = [
   { label: "Quantity", model: "quantity", placeholder: "0", type: "number"},
   { label: "Unit Cost", model: "unit_cost", placeholder: "0", type: "number"},
@@ -141,7 +134,6 @@ const toggleSidebar = () => {
           :invoices="invoices"
           :fundSources="fundSources"
           :view-items="viewItems"
-          :edit-items="editItems"
           :input-fields="inputFields"
           :quantity-cost-fields="quantityCostFields"
           :firstDropdown="firstDropdown"

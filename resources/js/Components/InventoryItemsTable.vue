@@ -19,7 +19,6 @@ const props = defineProps({
     invoices: Array,
     fundSources: Array,
     viewItems: Array,
-    editItems: Array,
     inputFields: Array,
     quantityCostFields: Array,
     firstDropdown: Array,
@@ -92,7 +91,7 @@ function openViewModal(item, open) {
 
 function openEditModal(item, open) {
     editModalRef.value = item;
-    form.property_number = item.property_number;
+    form.id = item.id;
     form.item_classification_id = item.item_classification_id;
     form.supplier_id = item.supplier_id;
     form.location_id = item.location_id;
@@ -105,11 +104,11 @@ function openEditModal(item, open) {
     form.unit = item.unit;
     form.unit_cost = item.unit_cost;
     form.total_amount = item.total_amount;
+    form.property_number = item.property_number;
     form.pr_number = item.pr_number;
     form.po_number = item.po_number;
     form.remarks = item.remarks;
     form.date_acquired = item.date_acquired ? item.date_acquired.split("T")[0] : "";
-
     form.status = item.status;
     open();
 }
@@ -123,8 +122,8 @@ const handleAddItem = (closeModal) => {
     });
 };
 
-const handleUpdateItem = (closeModal) => {
-    form.post(route("items.update"), {
+const handleUpdateItem = (id, closeModal) => {
+    form.put(route("items.update", id), {
         onSuccess: () => {
             closeModal(),
                 form.reset();
@@ -192,7 +191,7 @@ function getValue(obj, path) {
                                             <label class="block text-sm font-bold mb-1">{{ qcf.label
                                             }}</label>
                                             <input v-model="form[qcf.model]" :key="qcf.model" :type="qcf.type"
-                                                :placeholder="qcf.placeholder"
+                                                :placeholder="qcf.placeholder" step="any"
                                                 class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800 focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
                                             <div v-if="form.errors[qcf.model]" class="text-red-500 text-sm">
                                                 {{ form.errors[qcf.model] }}
@@ -402,7 +401,7 @@ function getValue(obj, path) {
                                         </template>
 
                                         <template #EditInventory="{ closeModal }">
-                                            <form @submit.prevent="handleUpdateItem(closeModal)"
+                                            <form @submit.prevent="handleUpdateItem(form.id, closeModal)"
                                                 class="flex flex-col gap-3 sm:overflow-y-auto">
                                                 <h2 class="text-2xl font-bold text-[#850038] mb-6">Edit Item</h2>
 
@@ -435,7 +434,7 @@ function getValue(obj, path) {
                                                                             qcf.label }}</label>
                                                                         <input v-model="form[qcf.model]"
                                                                             :type="qcf.type"
-                                                                            :placeholder="qcf.placeholder" class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8]
+                                                                            :placeholder="qcf.placeholder" step="any" class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8]
                             text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none
                             focus:border-[#850038]" />
                                                                         <div v-if="form.errors[qcf.model]"
