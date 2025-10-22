@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Models\Invoice;
 use App\Models\Location;
 use App\Models\Supplier;
@@ -23,7 +22,7 @@ class InventoryController extends Controller
         $invoices = Invoice::all();
         $fundSources = FundSource::all();
         
-        return Inertia::render('Inventory', [
+        return inertia('Inventory', [
         'items' => $service->getPaginatedInventory($search, $costRange),
         'itemClassifications' => $itemClassifications,
         'suppliers' => $suppliers,

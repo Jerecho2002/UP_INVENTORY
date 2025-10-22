@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\ReportController;
-use App\Models\Item;
-use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
@@ -44,7 +42,7 @@ Route::get('/dummy-auth', function () {
     // Log in user with ID 1
     Auth::loginUsingId($user_id);
 
-    return 'User logged ' . $user_id . " ID";
+    return "User logged in {$user_id}";
 });
 
 
