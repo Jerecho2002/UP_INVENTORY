@@ -71,7 +71,7 @@ class InventoryController extends Controller
             'pr_number' => 'required|string|max:50',
             'po_number' => 'required|string|max:50',
             'remarks' => 'required|string|max:50',
-            'date_aquired' => 'required|string|max:50',
+            'date_acquired' => 'required|date',
             'status' => 'nullable|string|max:50',
         ]);
 
@@ -96,12 +96,12 @@ class InventoryController extends Controller
             'pr_number' => $request->pr_number,
             'po_number' => $request->po_number,
             'remarks' => $request->remarks,
-            'date_aquired' => $request->date_aquired,
+            'date_acquired' => $request->date_acquired,
             'status' => $request->status,
         ]);
 
         // Redirect back or to a specific page after successful submission
-        return redirect()->route('inventory.index');
+        return redirect()->route('inventory.items');
     }
 
     public function destroy($id)

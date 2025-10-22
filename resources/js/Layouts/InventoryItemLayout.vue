@@ -63,7 +63,7 @@ const viewItems = [
 
 const editItems = [
   { label: "Property Records", key: "category" },
-  { label: "Property Number", key: "property.property_number" },
+  { label: "Property Number", key: "property_number" },
   { label: "Item Name", key: "item_name" },
   { label: "Description", key: "description" },
 ];
