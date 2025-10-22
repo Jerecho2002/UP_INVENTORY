@@ -56,7 +56,6 @@ const editModalRef = ref(null);
 const selectedViewItem = ref(null);
 
 const form = useForm({
-    property_number: "",
     item_classification_id: "",
     supplier_id: "",
     location_id: "",
@@ -69,6 +68,7 @@ const form = useForm({
     unit: "",
     unit_cost: "",
     total_amount: "",
+    property_number: "",
     pr_number: "",
     po_number: "",
     remarks: "",
