@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
-import InventoryTable from "@/Components/InventoryTable.vue";
+import InventoryItemsTable from "@/Components/InventoryItemsTable.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 
 
@@ -29,15 +29,7 @@ const columns = [
 const viewItems = [
   { label: "Property Records", key: "category" },
   { label: "Property Number", key: "property_number" },
-  { label: "Supplier", key: "supplier.supplier_name" },
-  { label: "Location", key: "location.location_name" },
-  { label: "Invoice", key: "invoice.invoice_number" },
-  { label: "Fund Source", key: "fund_source.code" },
-  { label: "PR Number", key: "pr_number" },
-  { label: "PO Number", key: "po_number" },
-  { label: "Remarks", key: "remarks" },
   { label: "Item Name", key: "item_name" },
-  { label: "Description", key: "description" },
   { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
   { label: "Unit Cost", key: "unit_cost", format: (val) => (val ? `₱${val}` : "N/A") },
   {
@@ -78,12 +70,6 @@ const inputFields = [
   { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
   { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
-
-const requestFields = [
-  { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
-  { label: "Purchase Orders", model: "po_number", placeholder: "PO-###", type: "text" },
-  { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
-]
 
 const firstDropdown = [
   { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
@@ -134,7 +120,7 @@ const toggleSidebar = () => {
         <!-- HEAD TITLE -->
         <PageHeader title="Items" />
         <div class="w-full h-full">
-          <InventoryTable 
+          <InventoryItemsTable 
           :columns="columns" 
           :rows="items"
           :itemClass="itemClassifications"
@@ -148,7 +134,6 @@ const toggleSidebar = () => {
           :quantity-cost-fields="quantityCostFields"
           :firstDropdown="firstDropdown"
           :secondDropdown="secondDropdown"
-          :requestFields="requestFields"
           />
         </div>
       </main>
