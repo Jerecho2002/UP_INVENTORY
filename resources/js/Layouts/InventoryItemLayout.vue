@@ -6,14 +6,7 @@ import SideBar from "@/Components/SideBar.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 
-const menuItems = [
-  { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "dashboard.index" },
-  { name: "Inventory", icon: "fa-solid fa-boxes-packing", route: "inventory.index" },
-  { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
-  { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
-  { name: "Purchase", icon: "fa-solid fa-box-open", route: "purchase.index" },
-  { name: "Item Disposal", icon: "fa-solid fa-recycle", route: "item_disposal.index" },
-];
+
 
 const columns = [
   { label: "Property Records", key: 'category' },
@@ -36,6 +29,13 @@ const columns = [
 const viewItems = [
   { label: "Property Records", key: "category" },
   { label: "Property Number", key: "property_number" },
+  { label: "Supplier", key: "supplier.supplier_name" },
+  { label: "Location", key: "location.location_name" },
+  { label: "Invoice", key: "invoice.invoice_number" },
+  { label: "Fund Source", key: "fund_source.code" },
+  { label: "PR Number", key: "pr_number" },
+  { label: "PO Number", key: "po_number" },
+  { label: "Remarks", key: "remarks" },
   { label: "Item Name", key: "item_name" },
   { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
   { label: "Unit Cost", key: "unit_cost", format: (val) => (val ? `₱${val}` : "N/A") },
@@ -73,10 +73,16 @@ const quantityCostFields = [
 ];
 
 const inputFields = [
-  { label: "PAR/ICS NUMBER", model: "category", placeholder: "000-0000-00-000", type: "text" },
-  { label: "ITEM NAME", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
-  { label: "PROPERTY NUMBER", model: "property_number", placeholder: "PROP-####.", type: "text" },
+  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text" },
+  { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
+  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
+
+const requestFields = [
+  { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
+  { label: "Purchase Orders", model: "po_number", placeholder: "PO-###", type: "text" },
+  { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
+]
 
 const firstDropdown = [
   { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
@@ -87,11 +93,11 @@ const firstDropdown = [
 ]
 
 const secondDropdown = [
-  { label: "UNIT", model: "unit", options: 
+  { label: "Unit", model: "unit", options: 
                                             [{label: "Unit", value: "Unit"},
                                              {label: "PC", value: "PC"}, 
                                              {label: "Box", value: "Box"}]},
-  { label: "STATUS", model: "status", options: 
+  { label: "Status", model: "status", options: 
                                             [{label: "Active", value: "1"},
                                              {label: "Inactive", value: "0"},]},
 ];
@@ -119,13 +125,13 @@ const toggleSidebar = () => {
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
       <aside v-show="isSidebarOpen">
-        <SideBar :menu-items="menuItems" />
+        <SideBar/>
       </aside>
 
       <!-- Main --> 
       <main class="flex-1 sm:p-5 md:p-6 overflow-hidden m-2">
         <!-- HEAD TITLE -->
-        <PageHeader title="Inventory" />
+        <PageHeader title="Items" />
         <div class="w-full h-full">
           <InventoryTable 
           :columns="columns" 
@@ -141,6 +147,7 @@ const toggleSidebar = () => {
           :quantity-cost-fields="quantityCostFields"
           :firstDropdown="firstDropdown"
           :secondDropdown="secondDropdown"
+          :requestFields="requestFields"
           />
         </div>
       </main>

@@ -36,8 +36,11 @@ class InventoryController extends Controller
     {
         // Validate incoming request
         $request->validate([
-            'property_id' => 'required|integer',
             'item_classification_id' => 'required|integer',
+            'supplier_id' => 'required|integer',
+            'location_id' => 'required|integer',
+            'invoice_id' => 'required|integer',
+            'fund_source_id' => 'required|integer',
             'item_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
@@ -45,6 +48,11 @@ class InventoryController extends Controller
             'unit' => 'required|string|max:50',
             'unit_cost' => 'required|numeric',
             'total_amount' => 'nullable|numeric',
+            'property_number' => 'required|string|max:50',
+            'pr_number' => 'required|string|max:50',
+            'po_number' => 'required|string|max:50',
+            'remarks' => 'required|string|max:50',
+            'date_aquired' => 'required|string|max:50',
             'status' => 'nullable|string|max:50',
         ]);
 
@@ -53,15 +61,23 @@ class InventoryController extends Controller
 
         // Create a new InventoryItem using mass assignment
         InventoryItem::create([
-            'property_id' => $request->property_id,
             'item_classification_id' => $request->item_classification_id,
+            'supplier_id' => $request->supplier_id,
+            'location_id' => $request->location_id,
+            'invoice_id' => $request->invoice_id,
+            'fund_source_id' => $request->fund_source_id,
             'item_name' => $request->item_name,
             'description' => $request->description,
             'category' => $request->category,
             'quantity' => $request->quantity,
             'unit' => $request->unit,
             'unit_cost' => $request->unit_cost,
-            'total_amount' => $totalAmount, // You may want to calculate this dynamically
+            'total_amount' => $totalAmount,
+            'property_number' => $request->property_number,
+            'pr_number' => $request->pr_number,
+            'po_number' => $request->po_number,
+            'remarks' => $request->remarks,
+            'date_aquired' => $request->date_aquired,
             'status' => $request->status,
         ]);
 

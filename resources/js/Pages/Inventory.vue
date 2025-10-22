@@ -1,5 +1,5 @@
 <script setup>
-    import InventoryLayout from '@/Layouts/InventoryLayout.vue';
+    import InventoryItemLayout from '@/Layouts/InventoryItemLayout.vue';
     import { Head } from '@inertiajs/vue3';
 </script>
 
@@ -7,7 +7,7 @@
    <Head title="UP | Inventory" />
     
         <div class="bg-[#F3F3F3]">
-            <InventoryLayout/>
+            <InventoryItemLayout/>
         </div> 
 
 </template>
