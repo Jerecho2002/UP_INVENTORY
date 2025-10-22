@@ -13,7 +13,7 @@ use App\Services\InventoryService;
 
 class InventoryController extends Controller
 {
-    public function searchBar(Request $request, InventoryService $service){
+    public function InventoryItems(Request $request, InventoryService $service){
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $itemClassifications = ItemClassification::all();

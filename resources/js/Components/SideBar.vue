@@ -8,7 +8,8 @@ const menuItems = [
         name: "Inventory",
         icon: "fa-solid fa-boxes-packing",
         children: [
-            { name: "Items", route: "inventory.index" },
+            { name: "Items", route: "inventory.items" },
+            { name: "Transactions", route: "inventory.transactions" },
         ],
     },
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },

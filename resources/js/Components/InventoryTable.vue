@@ -33,14 +33,14 @@ const selectedCostRange = ref(props.selectedCostRange || '');
 watch(
     search,
     debounce((output) => {
-        router.get('/', { search: output, cost_range: selectedCostRange.value }, { preserveState: true, only: ['items'] });
+        router.get('/inventory/items', { search: output, cost_range: selectedCostRange.value }, { preserveState: true, only: ['items'] });
     })
 );
 
 watch(
     selectedCostRange,
     debounce((range) => {
-        router.get('/', { search: search.value, cost_range: range }, { preserveState: true });
+        router.get('/inventory/items', { search: search.value, cost_range: range }, { preserveState: true });
     })
 )
 
@@ -392,7 +392,7 @@ function getValue(obj, path) {
                                     </ViewModal>
 
                                     <!-- EDIT MODAL -->
-                                    <!-- <EditModal ref="editModalRef">
+                                    <EditModal ref="editModalRef">
                                         <template #EditItemButton="{ open }">
                                             <button type="button" class="text-[#54B3AB] hover:text[#54B3AB] mx-1"
                                                 title="Edit" @click="() => openEditModal(item, open)">
@@ -496,7 +496,7 @@ function getValue(obj, path) {
                                                 </div>
                                             </form>
                                         </template>
-                                    </EditModal> -->
+                                    </EditModal>
 
 
                                     <!-- DELETE MODAL -->
