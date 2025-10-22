@@ -14,7 +14,7 @@ use App\Services\InventoryService;
 
 class InventoryController extends Controller
 {
-    public function searchBar(Request $request, InventoryService $service){
+    public function InventoryItems(Request $request, InventoryService $service){
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $itemClassifications = ItemClassification::all();
@@ -23,7 +23,7 @@ class InventoryController extends Controller
         $invoices = Invoice::all();
         $fundSources = FundSource::all();
         
-        return Inertia::render('Inventory', [
+        return Inertia::render('Inventory/InventoryItem', [
         'items' => $service->getPaginatedInventory($search, $costRange),
         'itemClassifications' => $itemClassifications,
         'suppliers' => $suppliers,
@@ -32,7 +32,7 @@ class InventoryController extends Controller
         'fundSources' => $fundSources,
     ]);
     }
-
+    
     public function store(Request $request)
     {
         // Validate incoming request

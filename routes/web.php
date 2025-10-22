@@ -21,7 +21,7 @@ use App\Http\Controllers\InventoryController;
 
 
 Route::middleware(['auth', 'role:staff,admin'])->group(function () {
-    Route::get('/inventory/items', [InventoryController::class, 'searchBar'])->name('inventory.index');
+    Route::get('/inventory/items', [InventoryController::class, 'InventoryItems'])->name('inventory.index');
     Route::post('/items/store', [InventoryController::class, 'store'])->name('items.store');     
     Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
     Route::get('/dashboard', [DashboardController::class, 'searchBar'])->name('dashboard.index');

@@ -33,14 +33,14 @@ const selectedCostRange = ref(props.selectedCostRange || '');
 watch(
     search,
     debounce((output) => {
-        router.get('/', { search: output, cost_range: selectedCostRange.value }, { preserveState: true, only: ['items'] });
+        router.get('/inventory/items', { search: output, cost_range: selectedCostRange.value }, { preserveState: true, only: ['items'] });
     })
 );
 
 watch(
     selectedCostRange,
     debounce((range) => {
-        router.get('/', { search: search.value, cost_range: range }, { preserveState: true });
+        router.get('/inventory/items', { search: search.value, cost_range: range }, { preserveState: true });
     })
 )
 
