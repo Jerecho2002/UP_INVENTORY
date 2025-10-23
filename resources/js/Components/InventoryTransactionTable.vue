@@ -42,7 +42,7 @@
             <div class="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-3">
                  <!-- Export button -->
                 <button
-                    class="flex items-center justify-center gap-2 bg-[#850038] text-white font-semibold rounded-md h-[2.5rem] sm:h-[3rem] px-5 hover:bg-[#a00746] transition duration-150">
+                    class="flex items-center justify-center gap-2 bg-[#20C6D2] text-white font-semibold rounded-md h-[2.5rem] sm:h-[3rem] px-5 hover:bg-[#49dce6] transition duration-150">
                     <i class="fa-solid fa-file-export"></i>
                     <span>Export</span>
                 </button>
