@@ -6,8 +6,6 @@ import SideBar from "@/Components/SideBar.vue";
 import InventoryItemsTable from "@/Components/InventoryItemsTable.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 
-
-
 const columns = [
   { label: "Property Records", key: 'category' },
   { label: "Property Number", key: 'property_number' },
@@ -23,13 +21,21 @@ const columns = [
       return `<span class="${cls}">${label}</span>`;
     }
   },
-  { label: "Action", key: "action" } // keep key, but don’t inject HTML
+  { label: "Action", key: "action" }
 ]
 
 const viewItems = [
   { label: "Property Records", key: "category" },
   { label: "Property Number", key: "property_number" },
+  { label: "Supplier", key: "supplier.supplier_name" },
+  { label: "Location", key: "location.location_name" },
+  { label: "Invoice", key: "invoice.invoice_number" },
+  { label: "Fund Source", key: "fund_source.code" },
+  { label: "PR Number", key: "pr_number" },
+  { label: "PO Number", key: "po_number" },
+  { label: "Remarks", key: "remarks" },
   { label: "Item Name", key: "item_name" },
+  { label: "Description", key: "description" },
   { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
   { label: "Unit Cost", key: "unit_cost", format: (val) => (val ? `₱${val}` : "N/A") },
   {
@@ -53,13 +59,6 @@ const viewItems = [
   },
 ];
 
-const editItems = [
-  { label: "Property Records", key: "category" },
-  { label: "Property Number", key: "property.property_number" },
-  { label: "Item Name", key: "item_name" },
-  { label: "Description", key: "description" },
-];
-
 const quantityCostFields = [
   { label: "Quantity", model: "quantity", placeholder: "0", type: "number"},
   { label: "Unit Cost", model: "unit_cost", placeholder: "0", type: "number"},
@@ -71,6 +70,12 @@ const inputFields = [
   { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
 
+const requestFields = [
+  { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
+  { label: "Purchase Orders", model: "po_number", placeholder: "PO-###", type: "text" },
+  { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
+]
+
 const firstDropdown = [
   { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
   { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name"},
@@ -81,9 +86,9 @@ const firstDropdown = [
 
 const secondDropdown = [
   { label: "Unit", model: "unit", options: 
-                                            [{label: "Unit", value: "Unit"},
-                                             {label: "PC", value: "PC"}, 
-                                             {label: "Box", value: "Box"}]},
+                                            [{label: "unit", value: "unit"},
+                                             {label: "pc", value: "pc"}, 
+                                             {label: "box", value: "box"}]},
   { label: "Status", model: "status", options: 
                                             [{label: "Active", value: "1"},
                                              {label: "Inactive", value: "0"},]},
@@ -129,11 +134,11 @@ const toggleSidebar = () => {
           :invoices="invoices"
           :fundSources="fundSources"
           :view-items="viewItems"
-          :edit-items="editItems"
           :input-fields="inputFields"
           :quantity-cost-fields="quantityCostFields"
           :firstDropdown="firstDropdown"
           :secondDropdown="secondDropdown"
+          :requestFields="requestFields"
           />
         </div>
       </main>

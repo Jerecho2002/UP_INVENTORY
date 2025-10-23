@@ -70,6 +70,7 @@ class InventoryItem extends Model
             $q->where('item_name', 'like', "%{$term}%")
                 ->orWhere('unit', 'like', "%{$term}%")
                 ->orWhere('property_number', 'like', "%{$term}%")
+                ->orWhere('category', 'like', "%{$term}%")
                 ->orWhereHas('location', function ($q) use ($term) {
                     $q->where('location_name', 'like', "%{$term}%");
                 });
