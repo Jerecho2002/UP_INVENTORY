@@ -12,17 +12,31 @@ const columns = [
   { label: "Item Name", key: 'item_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
-  { label: "Status", key: 'status', 
+  {
+    label: "Status", key: 'status',
     format: (status) => {
-      let label = 'Unknown', cls = 'text-gray-500';
-      if (status === 0) { label = 'Inactive'; cls = 'text-red-700'; }
-      else if (status === 1) { label = 'Active'; cls = 'text-[#14B449]'; }
-      else if (status === 2) { label = 'Pending'; cls = 'text-yellow-700'; }
-      return `<span class="${cls}">${label}</span>`;
+      let label = 'Unknown', cls = 'text-gray-500', icon = '';
+      if (status === 0) {
+        label = 'Inactive';
+        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-ban"></i>';
+      }
+      else if (status === 1) {
+        label = 'Active';
+        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-circle-check"></i>'; 
+      }
+      else if (status === 2) {
+        label = 'Pending';
+        cls = 'text-yellow-700';
+        icon = '<i class="fa-solid fa-clock"></i>'; 
+      }
+      return `<span class="${cls}">${icon} ${label}</span>`; // Render icon before label
     }
   },
   { label: "Action", key: "action" }
 ]
+
 
 const viewItems = [
   { label: "Property Records", key: "category" },
@@ -49,7 +63,7 @@ const viewItems = [
         cls = "text-red-700";
       } else if (status === 1) {
         label = "Active";
-        cls = "text-[#14B449]";
+        cls = "text-[#2E7D32]";
       } else if (status === 2) {
         label = "Pending";
         cls = "text-yellow-700";
@@ -60,8 +74,8 @@ const viewItems = [
 ];
 
 const quantityCostFields = [
-  { label: "Quantity", model: "quantity", placeholder: "0", type: "number"},
-  { label: "Unit Cost", model: "unit_cost", placeholder: "0", type: "number"},
+  { label: "Quantity", model: "quantity", placeholder: "0", type: "number" },
+  { label: "Unit Cost", model: "unit_cost", placeholder: "0", type: "number" },
 ];
 
 const inputFields = [
@@ -77,21 +91,25 @@ const requestFields = [
 ]
 
 const firstDropdown = [
-  { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
-  { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name"},
-  { label: "Locations", model: "location_id", name: "locations", option: "location_name"},
-  { label: "Invoices", model: "invoice_id", name: "invoices", option: "invoice_number"},
-  { label: "Fund Sources", model: "fund_source_id", name: "fundSources", option: "code"},
+  { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name" },
+  { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name" },
+  { label: "Locations", model: "location_id", name: "locations", option: "location_name" },
+  { label: "Invoices", model: "invoice_id", name: "invoices", option: "invoice_number" },
+  { label: "Fund Sources", model: "fund_source_id", name: "fundSources", option: "code" },
 ]
 
 const secondDropdown = [
-  { label: "Unit", model: "unit", options: 
-                                            [{label: "unit", value: "unit"},
-                                             {label: "pc", value: "pc"}, 
-                                             {label: "box", value: "box"}]},
-  { label: "Status", model: "status", options: 
-                                            [{label: "Active", value: "1"},
-                                             {label: "Inactive", value: "0"},]},
+  {
+    label: "Unit", model: "unit", options:
+      [{ label: "unit", value: "unit" },
+      { label: "pc", value: "pc" },
+      { label: "box", value: "box" }]
+  },
+  {
+    label: "Status", model: "status", options:
+      [{ label: "Active", value: "1" },
+      { label: "Inactive", value: "0" },]
+  },
 ];
 
 const page = usePage();
@@ -117,29 +135,18 @@ const toggleSidebar = () => {
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
       <aside v-show="isSidebarOpen">
-        <SideBar/>
+        <SideBar />
       </aside>
 
-      <!-- Main --> 
+      <!-- Main -->
       <main class="flex-1 sm:p-5 md:p-6 overflow-hidden m-2">
         <!-- HEAD TITLE -->
         <PageHeader title="Items" />
         <div class="w-full h-full">
-          <InventoryItemsTable 
-          :columns="columns" 
-          :rows="items"
-          :itemClass="itemClassifications"
-          :suppliers="suppliers"
-          :locations="locations"
-          :invoices="invoices"
-          :fundSources="fundSources"
-          :view-items="viewItems"
-          :input-fields="inputFields"
-          :quantity-cost-fields="quantityCostFields"
-          :firstDropdown="firstDropdown"
-          :secondDropdown="secondDropdown"
-          :requestFields="requestFields"
-          />
+          <InventoryItemsTable :columns="columns" :rows="items" :itemClass="itemClassifications" :suppliers="suppliers"
+            :locations="locations" :invoices="invoices" :fundSources="fundSources" :view-items="viewItems"
+            :input-fields="inputFields" :quantity-cost-fields="quantityCostFields" :firstDropdown="firstDropdown"
+            :secondDropdown="secondDropdown" :requestFields="requestFields" />
         </div>
       </main>
     </div>

@@ -35,7 +35,7 @@ function getValue(obj, path) {
         <div class="sm:w-auto mt-3 mb-2 flex justify-end">
             <div class="relative w-full sm:w-52 md:w-96">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-        <!-- SEARCH -->
+                <!-- SEARCH -->
                 <input type="search" placeholder="Search" v-model="search"
                     class="w-full h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
             </div>
@@ -56,8 +56,8 @@ function getValue(obj, path) {
 
                     <tbody class="text-gray-700">
                         <tr v-for="item in rows.data" :key="item.id" class="even:bg-gray-200">
-                            <TableCell v-for="col in columns" :key="col.key" class="whitespace-nowrap">
-                                <!-- Normal columns -->
+                            <TableCell v-for="col in columns" :key="col.key">
+                                <!-- For normal columns -->
                                 <template v-if="col.key !== 'action'">
                                     <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
                                     <span v-else>{{ getValue(item, col.key) }}</span>

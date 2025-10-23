@@ -15,17 +15,19 @@ const columns = [
     label: "Status", 
     key: 'status',
     format: (status) => {
-      let label = 'Unknown', cls = 'text-gray-500';
+      let label = 'Unknown', cls = 'text-gray-500', icon = ''; 
       if (status === 0) { 
         label = 'Out of Stock'; 
-        cls = 'text-red-700'; 
+        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-arrow-trend-down"></i>';
       } 
       else if (status === 1) { 
         label = 'In Stock'; 
-        cls = 'text-[#14B449]'; 
+        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full'; 
+        icon = '<i class="fa-solid fa-arrow-trend-up"></i>';
       }
 
-      return `<span class="${cls} font-semibold">${label}</span>`;
+      return `<span class="${cls} font-semibold">${icon} ${label}</span>`;
     }
   },
   { label: "Action", key: "action" }
