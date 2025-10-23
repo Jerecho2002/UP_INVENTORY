@@ -68,6 +68,7 @@ const form = useForm({
     unit_cost: "",
     total_amount: "",
     property_number: "",
+    serial_number: "",
     pr_number: "",
     po_number: "",
     remarks: "",
@@ -105,6 +106,7 @@ function openEditModal(item, open) {
     form.unit_cost = item.unit_cost;
     form.total_amount = item.total_amount;
     form.property_number = item.property_number;
+    form.serial_number = item.serial_number;
     form.pr_number = item.pr_number;
     form.po_number = item.po_number;
     form.remarks = item.remarks;

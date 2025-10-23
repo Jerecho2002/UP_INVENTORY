@@ -36,9 +36,11 @@ watch(
 
 // Category (In Stock / Out of Stock)
 watch(selectedStatus, (status) => {
+    const quantityFilter = status === '1' ? 'greater_than_zero' : status === '0' ? 'less_than_or_equal_zero' : '';
+
     router.get(route('reports.index'), {
         search: search.value,
-        status: status,
+        quantity: quantityFilter,
         from: fromDate.value,
         to: toDate.value,
     }, {
@@ -47,6 +49,7 @@ watch(selectedStatus, (status) => {
         preserveScroll: true,
     });
 });
+
 
 // Date watchers
 watch([fromDate, toDate], () => {

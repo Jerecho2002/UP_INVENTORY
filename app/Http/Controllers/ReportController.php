@@ -11,14 +11,14 @@ class ReportController extends Controller
     public function searchBar(Request $request, ReportService $service)
     {
         $search = $request->input('search');
-        $status = $request->input('status');
+        $quantity = $request->input('quantity');
         $from = $request->input('from');
         $to = $request->input('to');
 
         return Inertia::render('Reports', [
-            'items' => $service->getPaginatedInventory($search, $status, $from, $to),
+            'items' => $service->getPaginatedInventory($search, $quantity, $from, $to),
             'searchItem' => $search,
-            'selectedStatus' => $status,
+            'selectedStatus' => $quantity,
             'fromDate' => $from,
             'toDate' => $to,
         ]);

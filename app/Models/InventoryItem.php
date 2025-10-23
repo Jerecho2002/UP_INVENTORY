@@ -24,6 +24,7 @@ class InventoryItem extends Model
         'pr_number',
         'po_number',
         'property_number',
+        'serial_number',
         'remarks',
         'date_acquired',
         'status'

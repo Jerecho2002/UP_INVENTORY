@@ -1,5 +1,6 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, onMounted, ref } from 'vue';
+import { Chart } from 'chart.js/auto';
 
 const props = defineProps({
   title: String,
@@ -11,7 +12,35 @@ const itemForm = reactive({
     supplier: "",
 });
 
+const chartCanvasStatistics = ref(null)
+
+onMounted(() => {
+  new Chart(chartCanvasStatistics.value, {
+    type: 'pie', // Change to 'line', 'pie', etc. if needed
+    data: {
+     labels: ['January', 'February', 'March', 'April'],
+      datasets: [{
+        label: 'Order Status',
+       data: [12, 19, 3, 5],
+        backgroundColor: ['#2E7D32'],
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true },
+      }
+    }
+  })
+})
 </script>
+<style scoped>
+/* You can style the canvas here */
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+</style>
 
 <template>
   <div class="bg-white sm:h-[27.5rem] rounded-xl shadow-lg p-4">
@@ -34,7 +63,10 @@ const itemForm = reactive({
             <option disabled value="">Select</option>
             <option v-for="option in supplier.options" :key="option" :value="option">{{ option }}</option>
           </select>
+          <canvas ref="chartCanvasStatistics"></canvas>
         </div>
+
+        
      </div>
   </div>
 </template>

@@ -12,16 +12,16 @@ const columns = [
   { label: "Description", key: 'description' },
   { label: "Quantity", key: 'quantity' },
   { 
-    label: "Status", 
-    key: 'status',
-    format: (status) => {
+    label: "Stock Status", 
+    key: 'quantity',
+    format: (quantity) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = ''; 
-      if (status === 0) { 
-        label = 'Out of Stock'; 
+      if (quantity <= 0) { 
+        label = 'Out of Stock';
         cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-arrow-trend-down"></i>';
       } 
-      else if (status === 1) { 
+      else if (quantity > 0) { 
         label = 'In Stock'; 
         cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full'; 
         icon = '<i class="fa-solid fa-arrow-trend-up"></i>';
@@ -59,7 +59,10 @@ const toggleSidebar = () => {
         <div>
           <PageHeader title="Reports" />
           <div class="mt-[3rem]">
-            <ReportFilterForm  :columns="columns" :rows="items" />
+            <ReportFilterForm  
+            :columns="columns"
+            :rows="items"
+            />
           </div>
         </div>
       </main>

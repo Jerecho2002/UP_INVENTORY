@@ -33,6 +33,7 @@ class InventoryItemFactory extends Factory
             'unit_cost' => $unitCost,
             'total_amount' => $qty * $unitCost,
             'property_number' => strtoupper($this->faker->unique()->bothify('PROP###')),
+            'serial_number' => strtoupper($this->faker->unique()->bothify('SER###')),
             'pr_number' => strtoupper($this->faker->unique()->bothify('PR###')),
             'po_number' => strtoupper($this->faker->unique()->bothify('PO###')),
             'remarks' => strtoupper($this->faker->unique()->bothify('RM###')),
