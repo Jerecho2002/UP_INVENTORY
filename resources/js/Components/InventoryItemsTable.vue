@@ -174,7 +174,7 @@ function getValue(obj, path) {
                         <div class="space-y-6 col-span-1 md:col-span-1">
                             <!-- Dynamic Input Fields -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-6">
-                                <div class="space-y-5">
+                                <div class="space-y-4">
                                     <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
                                         <label class="block text-sm font-bold mb-1 ">{{ ip.label
                                         }}</label>
@@ -202,7 +202,7 @@ function getValue(obj, path) {
                                     </div>
 
                                     <!-- Request Fields -->
-                                    <div>
+                                    <div class="space-y-4">
                                         <div v-for="rf in requestFields" :key="rf.model" class="flex flex-col">
                                             <label class="block text-sm font-bold mb-1 ">{{ rf.label
                                                 }}</label>
@@ -219,15 +219,14 @@ function getValue(obj, path) {
                         </div>
 
                         <!-- Right Side -->
-                        <div class="flex flex-col justify-between">
-
+                        <div>
                             <!-- First Dropdown -->
-                            <div class="flex flex-col md:flex-row gap-2 mb-3">
+                            <div class="flex flex-col md:flex-row gap-4 mb-8">
                                 <div v-for="fdp in firstDropdown" :key="fdp.name" class="flex flex-col">
                                     <label class="block text-sm font-bold mb-1">{{ fdp.label
                                     }}</label>
                                     <select v-model="form[fdp.model]" :key="fdp.model"
-                                        class="w-full sm:w-[6.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                        class="w-full sm:w-[6rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                         <option value="">Select</option>
                                         <option v-for="item in props[fdp.name]" :key="item.id" :value="item.id">
                                             {{ item[fdp.option] || 'N/A' }}
@@ -240,7 +239,7 @@ function getValue(obj, path) {
                             </div>
 
                             <!-- Second Dropdown -->
-                            <div class="flex flex-col md:flex-row gap-3 mb-3">
+                            <div class="flex flex-col md:flex-row gap-3 mb-8">
                                 <div v-for="sdf in secondDropdown" :key="sdf.label" class="flex gap-3">
                                     <div>
                                         <label class="block text-sm font-bold mb-1">{{ sdf.label
@@ -273,7 +272,7 @@ function getValue(obj, path) {
                                 </div>
                             </div>
 
-                            <div class="flex flex-col md:flex-row items-center text-sm font-semibold">
+                            <div class="flex flex-col md:flex-row items-center text-sm font-semibold mt-8">
                                 <label class="block text-base font-bold">Total Amount:</label>
                                 <input v-model="form.total_amount" readonly placeholder="₱0.00"
                                     class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none">
