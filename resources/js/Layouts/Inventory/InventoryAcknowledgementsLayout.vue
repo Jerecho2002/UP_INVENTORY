@@ -23,7 +23,7 @@ const toggleSidebar = () => {
       </aside>
 
       <!-- Main --> 
-      <main class="flex-1 sm:p-5 md:p-6 overflow-hidden mx-2">
+      <main class="flex-1 sm:p-5 md:p-6 overflow-hidden ">
         <!-- HEAD TITLE -->
         <PageHeader title="Acknowledgements" />
         <div class="w-full h-full">

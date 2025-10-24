@@ -18,6 +18,12 @@ defineExpose({ openModal, closeModal });
   <div>
     <slot name="AddItemButton"></slot>
   </div>
+  <div>
+    <slot name="AddAssignButton"></slot>
+  </div>
+  <div>
+    <slot name="AddSupplierButton"></slot>
+  </div>
 
   <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="absolute inset-0 bg-black opacity-50 backdrop-blur-md"></div>

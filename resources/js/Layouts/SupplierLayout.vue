@@ -27,7 +27,7 @@ const toggleSidebar = () => {
        <main class="flex-1 sm:p-5 md:p-6 overflow-hidden m-2">
           <div>
             <PageHeader title="Suppliers" />
-              <div class="w-full">
+              <div class="w-full h-full">
                 <SupplierTable /> 
               </div>
           </div>
