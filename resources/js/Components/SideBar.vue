@@ -10,6 +10,7 @@ const menuItems = [
         children: [
             { name: "Items", route: "inventory.items" },
             { name: "Transactions", route: "inventory.transactions" },
+            { name: "Acknowledgements", route: "inventory.acknowledgements" },
         ],
     },
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
@@ -43,7 +44,6 @@ const toggleDropdown = (name) => {
                     <i class="fa-solid" :class="openDropdown === item.name ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                 </div>
 
-                <!-- :class="{ 'bg-[#D9D9D9] font-semibold text-[#850038]': route().current(item.route) && openDropdown === item.name }" -->
                 <!-- Link to route if no children -->
                 <Link v-else :href="route(item.route)"
                     class="flex items-center gap-3 text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9]"

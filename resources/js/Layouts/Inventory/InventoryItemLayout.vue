@@ -14,11 +14,19 @@ const columns = [
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
   { label: "Status", key: 'status', 
     format: (status) => {
-      let label = 'Unknown', cls = 'text-gray-500';
-      if (status === 0) { label = 'Inactive'; cls = 'text-red-700'; }
-      else if (status === 1) { label = 'Active'; cls = 'text-[#14B449]'; }
+      let label = 'Unknown', cls = 'text-gray-500', icon = '';
+      if (status === 0) { 
+        label = 'Inactive'; 
+        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full'; 
+        icon = '<i class="fa-solid fa-ban"></i>';
+      }
+      else if (status === 1) { 
+        label = 'Active'; 
+        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full'; 
+        icon = '<i class="fa-solid fa-circle-check"></i>';
+      }
       else if (status === 2) { label = 'Pending'; cls = 'text-yellow-700'; }
-      return `<span class="${cls}">${label}</span>`;
+      return `<span class="${cls}">${icon} ${label}</span>`;
     }
   },
   { label: "Action", key: "action" }

@@ -47,12 +47,18 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col md:flex-row gap-4 w-full h-full sm:h-[18rem]">
+    <div class="flex flex-col md:flex-row gap-4 w-full h-full sm:h-[22rem]">
         <div class="flex-1 bg-white p-4 rounded-lg shadow-lg">
-            <canvas ref="chartCanvasOrder"></canvas>
+          <h1 class="font-bold text-lg">Orders</h1>
+            <div class="my-5">
+              <canvas ref="chartCanvasOrder"></canvas>
+            </div>
         </div>
         <div class="flex-1 bg-white p-4 rounded-lg shadow-lg">
-            <canvas ref="chartCanvasRequest"></canvas>
+          <h1 class="font-bold text-lg">Request</h1>
+           <div class="my-5">
+             <canvas ref="chartCanvasRequest"></canvas>
+           </div>
         </div>
     </div>
 </template>

@@ -3,6 +3,7 @@ import { ref } from "vue";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
+import SupplierTable from "@/Components/SupplierTable.vue";
 
 
 const isSidebarOpen = ref(true);
@@ -26,8 +27,8 @@ const toggleSidebar = () => {
        <main class="flex-1 sm:p-5 md:p-6 overflow-hidden m-2">
           <div>
             <PageHeader title="Suppliers" />
-              <div class="mt-[3rem]">
-                
+              <div class="w-full">
+                <SupplierTable /> 
               </div>
           </div>
        </main>

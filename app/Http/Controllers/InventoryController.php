@@ -50,6 +50,24 @@ class InventoryController extends Controller
         'fundSources' => $fundSources,
     ]);
     }
+      public function InventoryAcknowledgements(Request $request, InventoryService $service){
+        $search = $request->input(key: 'search');
+        $costRange = $request->input('cost_range');
+        $itemClassifications = ItemClassification::all();
+        $suppliers = Supplier::all();
+        $locations = Location::all();
+        $invoices = Invoice::all();
+        $fundSources = FundSource::all();
+        
+        return inertia('Inventory/InventoryAcknowledgements', [
+        'items' => $service->getPaginatedInventory($search, $costRange),
+        'itemClassifications' => $itemClassifications,
+        'suppliers' => $suppliers,
+        'locations' => $locations,
+        'invoices' => $invoices,
+        'fundSources' => $fundSources,
+    ]);
+    }
     
     public function store(Request $request)
     {

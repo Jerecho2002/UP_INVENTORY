@@ -337,13 +337,13 @@ function getValue(obj, path) {
                 </thead>
 
                 <tbody class="text-gray-700">
-                    <tr v-for="item in rows.data" :key="item.id" class="even:bg-gray-200">
-                        <TableCell v-for="col in columns" :key="col.key">
-                            <!-- For normal columns -->
-                            <template v-if="col.key !== 'action'">
-                                <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
-                                <span v-else>{{ getValue(item, col.key) }}</span>
-                            </template>
+                   <tr v-for="item in rows.data" :key="item.id" class="even:bg-gray-200">
+                            <TableCell v-for="col in columns" :key="col.key">
+                                <!-- For normal columns -->
+                                <template v-if="col.key !== 'action'">
+                                    <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
+                                    <span v-else>{{ getValue(item, col.key) }}</span>
+                                </template>
 
                             <!-- For Action column -->
                             <template v-else>

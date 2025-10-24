@@ -43,11 +43,13 @@ canvas {
 </style>
 
 <template>
-  <div class="bg-white sm:h-[27.5rem] rounded-xl shadow-lg p-4">
+  <div class="bg-white sm:h-[34rem] rounded-xl shadow-lg p-4">
     <h2 class="font-bold mb-2 text-lg">{{ title }}</h2>
 
     <!-- CHART -->
-    <div></div>
+    <div>
+      <canvas ref="chartCanvasStatistics"></canvas>
+    </div>
 
     <!-- SUPPLIED/DELIVERED/CANCELLED -->
     <div v-for="supplier in supplierChart" :key="supplier.name"
@@ -57,16 +59,13 @@ canvas {
     </div>
 
     <!-- DROPDOWN SUPPLIER LIST -->
-     <div class="flex justify-center">
+     <div class="flex justify-center my-4">
         <div v-for="supplier in dropdownSupplierList" :key="supplier.model">
           <select v-model="itemForm.supplier[supplier.model]">
             <option disabled value="">Select</option>
             <option v-for="option in supplier.options" :key="option" :value="option">{{ option }}</option>
           </select>
-          <canvas ref="chartCanvasStatistics"></canvas>
         </div>
-
-        
      </div>
   </div>
 </template>
