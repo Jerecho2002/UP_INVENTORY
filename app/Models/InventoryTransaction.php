@@ -14,8 +14,8 @@ class InventoryTransaction extends Model
         'date_released',
     ];
 
-    public function item()
+    public function inventoryItems()
     {
-        return $this->belongsTo(InventoryItem::class, 'item_id');
+        return $this->belongsTo(InventoryItem::class);
     }
 }

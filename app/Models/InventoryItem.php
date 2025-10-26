@@ -60,6 +60,10 @@ class InventoryItem extends Model
         return $this->belongsTo(ItemClassification::class, 'item_classification_id');
     }
 
+    public function inventoryTransaction()
+    {
+        return $this->hasMany(InventoryTransaction::class);
+    }
 
     public function scopeSearch($query, $term)
     {

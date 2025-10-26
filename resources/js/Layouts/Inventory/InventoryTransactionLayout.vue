@@ -12,6 +12,37 @@ const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
 
+const page = usePage();
+const items = computed(() => page.props.items);
+
+const tableHeader = [
+  { label: 'Item Name', key: 'item_name'},
+  { label: 'Office Name', key: 'location_id'},
+  { label: 'Quantity', key: 'quantity'},
+  { label: 'Unit Cost', key: 'unit_cost'},
+  { label: 'Property Number', key: 'category'},
+  { label: 'PR Number', key: 'pr_number'},
+  { label: 'PO Number', key: 'po_number'},
+  { label: 'Invoice Number', key: 'invoice_id'},
+   { label: "Status", key: 'status', 
+    format: (status) => {
+      let label = 'Unknown', cls = 'text-gray-500', icon = '';
+      if (status === 0) { 
+        label = 'Inactive'; 
+        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full'; 
+        icon = '<i class="fa-solid fa-ban"></i>';
+      }
+      else if (status === 1) { 
+        label = 'Active'; 
+        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full'; 
+        icon = '<i class="fa-solid fa-circle-check"></i>';
+      }
+      else if (status === 2) { label = 'Pending'; cls = 'text-yellow-700'; }
+      return `<span class="${cls}">${icon} ${label}</span>`;
+    }
+  },
+  { label: "Action", key: "action" }
+]
 </script>
 
 <template>
@@ -31,7 +62,10 @@ const toggleSidebar = () => {
         <PageHeader title="Transactions" />
         <div class="bg-white h-full rounded-lg p-4 drop-shadow-md mt-6">
           <!-- Inventory Transaction Table Component -->
-            <InventoryTransactionTable />
+            <InventoryTransactionTable
+            :tableHeader = tableHeader
+            :items = items
+            />
         </div>
       </main>
     </div>
