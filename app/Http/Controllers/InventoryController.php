@@ -13,7 +13,8 @@ use App\Services\InventoryService;
 
 class InventoryController extends Controller
 {
-    public function InventoryItems(Request $request, InventoryService $service){
+    public function InventoryItems(Request $request, InventoryService $service)
+    {
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $itemClassifications = ItemClassification::all();
@@ -21,18 +22,19 @@ class InventoryController extends Controller
         $locations = Location::all();
         $invoices = Invoice::all();
         $fundSources = FundSource::all();
-        
+
         return inertia('Inventory/InventoryItem', [
-        'items' => $service->getPaginatedInventory($search, $costRange),
-        'itemClassifications' => $itemClassifications,
-        'suppliers' => $suppliers,
-        'locations' => $locations,
-        'invoices' => $invoices,
-        'fundSources' => $fundSources,
-    ]);
+            'items' => $service->getPaginatedInventory($search, $costRange),
+            'itemClassifications' => $itemClassifications,
+            'suppliers' => $suppliers,
+            'locations' => $locations,
+            'invoices' => $invoices,
+            'fundSources' => $fundSources,
+        ]);
     }
 
-    public function InventoryTransactions(Request $request, InventoryService $service){
+    public function InventoryTransactions(Request $request, InventoryService $service)
+    {
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $itemClassifications = ItemClassification::all();
@@ -40,17 +42,18 @@ class InventoryController extends Controller
         $locations = Location::all();
         $invoices = Invoice::all();
         $fundSources = FundSource::all();
-        
+
         return inertia('Inventory/InventoryTransaction', [
-        'items' => $service->getPaginatedInventory($search, $costRange),
-        'itemClassifications' => $itemClassifications,
-        'suppliers' => $suppliers,
-        'locations' => $locations,
-        'invoices' => $invoices,
-        'fundSources' => $fundSources,
-    ]);
+            'items' => $service->getPaginatedInventory($search, $costRange),
+            'itemClassifications' => $itemClassifications,
+            'suppliers' => $suppliers,
+            'locations' => $locations,
+            'invoices' => $invoices,
+            'fundSources' => $fundSources,
+        ]);
     }
-      public function InventoryAcknowledgements(Request $request, InventoryService $service){
+    public function InventoryAcknowledgements(Request $request, InventoryService $service)
+    {
         $search = $request->input(key: 'search');
         $costRange = $request->input('cost_range');
         $itemClassifications = ItemClassification::all();
@@ -58,20 +61,19 @@ class InventoryController extends Controller
         $locations = Location::all();
         $invoices = Invoice::all();
         $fundSources = FundSource::all();
-        
+
         return inertia('Inventory/InventoryAcknowledgements', [
-        'items' => $service->getPaginatedInventory($search, $costRange),
-        'itemClassifications' => $itemClassifications,
-        'suppliers' => $suppliers,
-        'locations' => $locations,
-        'invoices' => $invoices,
-        'fundSources' => $fundSources,
-    ]);
+            'items' => $service->getPaginatedInventory($search, $costRange),
+            'itemClassifications' => $itemClassifications,
+            'suppliers' => $suppliers,
+            'locations' => $locations,
+            'invoices' => $invoices,
+            'fundSources' => $fundSources,
+        ]);
     }
-    
+
     public function store(Request $request)
     {
-        // Validate incoming request
         $request->validate([
             'item_classification_id' => 'required|integer',
             'supplier_id' => 'required|integer',
@@ -81,12 +83,12 @@ class InventoryController extends Controller
             'item_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
-            'quantity' => 'required|integer',
+            'quantity' => 'required|integer|min:1',
             'unit' => 'required|string|max:50',
             'unit_cost' => 'required|numeric',
-            'total_amount' => 'nullable|numeric',
+            'serial_numbers' => 'required|array|min:1',
+            'serial_numbers.*' => 'required|string|max:50',
             'property_number' => 'required|string|max:50',
-            'serial_number' => 'required|string|max:50',
             'pr_number' => 'required|string|max:50',
             'po_number' => 'required|string|max:50',
             'remarks' => 'required|string|max:50',
@@ -94,35 +96,35 @@ class InventoryController extends Controller
             'status' => 'nullable|string|max:50',
         ]);
 
-        // Calculate the total amount if necessary
-        $totalAmount = $request->quantity * $request->unit_cost;
+        foreach ($request->serial_numbers as $index => $serialNumber) {
+            $propertyNumber = $request->property_number . '-' . str_pad($index + 1, 2, '0', STR_PAD_LEFT);
 
-        // Create a new InventoryItem using mass assignment
-        InventoryItem::create([
-            'item_classification_id' => $request->item_classification_id,
-            'supplier_id' => $request->supplier_id,
-            'location_id' => $request->location_id,
-            'invoice_id' => $request->invoice_id,
-            'fund_source_id' => $request->fund_source_id,
-            'item_name' => $request->item_name,
-            'description' => $request->description,
-            'category' => $request->category,
-            'quantity' => $request->quantity,
-            'unit' => $request->unit,
-            'unit_cost' => $request->unit_cost,
-            'total_amount' => $totalAmount,
-            'property_number' => $request->property_number,
-            'serial_number' => $request->serial_number,
-            'pr_number' => $request->pr_number,
-            'po_number' => $request->po_number,
-            'remarks' => $request->remarks,
-            'date_acquired' => $request->date_acquired,
-            'status' => $request->status,
-        ]);
+            InventoryItem::create([
+                'item_classification_id' => $request->item_classification_id,
+                'supplier_id' => $request->supplier_id,
+                'location_id' => $request->location_id,
+                'invoice_id' => $request->invoice_id,
+                'fund_source_id' => $request->fund_source_id,
+                'item_name' => $request->item_name,
+                'description' => $request->description,
+                'category' => $request->category,
+                'quantity' => 1, // per record
+                'unit' => $request->unit,
+                'unit_cost' => $request->unit_cost,
+                'total_amount' => $request->unit_cost,
+                'property_number' => $propertyNumber,
+                'serial_number' => $serialNumber, // <- single column
+                'pr_number' => $request->pr_number,
+                'po_number' => $request->po_number,
+                'remarks' => $request->remarks,
+                'date_acquired' => $request->date_acquired,
+                'status' => $request->status,
+            ]);
+        }
 
-        // Redirect back or to a specific page after successful submission
         return redirect()->route('inventory.items');
     }
+
 
     public function update(Request $request, $id)
     {

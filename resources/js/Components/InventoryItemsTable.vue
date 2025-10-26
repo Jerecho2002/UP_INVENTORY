@@ -26,23 +26,6 @@ const props = defineProps({
     requestFields: Array,
 });
 
-const search = ref(props.searchItem || '');
-const selectedCostRange = ref(props.selectedCostRange || '');
-
-watch(
-    search,
-    debounce((output) => {
-        router.get('/inventory/items', { search: output, cost_range: selectedCostRange.value }, { preserveState: true, only: ['items'] });
-    })
-);
-
-watch(
-    selectedCostRange,
-    debounce((range) => {
-        router.get('/inventory/items', { search: search.value, cost_range: range }, { preserveState: true });
-    })
-)
-
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const userRole = computed(() => user.value?.role);
@@ -68,7 +51,7 @@ const form = useForm({
     unit_cost: "",
     total_amount: "",
     property_number: "",
-    serial_number: "",
+    serial_numbers: [],
     pr_number: "",
     po_number: "",
     remarks: "",
@@ -76,6 +59,8 @@ const form = useForm({
     status: "",
 });
 
+const search = ref(props.searchItem || '');
+const selectedCostRange = ref(props.selectedCostRange || '');
 const calculateTotalAmount = () => {
     form.total_amount = form.quantity * form.unit_cost;
 };
@@ -84,6 +69,58 @@ watch(
     () => [form.quantity, form.unit_cost],
     calculateTotalAmount
 );
+
+watch(
+    search,
+    debounce((output) => {
+        router.get('/inventory/items', { search: output, cost_range: selectedCostRange.value }, { preserveState: true, only: ['items'] });
+    })
+);
+
+watch(
+    selectedCostRange,
+    debounce((range) => {
+        router.get('/inventory/items', { search: search.value, cost_range: range }, { preserveState: true });
+    })
+)
+
+watch(() => form.item_classification_id, (newVal) => {
+    if (!newVal) return;
+
+    // Find the selected classification object
+    const selectedClass = props.itemClass.find(c => c.id === newVal);
+
+    if (selectedClass) {
+        const code = selectedClass.classification_code;
+
+        // Get current year and month (with leading zero for month)
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+
+        // Update the input fields (PAR/ICS and Property Number)
+        if (code) {
+            const formatted = `${code}-${year}-${month}-`;
+            form.category = formatted;
+            form.property_number = `${code}-`;
+        } else {
+            form.category = "";
+            form.property_number = "";
+        }
+    }
+});
+
+watch(() => form.quantity, (newVal) => {
+    const qty = parseInt(newVal);
+
+    if (!qty || qty <= 0) {
+        form.serial_numbers = [];
+        return;
+    }
+
+    // Adjust number of fields based on quantity
+    form.serial_numbers = Array.from({ length: qty }, (_, i) => form.serial_numbers[i] || "");
+});
 
 function openViewModal(item, open) {
     selectedViewItem.value = item; // store clicked row’s data
@@ -146,7 +183,6 @@ const unitCostOptions = [
 function getValue(obj, path) {
     return path.split('.').reduce((acc, key) => acc?.[key], obj) ?? 'N/A'
 }
-
 </script>
 
 <template>
@@ -172,7 +208,7 @@ function getValue(obj, path) {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <!-- Left Side -->
                         <div class="space-y-6 col-span-1 md:col-span-1">
-                            <!-- Dynamic Input Fields -->
+                            <!-- Input Fields -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-6">
                                 <div class="space-y-4">
                                     <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
@@ -185,6 +221,15 @@ function getValue(obj, path) {
                                             {{ form.errors[ip.model] }}
                                         </div>
                                     </div>
+                                    <div v-if="form.quantity > 0" class="flex flex-col gap-2 mt-4">
+                                        <label class="block text-sm font-bold mb-1">Serial Numbers</label>
+                                        <div v-for="(sn, index) in form.serial_numbers" :key="index">
+                                            <input v-model="form.serial_numbers[index]" type="text"
+                                                :placeholder="`SER-${String(index + 1).padStart(3, '0')}`"
+                                                class="w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                        </div>
+                                    </div>
+
 
                                     <!-- Quantity + Unit Cost -->
                                     <div class="flex gap-4 sm:gap-6 w-full">
@@ -336,13 +381,13 @@ function getValue(obj, path) {
                 </thead>
 
                 <tbody class="text-gray-700">
-                   <tr v-for="item in rows.data" :key="item.id" class="even:bg-gray-200">
-                            <TableCell v-for="col in columns" :key="col.key">
-                                <!-- For normal columns -->
-                                <template v-if="col.key !== 'action'">
-                                    <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
-                                    <span v-else>{{ getValue(item, col.key) }}</span>
-                                </template>
+                    <tr v-for="item in rows.data" :key="item.id" class="even:bg-gray-200">
+                        <TableCell v-for="col in columns" :key="col.key">
+                            <!-- For normal columns -->
+                            <template v-if="col.key !== 'action'">
+                                <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
+                                <span v-else>{{ getValue(item, col.key) }}</span>
+                            </template>
 
                             <!-- For Action column -->
                             <template v-else>
@@ -435,7 +480,8 @@ function getValue(obj, path) {
                                                                             qcf.label }}</label>
                                                                         <input v-model="form[qcf.model]"
                                                                             :type="qcf.type"
-                                                                            :placeholder="qcf.placeholder" step="any" class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8]
+                                                                            :placeholder="qcf.placeholder" step="any"
+                                                                            class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8]
                             text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none
                             focus:border-[#850038]" />
                                                                         <div v-if="form.errors[qcf.model]"

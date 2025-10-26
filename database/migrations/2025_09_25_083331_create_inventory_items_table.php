@@ -22,9 +22,9 @@ return new class extends Migration {
             $table->decimal('unit_cost', 12, 2)->nullable();
             $table->decimal('total_amount', 14, 2)->nullable();
             $table->string('property_number', 80)->unique();
-            $table->string('serial_number', 80)->unique();
-            $table->string('pr_number', 60)->unique();
-            $table->string('po_number', 60)->unique();
+            $table->string('serial_number', 80);
+            $table->string('pr_number', 60);
+            $table->string('po_number', 60);
             $table->string('remarks', 255)->nullable();
             $table->date('date_acquired')->nullable();
             $table->tinyInteger('status')->default(0);
