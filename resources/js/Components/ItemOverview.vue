@@ -21,8 +21,9 @@ const props = defineProps({
       </div>
 
       <!-- Icon -->
-      <div class="p-6 text-3xl flex sm:justify-start" :class="overview.textColor">
+      <div class="py-6 px-4 gap-3 text-3xl flex items-center sm:justify-start" :class="overview.textColor">
         <i :class="overview.icon"></i>
+        <span>0</span>
       </div>
     </div>
   </div>
