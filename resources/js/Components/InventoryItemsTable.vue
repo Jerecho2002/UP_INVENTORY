@@ -284,7 +284,7 @@ function getValue(obj, path) {
                             </div>
 
                             <!-- Second Dropdown -->
-                            <div class="flex flex-col md:flex-row gap-3 mb-8">
+                            <div class="flex md:flex-row gap-3 mb-8">
                                 <div v-for="sdf in secondDropdown" :key="sdf.label" class="flex gap-3">
                                     <div>
                                         <label class="block text-sm font-bold mb-1">{{ sdf.label
@@ -317,7 +317,7 @@ function getValue(obj, path) {
                                 </div>
                             </div>
 
-                            <div class="flex flex-col md:flex-row items-center text-sm font-semibold mt-8">
+                            <div class="flex flex-col md:flex-row md:items-center text-sm font-semibold mt-8">
                                 <label class="block text-base font-bold">Total Amount:</label>
                                 <input v-model="form.total_amount" readonly placeholder="₱0.00"
                                     class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none">
@@ -326,7 +326,7 @@ function getValue(obj, path) {
                     </div>
 
                     <!-- Buttons -->
-                    <div class="flex justify-end items-center gap-4 mt-8">
+                    <div class="flex justify-end items-center gap-4">
                         <button type="button" @click="closeModal"
                             class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">
                             Cancel
@@ -525,7 +525,7 @@ function getValue(obj, path) {
                                                         </div>
 
                                                         <!-- secondDropdown -->
-                                                        <div class="flex flex-col md:flex-row gap-3 mb-3">
+                                                        <div class="flex flex-col md:flex-row gap-3 mb-3 -mt-8">
                                                             <div v-for="sdf in secondDropdown" :key="sdf.label"
                                                                 class="flex gap-3">
                                                                 <div>
@@ -571,7 +571,7 @@ function getValue(obj, path) {
                                                 </div>
 
                                                 <!-- Buttons -->
-                                                <div class="flex justify-end items-center gap-4 mt-8">
+                                                <div class="flex justify-end items-center gap-4">
                                                     <button type="button" @click="handleCloseModal(closeModal)"
                                                         class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">
                                                         Cancel
