@@ -25,6 +25,7 @@ const openDropdown = ref(null);
 const toggleDropdown = (name) => {
     openDropdown.value = openDropdown.value === name ? null : name;
 };
+
 </script>
 
 <template>

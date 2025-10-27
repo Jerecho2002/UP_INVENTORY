@@ -16,14 +16,14 @@ const page = usePage();
 const items = computed(() => page.props.items);
 
 const tableHeader = [
-  { label: 'Item Name', key: 'item_name'},
-  { label: 'Office Name', key: 'location_id'},
+  { label: 'Item Name', key: 'inventory_item', format: (val) => val?.item_name ?? 'N/A'},
+  { label: 'Office Name', key: 'inventory_item', format: (val) => val?.location.office.office_name ?? 'N/A'},
   { label: 'Quantity', key: 'quantity'},
-  { label: 'Unit Cost', key: 'unit_cost'},
-  { label: 'Property Number', key: 'category'},
-  { label: 'PR Number', key: 'pr_number'},
-  { label: 'PO Number', key: 'po_number'},
-  { label: 'Invoice Number', key: 'invoice_id'},
+  { label: 'Unit Cost', key: 'inventory_item', format: (val) => val?.unit_cost ? `₱${(val.unit_cost)}` : 'N/A'},
+  { label: 'Property Number', key: 'inventory_item', format: (val) => val?.category ?? 'N/A'},
+  { label: 'PR Number', key: 'inventory_item', format: (val) => val?.pr_number ?? 'N/A'},
+  { label: 'PO Number', key: 'inventory_item', format: (val) => val?.po_number ?? 'N/A'},
+  { label: 'Invoice Number', key: 'inventory_item', format: (val) => val?.invoice.invoice_number ?? 'N/A'},
    { label: "Status", key: 'status', 
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
@@ -43,6 +43,19 @@ const tableHeader = [
   },
   { label: "Action", key: "action" }
 ]
+
+const processedItems = computed(() =>
+  items.value.data.map((item) => {
+    const newItem = { ...item }
+    tableHeader.forEach(col => {
+      if (col.format) {
+        newItem[col.key] = col.format(item[col.key])
+      }
+    })
+    return newItem
+  })
+)
+
 </script>
 
 <template>

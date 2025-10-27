@@ -9,29 +9,6 @@ import DashboardTable from "@/Components/DashboardTable.vue";
 import BarChartCard from "@/Components/BarChartCard.vue";
 import SupplierChartCard from "@/Components/SupplierChartCard.vue";
 import UserActivity from "@/Components/UserActivity.vue";
-import { Chart } from 'chart.js/auto';
-
-const chartCanvas = ref(null)
-
-onMounted(() => {
-  new Chart(chartCanvas.value, {
-    type: 'bar', // Change to 'line', 'pie', etc. if needed
-    data: {
-      labels: ['In Stock', 'Out of Stock'],
-      datasets: [{
-        label: 'Inventory Status',
-        data: [15, 8], // These numbers should come from your backend
-        backgroundColor: ['#2E7D32', '#D32F2F'],
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true },
-      }
-    }
-  })
-})
 
 const columns = [
   { label: "Property Records", key: 'category' },

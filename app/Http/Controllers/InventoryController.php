@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\InventoryItem;
 use App\Models\ItemClassification;
 use App\Services\InventoryService;
+use App\Services\InventoryTransactionService;
 
 class InventoryController extends Controller
 {
@@ -33,25 +34,16 @@ class InventoryController extends Controller
         ]);
     }
 
-    public function InventoryTransactions(Request $request, InventoryService $service)
+    public function InventoryTransactions(Request $request, InventoryTransactionService $service)
     {
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
-        $itemClassifications = ItemClassification::all();
-        $suppliers = Supplier::all();
-        $locations = Location::all();
-        $invoices = Invoice::all();
-        $fundSources = FundSource::all();
 
         return inertia('Inventory/InventoryTransaction', [
             'items' => $service->getPaginatedInventory($search, $costRange),
-            'itemClassifications' => $itemClassifications,
-            'suppliers' => $suppliers,
-            'locations' => $locations,
-            'invoices' => $invoices,
-            'fundSources' => $fundSources,
         ]);
     }
+
     public function InventoryAcknowledgements(Request $request, InventoryService $service)
     {
         $search = $request->input(key: 'search');

@@ -14,8 +14,23 @@ class InventoryTransaction extends Model
         'date_released',
     ];
 
-    public function inventoryItems()
+    public function inventoryItem()
     {
         return $this->belongsTo(InventoryItem::class);
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        if (!$term) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($term) {
+            $q->where('quantity', 'like', "%{$term}%")
+                ->orWhere('date_released', 'like', "%{$term}%")
+                ->orWhereHas('inventoryItem', function ($q) use ($term) {
+                    $q->where('item_name', 'like', "%{$term}%");
+                });
+        });
     }
 }

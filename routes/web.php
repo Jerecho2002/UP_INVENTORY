@@ -16,8 +16,6 @@ use App\Http\Controllers\InventoryController;
 //     ]);
 // });
 
-
-
 Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::get('/inventory/items', [InventoryController::class, 'InventoryItems'])->name('inventory.items');
     Route::get('/inventory/transactions', [InventoryController::class, 'InventoryTransactions'])->name('inventory.transactions');
