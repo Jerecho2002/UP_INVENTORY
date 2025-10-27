@@ -96,7 +96,8 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
 
     <!-- SIDERBAR -->
     <div class="flex flex-1 overflow-hidden">
-      <aside v-show="isSidebarOpen">
+      <aside  class="transition-all duration-600 ease-in-out transform"
+    :class="isSidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full opacity-0 w-0'">
         <SideBar/>
       </aside>
 

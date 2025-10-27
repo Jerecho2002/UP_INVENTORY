@@ -33,33 +33,37 @@ const toggleDropdown = (name) => {
         <!-- Menu -->
         <ul class="flex-1">
             <li v-for="item in menuItems" :key="item.name" class="rounded-md">
-                <!-- If item has children = dropdown -->
+                <!-- If item has children -->
                 <div v-if="item.children" @click="toggleDropdown(item.name)"
-                    class="flex items-center gap-3 justify-between text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9] cursor-pointer"
-                    >
+                    class="flex items-center gap-3 justify-between text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9] cursor-pointer transition-all duration-300">
                     <div class="flex items-center gap-3">
                         <i :class="item.icon"></i>
                         <span>{{ item.name }}</span>
                     </div>
-                    <i class="fa-solid" :class="openDropdown === item.name ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    <i class="fa-solid transform transition-transform duration-300"
+                        :class="openDropdown === item.name ? 'fa-chevron-up rotate-180' : 'fa-chevron-down'"></i>
                 </div>
 
-                <!-- Link to route if no children -->
+                <!-- Link if no children -->
                 <Link v-else :href="route(item.route)"
-                    class="flex items-center gap-3 text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9]"
-                    :class="{ 'bg-[#D9D9D9] font-semibold text-[#850038]': route().current(item.route) }">
+                    class="flex items-center gap-3 text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9] transition-all duration-300"
+                    :class="{
+                        'bg-[#D9D9D9] font-semibold text-[#850038]': route().current(item.route),
+                    }">
                 <i :class="item.icon"></i>
                 <span>{{ item.name }}</span>
                 </Link>
 
-                <!-- Dropdown children (only visible if dropdown is open) -->
-                <div v-if="item.children && openDropdown === item.name">
+                <!-- Dropdown children-->
+                <div v-if="item.children" class="overflow-hidden transition-all duration-500 ease-in-out"
+                    :class="openDropdown === item.name ? 'max-h-60 opacity-100 mt-2' : 'max-h-0 opacity-0'">
                     <ul class="ml-10 mt-1 space-y-1 text-[15px] text-gray-600">
                         <li v-for="child in item.children" :key="child.name">
-                            <Link :href="route(child.route)" class="block py-2 px-2 mx-3 rounded-md hover:bg-[#EFEFEF]"
+                            <Link :href="route(child.route)"
+                                class="block py-2 px-2 mx-3 rounded-md hover:bg-[#EFEFEF] transition-all duration-300"
                                 :class="{
-                                    'font-semibold text-[#850038]': route().current(child.route), 
-                                    'text-gray-600': !route().current(child.route) 
+                                    'font-semibold text-[#850038]': route().current(child.route),
+                                    'text-gray-600': !route().current(child.route),
                                 }">
                             {{ child.name }}
                             </Link>
@@ -71,7 +75,9 @@ const toggleDropdown = (name) => {
 
         <!-- Footer -->
         <div class="mt-auto border-t border-gray-200 py-3">
-            <span class="block text-center text-xs text-gray-500">EasyLearning © UP Cebu.</span>
+            <span class="block text-center text-xs text-gray-500">
+                EasyLearning © UP Cebu.
+            </span>
         </div>
     </div>
 </template>

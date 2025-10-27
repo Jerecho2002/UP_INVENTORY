@@ -44,7 +44,8 @@ defineExpose({ openModal, closeModal });
 
     <!-- Modal -->
     <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
-        <div class="bg-white w-[90%] max-w-md rounded-lg shadow-2xl p-6 relative animate-fadeIn">
+       <div class="absolute inset-0 bg-black opacity-50 backdrop-blur-md"></div>
+        <div class="bg-white w-[60rem] max-w-md rounded-lg shadow-2xl p-6 relative animate-fadeIn">
             <slot name="DeleteItem" :close="closeModal" :confirm="confirmDelete" :message="props.message"></slot>
         </div>
     </div>

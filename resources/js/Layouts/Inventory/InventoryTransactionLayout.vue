@@ -52,7 +52,8 @@ const tableHeader = [
 
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
-      <aside v-show="isSidebarOpen">
+      <aside  class="transition-all duration-600 ease-in-out transform"
+    :class="isSidebarOpen ? 'translate-x-0 opacity-100 w-64' : '-translate-x-full opacity-0 w-0'">
         <SideBar/>
       </aside>
 

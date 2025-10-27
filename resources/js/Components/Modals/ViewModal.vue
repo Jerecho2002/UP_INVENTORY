@@ -19,8 +19,10 @@ defineExpose({ openModal, closeModal });
   <slot name="ViewItemButton" :open="openModal"></slot>
 
   <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black opacity-50 backdrop-blur-md"></div>
     <div class="bg-white w-[90%] max-w-md rounded-lg shadow-2xl  p-6 relative animate-fadeIn">
-      <button @click="closeModal" class="absolute top-4 right-4 flex items-center justify-center w-6 h-6 rounded-full bg-black text-white transition-colors duration-200">
+      <button @click="closeModal"
+        class="absolute top-4 right-4 flex items-center justify-center w-6 h-6 rounded-full bg-black text-white transition-colors duration-200">
         <i class="fa-solid fa-xmark text-sm"></i>
       </button>
 

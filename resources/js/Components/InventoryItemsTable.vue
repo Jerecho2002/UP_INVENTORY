@@ -505,14 +505,14 @@ function getValue(obj, path) {
                                                     </div>
 
                                                     <!-- right side -->
-                                                    <div class="flex flex-col justify-between">
+                                                    <div class="flex flex-col">
                                                         <!-- firstDropdown -->
-                                                        <div class="flex flex-col md:flex-row gap-2 mb-3">
+                                                        <div class="flex flex-col md:flex-row gap-3 mb-8">
                                                             <div v-for="fdp in firstDropdown" :key="fdp.name"
                                                                 class="flex flex-col">
                                                                 <label class="block text-sm font-bold mb-1">{{ fdp.label
                                                                 }}</label>
-                                                                <select v-model="form[fdp.model]" class="w-full sm:w-[6.5rem] rounded-md border border-gray-300 px-3 py-3
+                                                                <select v-model="form[fdp.model]" class="w-full sm:w-[6rem] rounded-md border border-gray-300 px-3 py-3
                          bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038]
                          focus:outline-none focus:border-[#850038]">
                                                                     <option value="">Select</option>
@@ -525,7 +525,7 @@ function getValue(obj, path) {
                                                         </div>
 
                                                         <!-- secondDropdown -->
-                                                        <div class="flex flex-col md:flex-row gap-3 mb-3 -mt-8">
+                                                        <div class="flex flex-col md:flex-row gap-3 mb-3">
                                                             <div v-for="sdf in secondDropdown" :key="sdf.label"
                                                                 class="flex gap-3">
                                                                 <div>
@@ -553,14 +553,14 @@ function getValue(obj, path) {
 
                                                         <div>
                                                             <label
-                                                                class="block text-md font-semibold mb-1">Description</label>
+                                                                class="block text-md font-semibold mt-4">Description</label>
                                                             <textarea v-model="form.description" class="w-full h-36 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8]
                          text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none
                          focus:border-[#850038]"></textarea>
                                                         </div>
 
                                                         <div
-                                                            class="flex flex-col md:flex-row items-center text-sm font-semibold">
+                                                            class="flex flex-col md:flex-row items-center text-sm font-semibold mt-8">
                                                             <label class="block text-base font-bold">Total
                                                                 Amount:</label>
                                                             <input v-model="form.total_amount" readonly
@@ -598,18 +598,19 @@ function getValue(obj, path) {
 
                                         <template #DeleteItem="{ close, confirm, message }">
                                             <div class="text-center">
-                                                <div class="text-4xl  text-[#FF0000]">
+                                                <div class="text-4xl  text-[#FF0000] bg-[#F5CCCC] w-16 h-16 mx-auto flex items-center justify-center rounded-full">
                                                     <i class="fa-solid fa-triangle-exclamation"></i>
                                                 </div>
+                                                <h1 class="font-bold text-2xl">Delete</h1>
                                                 <p class="text-gray-600 mb-6 text-lg mt-2">{{ message }}</p>
 
                                                 <div class="flex justify-center gap-3">
                                                     <button @click="close"
-                                                        class="px-4 py-2 rounded-md text-sm bg-gray-200 hover:bg-gray-300 font-medium">
+                                                        class="px-8 py-4 rounded-md items-center text-base bg-gray-200 hover:bg-gray-300 font-bold">
                                                         Cancel
                                                     </button>
                                                     <button @click="confirm"
-                                                        class="px-4 py-2 rounded-md items-center flex gap-2 text-sm bg-red-600 hover:bg-red-700 text-white font-medium">
+                                                        class="px-8 py-4 rounded-md items-center flex gap-2 text-base bg-red-600 hover:bg-red-700 text-white font-bold">
                                                         <i class="fa-solid fa-trash"></i>
                                                         <h2>Delete</h2>
                                                     </button>
