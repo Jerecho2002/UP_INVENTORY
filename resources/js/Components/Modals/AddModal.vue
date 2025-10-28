@@ -30,7 +30,7 @@ defineExpose({ openModal, closeModal });
 
     <!-- Modal Content with Vertical Scroll -->
     <div
-      class="bg-white w-full max-w-6xl rounded-lg drop-shadow-2xl p-4 relative transition-all duration-800 transform opacity-100 animate-fade-in overflow-y-auto max-h-[90vh]">
+      class="bg-white w-full max-w-6xl rounded-lg drop-shadow-2xl p-4 relative overflow-y-auto max-h-[90vh]">
       <!-- Pass the close function (and optional submit handler) -->
       <slot name="InventoryForm" :closeModal="closeModal"></slot>
     </div>

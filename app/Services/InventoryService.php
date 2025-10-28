@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class InventoryService
 {
-    public function getPaginatedInventory($search = null, $costRange = null)
+    public function getPaginatedInventory($search = null, $costRange = null, $status = null)
     {
         // Start a query and eager-load 'property' and 'acknowledgementReceipts' relationships
         // This returns an Eloquent query builder instance
@@ -20,16 +20,19 @@ class InventoryService
             ->when($costRange, function ($query, $costRange) {
                 [$min, $max] = explode('-', $costRange);
 
-                if ($min !== '' && $max !== '') {
+                if (!is_null($min) && !is_null($max)) {
                     // Both bounds exist
                     $query->whereBetween('unit_cost', [(float) $min, (float) $max]);
-                } elseif ($min !== '' && $max === '') {
+                } elseif (!is_null($min) && !is_null($max)) {
                     // Only minimum given → "₱50,000 and above"
                     $query->where('unit_cost', '>=', (float) $min);
-                } elseif ($min === '' && $max !== '') {
+                } elseif (!is_null($min) && !is_null($max)) {
                     // Only maximum given → "Up to ₱50,000"
                     $query->where('unit_cost', '<=', (float) $max);
                 }
+            })
+            ->when(!is_null($status), function ($query) use ($status) {
+                $query->where('status', $status);
             })
 
             // Limit the result to 8 items per page

@@ -13,6 +13,8 @@ const props = defineProps({
     selectedCostRange: String,
     columns: Array,
     rows: Array,
+    unitCostOptions: Array,
+    Status: Array,
     itemClass: Array,
     suppliers: Array,
     locations: Array,
@@ -20,6 +22,7 @@ const props = defineProps({
     fundSources: Array,
     viewItems: Array,
     inputFields: Array,
+    inputFieldsEdit: Array,
     quantityCostFields: Array,
     firstDropdown: Array,
     secondDropdown: Array,
@@ -52,6 +55,7 @@ const form = useForm({
     total_amount: "",
     property_number: "",
     serial_numbers: [],
+    serial_number: "",
     pr_number: "",
     po_number: "",
     remarks: "",
@@ -59,11 +63,14 @@ const form = useForm({
     status: "",
 });
 
-const search = ref(props.searchItem || '');
-const selectedCostRange = ref(props.selectedCostRange || '');
+const search = ref(props.search || '');
+const cost_range = ref(props.cost_range || '');
+const status = ref(props.status || '');
 const calculateTotalAmount = () => {
     form.total_amount = form.quantity * form.unit_cost;
 };
+const isEditing = ref(false);
+
 
 watch(
     () => [form.quantity, form.unit_cost],
@@ -73,19 +80,27 @@ watch(
 watch(
     search,
     debounce((output) => {
-        router.get('/inventory/items', { search: output, cost_range: selectedCostRange.value }, { preserveState: true, only: ['items'] });
+        router.get('/inventory/items', { search: output, cost_range: cost_range.value, status: status.value }, { preserveState: true, only: ['items'] });
     })
 );
 
 watch(
-    selectedCostRange,
-    debounce((range) => {
-        router.get('/inventory/items', { search: search.value, cost_range: range }, { preserveState: true });
+    status,
+    debounce((isActive) => {
+        router.get('/inventory/items', { search: search.value, cost_range: cost_range.value, status: isActive }, { preserveState: true });
     })
 )
 
+watch(
+    cost_range,
+    debounce((range) => {
+        router.get('/inventory/items', { search: search.value, cost_range: range, status: status.value }, { preserveState: true });
+    })
+)
+
+
 watch(() => form.item_classification_id, (newVal) => {
-    if (!newVal) return;
+    if (isEditing.value || !newVal) return;
 
     // Find the selected classification object
     const selectedClass = props.itemClass.find(c => c.id === newVal);
@@ -128,6 +143,7 @@ function openViewModal(item, open) {
 }
 
 function openEditModal(item, open) {
+    isEditing.value = true;
     editModalRef.value = item;
     form.id = item.id;
     form.item_classification_id = item.item_classification_id;
@@ -159,6 +175,7 @@ const handleAddItem = (closeModal) => {
         onSuccess: () => {
             closeModal();     // close the Add Item form modal
             form.reset();     // reset form data
+            isEditing.value = false;
             showSuccess.value = true;
 
             // Optional auto-close after 2 seconds
@@ -183,11 +200,6 @@ const handleCloseModal = (closeModal) => {
     closeModal();
 
 };
-
-const unitCostOptions = [
-    { label: "₱0 - ₱50,000", value: "0-50000" },
-    { label: "₱50,000 Above", value: "50000-100000" },
-];
 
 function getValue(obj, path) {
     return path.split('.').reduce((acc, key) => acc?.[key], obj) ?? 'N/A'
@@ -396,15 +408,25 @@ function getValue(obj, path) {
             </div>
         </transition>
 
-
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
             <!-- UNIT COST FILTER -->
             <div class="flex flex-col w-full sm:w-auto">
                 <label class="text-xs font-bold mb-1 sm:mb-0">Unit Cost</label>
-                <select v-model="selectedCostRange"
+                <select v-model="cost_range"
                     class="h-8 sm:h-9 w-full sm:w-36 text-xs rounded-md text-gray-600 border focus:ring-2 focus:ring-[#850038] outline-none">
                     <option value="">Select All</option>
                     <option v-for="(option, index) in unitCostOptions" :key="index" :value="option.value">
+                        {{ option.label }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="flex flex-col w-full sm:w-auto">
+                <label class="text-xs font-bold mb-1 sm:mb-0">Status</label>
+                <select v-model="status"
+                    class="h-8 sm:h-9 w-full sm:w-36 text-xs rounded-md text-gray-600 border focus:ring-2 focus:ring-[#850038] outline-none">
+                    <option value="">Select All</option>
+                    <option v-for="(option, index) in Status" :key="index" :value="option.value">
                         {{ option.label }}
                     </option>
                 </select>
@@ -513,19 +535,22 @@ function getValue(obj, path) {
                                                     <div class="space-y-6 col-span-1 md:col-span-1">
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-6">
                                                             <div class="space-y-5">
-                                                                <div v-for="ip in inputFields" :key="ip.model"
+                                                                <div v-for="ip in inputFieldsEdit" :key="ip.model"
                                                                     class="flex flex-col">
                                                                     <label class="block text-sm font-bold mb-1">{{
                                                                         ip.label }}</label>
-                                                                    <input v-model="form[ip.model]"
-                                                                        :placeholder="ip.placeholder" type="text" class="w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3
-                          bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038]
-                          focus:outline-none focus:border-[#850038]" />
+                                                                    <input v-model="form[ip.model]" :type="ip.type"
+                                                                        :placeholder="ip.placeholder"
+                                                                        :readonly="ip.readonly" :class="[
+                                                                            'w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150',
+                                                                            ip.readonly ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'text-gray-800'
+                                                                        ]" />
                                                                     <div v-if="form.errors[ip.model]"
                                                                         class="text-red-500 text-sm">
                                                                         {{ form.errors[ip.model] }}
                                                                     </div>
                                                                 </div>
+
 
                                                                 <!-- Quantity + Cost -->
                                                                 <div class="flex gap-4 sm:gap-6 w-full">

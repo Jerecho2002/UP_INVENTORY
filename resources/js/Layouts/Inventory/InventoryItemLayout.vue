@@ -87,6 +87,13 @@ const inputFields = [
   { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
 
+const inputFieldsEdit = [
+  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text", readonly: true },
+  { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text", readonly: false },
+  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" , readonly: true},
+  { label: "Serial Number", model: "serial_number", placeholder: "SER-####.", type: "text", readonly: false },
+];
+
 const requestFields = [
   { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
   { label: "Purchase Orders", model: "po_number", placeholder: "PO-###", type: "text" },
@@ -109,6 +116,16 @@ const secondDropdown = [
   { label: "Status", model: "status", options: 
                                             [{label: "Active", value: "1"},
                                              {label: "Inactive", value: "0"},]},
+];
+
+const unitCostOptions = [
+    { label: "₱0 - ₱50,000", value: "0-50000" },
+    { label: "₱50,000 Above", value: "50000-99999999" },
+];
+
+const Status = [
+    { label: "Active", value: 1},
+    { label: "Inactive", value: 0 },
 ];
 
 const page = usePage();
@@ -146,6 +163,8 @@ const toggleSidebar = () => {
           <InventoryItemsTable 
           :columns="columns" 
           :rows="items"
+          :unitCostOptions="unitCostOptions"
+          :Status="Status"
           :itemClass="itemClassifications"
           :suppliers="suppliers"
           :locations="locations"
@@ -154,6 +173,7 @@ const toggleSidebar = () => {
           :view-items="viewItems"
           :edit-items="editItems"
           :input-fields="inputFields"
+          :inputFieldsEdit="inputFieldsEdit"
           :quantity-cost-fields="quantityCostFields"
           :firstDropdown="firstDropdown"
           :secondDropdown="secondDropdown"
