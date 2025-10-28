@@ -107,6 +107,36 @@ watch(
     })
 )
 
+function openViewModal(item, open) {
+    selectedViewItem.value = item; // store clicked row’s data
+    open(); // call the modal’s exposed openModal()
+}
+
+function openEditModal(item, open) {
+    isEditing.value = true;
+    editModalRef.value = item;
+    form.id = item.id;
+    form.item_classification_id = item.item_classification_id;
+    form.supplier_id = item.supplier_id;
+    form.location_id = item.location_id;
+    form.invoice_id = item.invoice_id;
+    form.fund_source_id = item.fund_source_id;
+    form.item_name = item.item_name;
+    form.description = item.description;
+    form.category = item.category;
+    form.quantity = item.quantity;
+    form.unit = item.unit;
+    form.unit_cost = item.unit_cost;
+    form.total_amount = item.total_amount;
+    form.property_number = item.property_number;
+    form.serial_number = item.serial_number;
+    form.pr_number = item.pr_number;
+    form.po_number = item.po_number;
+    form.remarks = item.remarks;
+    form.date_acquired = item.date_acquired ? item.date_acquired.split("T")[0] : "";
+    form.status = item.status;
+    open();
+}
 
 watch(() => form.item_classification_id, (newVal) => {
     if (isEditing.value || !newVal) return;
@@ -146,37 +176,6 @@ watch(() => form.quantity, (newVal) => {
     form.serial_numbers = Array.from({ length: qty }, (_, i) => form.serial_numbers[i] || "");
 });
 
-function openViewModal(item, open) {
-    selectedViewItem.value = item; // store clicked row’s data
-    open(); // call the modal’s exposed openModal()
-}
-
-function openEditModal(item, open) {
-    isEditing.value = true;
-    editModalRef.value = item;
-    form.id = item.id;
-    form.item_classification_id = item.item_classification_id;
-    form.supplier_id = item.supplier_id;
-    form.location_id = item.location_id;
-    form.invoice_id = item.invoice_id;
-    form.fund_source_id = item.fund_source_id;
-    form.item_name = item.item_name;
-    form.description = item.description;
-    form.category = item.category;
-    form.quantity = item.quantity;
-    form.unit = item.unit;
-    form.unit_cost = item.unit_cost;
-    form.total_amount = item.total_amount;
-    form.property_number = item.property_number;
-    form.serial_number = item.serial_number;
-    form.pr_number = item.pr_number;
-    form.po_number = item.po_number;
-    form.remarks = item.remarks;
-    form.date_acquired = item.date_acquired ? item.date_acquired.split("T")[0] : "";
-    form.status = item.status;
-    open();
-}
-
 const showSuccess = ref(false);
 
 const handleAddItem = (closeModal) => {
@@ -184,7 +183,6 @@ const handleAddItem = (closeModal) => {
         onSuccess: () => {
             closeModal();     // close the Add Item form modal
             form.reset();     // reset form data
-            isEditing.value = false;
             showSuccess.value = true;
 
             // Optional auto-close after 2 seconds
@@ -200,14 +198,15 @@ const handleUpdateItem = (id, closeModal) => {
         onSuccess: () => {
             closeModal(),
                 form.reset();
+                isEditing.value = false;
         }
     });
 };
 
 const handleCloseModal = (closeModal) => {
     form.reset();
+    isEditing.value = false;
     closeModal();
-
 };
 
 function getValue(obj, path) {
@@ -601,7 +600,7 @@ function getValue(obj, path) {
                                                             <div v-for="fdp in firstDropdown" :key="fdp.name"
                                                                 class="flex flex-col">
                                                                 <label class="block text-sm font-bold mb-1">{{ fdp.label
-                                                                    }}</label>
+                                                                }}</label>
                                                                 <select v-model="form[fdp.model]" class="w-full sm:w-[6rem] rounded-md border border-gray-300 px-3 py-3
                          bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038]
                          focus:outline-none focus:border-[#850038]">
