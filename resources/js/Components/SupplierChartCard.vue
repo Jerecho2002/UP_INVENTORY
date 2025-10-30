@@ -43,7 +43,7 @@ canvas {
 </style>
 
 <template>
-  <div class="bg-white w-full h-auto sm:h-[34rem] rounded-xl shadow-lg p-2 sm:p-2 md:p-4">
+  <div class="bg-white w-full h-auto rounded-xl shadow-lg p-2 sm:p-4 md:p-6">
     <h2 class="font-bold mb-2 text-lg text-center sm:text-left">{{ title }}</h2>
 
     <!-- CHART -->
@@ -65,9 +65,7 @@ canvas {
         <select v-model="itemForm.supplier[supplier.model]"
           class="border border-gray-300 rounded-md px-3 py-2 w-36 sm:w-44 md:w-52 text-xs sm:text-sm md:text-base focus:ring-2 focus:ring-[#850038] outline-none transition-all">
           <option disabled value="">Select</option>
-          <option v-for="option in supplier.options" :key="option" :value="option">
-            {{ option }}
-          </option>
+          <option v-for="option in supplier.options" :key="option" :value="option">{{ option }}</option>
         </select>
       </div>
     </div>

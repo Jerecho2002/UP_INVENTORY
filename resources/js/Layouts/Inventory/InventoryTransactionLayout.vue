@@ -58,10 +58,10 @@ const tableHeader = [
       </aside>
 
       <!-- Main --> 
-      <main class="flex-1 sm:p-5 md:p-6 overflow-hidden mx-2 sm:mx-2 md:mx-0">
+      <main class="flex-1 sm:p-5 md:p-6  mx-2 sm:mx-2 md:mx-0 overflow-y-auto">
         <!-- HEAD TITLE -->
         <PageHeader title="Transactions" />
-        <div class="bg-white h-full rounded-lg p-4 drop-shadow-md mt-6">
+        <div class="bg-white rounded-lg p-4 drop-shadow-md mt-8 ">
           <!-- Inventory Transaction Table Component -->
             <InventoryTransactionTable
             :tableHeader = tableHeader
