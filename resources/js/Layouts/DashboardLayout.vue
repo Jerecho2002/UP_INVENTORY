@@ -73,18 +73,18 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
 
     <!-- SIDERBAR -->
     <div class="flex flex-1 overflow-hidden">
-      <aside  class="transition-all duration-600 ease-in-out transform"
+      <aside  class="transition-all duration- ease-in-out transform"
     :class="isSidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full opacity-0 w-0'">
         <SideBar/>
       </aside>
 
       <!-- MAIN CONTENT -->
-      <main class="flex-1 sm:p-5 md:p-6 overflow-y-auto mx-2">
+      <main class="flex-1 sm:p-5 md:p-6 w-full overflow-y-auto mx-2">
         <PageHeader title="Dashboard" />
 
-        <div class="flex flex-col md:flex-row gap-4 my-5">
+        <div class="flex flex-col w-full md:flex-row gap-4 my-5">
           <!-- LEFT -->
-          <div class="w-full md:w-[80rem]">
+          <div class="w-full h-full">
             <div>
               <ItemOverview :item-overview="itemOverview" />
             </div>
