@@ -27,6 +27,16 @@ watch(
 function getValue(obj, path) {
     return path.split('.').reduce((acc, key) => acc?.[key], obj) ?? 'N/A'
 }
+
+const goToPage = (url) => {
+    if (!url) return;
+    router.visit(url, {
+        preserveState: true,
+        replace: true,
+        preserveScroll: true,
+    });
+};
+
 </script>
 
 <template>
@@ -84,17 +94,16 @@ function getValue(obj, path) {
                     </p>
                     <div>
                         <span v-for="link in rows.links" :key="link.label">
-                            <component :is="link.url ? Link : 'span'" :href="link.url || null"
-                                class="p-1 text-xs sm:text-sm" :class="{
+                            <span v-if="link.url" @click="goToPage(link.url)"
+                                class="cursor-pointer p-1 text-xs sm:text-sm" :class="{
                                     'text-gray-600 hover:underline': link.url,
-                                    'text-blue-600 font-bold': link.active,
-                                    'text-gray-300': !link.url
+                                    'text-blue-600 font-bold': link.active
                                 }">
                                 <!-- Render label or icon -->
                                 <i v-if="link.label.includes('Previous')" class="fa-solid fa-chevron-left"></i>
                                 <i v-else-if="link.label.includes('Next')" class="fa-solid fa-chevron-right"></i>
                                 <span class="px-1" v-else>{{ link.label }}</span>
-                            </component>
+                            </span>
                         </span>
                     </div>
                 </div>

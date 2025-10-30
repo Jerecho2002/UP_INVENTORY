@@ -37,6 +37,15 @@ const addModalRef = ref(null);
 const editModalRef = ref(null);
 const selectedViewItem = ref(null);
 
+const goToPage = (url) => {
+    if (!url) return;
+    router.visit(url, {
+        preserveState: true,
+        replace: true,
+        preserveScroll: true,
+    });
+};
+
 const form = useForm({
     item_classification_id: "",
     supplier_id: "",
@@ -213,7 +222,7 @@ function getValue(obj, path) {
                                 <div class="space-y-4">
                                     <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
                                         <label class="block text-sm font-bold mb-1 ">{{ ip.label
-                                        }}</label>
+                                            }}</label>
                                         <input v-model="form[ip.model]" :key="ip.model" type="text"
                                             :placeholder="ip.placeholder"
                                             class="w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
@@ -236,7 +245,7 @@ function getValue(obj, path) {
                                         <div v-for="qcf in quantityCostFields" :key="qcf.quantityCostFields"
                                             class="flex flex-col flex-1 min-w-[8rem] sm:min-w-[10rem] md:min-w-[15rem] lg:min-w-[14.3rem]">
                                             <label class="block text-sm font-bold mb-1">{{ qcf.label
-                                            }}</label>
+                                                }}</label>
                                             <input v-model="form[qcf.model]" :key="qcf.model" :type="qcf.type"
                                                 :placeholder="qcf.placeholder" step="any"
                                                 class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800 focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
@@ -250,7 +259,7 @@ function getValue(obj, path) {
                                     <div class="space-y-4">
                                         <div v-for="rf in requestFields" :key="rf.model" class="flex flex-col">
                                             <label class="block text-sm font-bold mb-1 ">{{ rf.label
-                                                }}</label>
+                                            }}</label>
                                             <input v-model="form[rf.model]" :key="rf.model" type="text"
                                                 :placeholder="rf.placeholder"
                                                 class="w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
@@ -269,7 +278,7 @@ function getValue(obj, path) {
                             <div class="flex flex-col md:flex-row gap-4 mb-8">
                                 <div v-for="fdp in firstDropdown" :key="fdp.name" class="flex flex-col">
                                     <label class="block text-sm font-bold mb-1">{{ fdp.label
-                                    }}</label>
+                                        }}</label>
                                     <select v-model="form[fdp.model]" :key="fdp.model"
                                         class="w-full sm:w-[6rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                         <option value="">Select</option>
@@ -288,7 +297,7 @@ function getValue(obj, path) {
                                 <div v-for="sdf in secondDropdown" :key="sdf.label" class="flex gap-3">
                                     <div>
                                         <label class="block text-sm font-bold mb-1">{{ sdf.label
-                                        }}</label>
+                                            }}</label>
                                         <select v-model="form[sdf.model]"
                                             class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                             <option value="">Select</option>
@@ -511,7 +520,7 @@ function getValue(obj, path) {
                                                             <div v-for="fdp in firstDropdown" :key="fdp.name"
                                                                 class="flex flex-col">
                                                                 <label class="block text-sm font-bold mb-1">{{ fdp.label
-                                                                }}</label>
+                                                                    }}</label>
                                                                 <select v-model="form[fdp.model]" class="w-full sm:w-[6rem] rounded-md border border-gray-300 px-3 py-3
                          bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038]
                          focus:outline-none focus:border-[#850038]">
@@ -598,7 +607,8 @@ function getValue(obj, path) {
 
                                         <template #DeleteItem="{ close, confirm, message }">
                                             <div class="text-center">
-                                                <div class="text-4xl  text-[#FF0000] bg-[#F5CCCC] w-16 h-16 mx-auto flex items-center justify-center rounded-full">
+                                                <div
+                                                    class="text-4xl  text-[#FF0000] bg-[#F5CCCC] w-16 h-16 mx-auto flex items-center justify-center rounded-full">
                                                     <i class="fa-solid fa-triangle-exclamation"></i>
                                                 </div>
                                                 <h1 class="font-bold text-2xl">Delete</h1>
@@ -637,17 +647,16 @@ function getValue(obj, path) {
                 </p>
                 <div>
                     <span v-for="link in rows.links" :key="link.label">
-                        <component :is="link.url ? Link : 'span'" :href="link.url || null"
-                            class="p-1 text-xs sm:text-sm" :class="{
+                        <span v-if="link.url" @click="goToPage(link.url)" class="cursor-pointer p-1 text-xs sm:text-sm"
+                            :class="{
                                 'text-gray-600 hover:underline': link.url,
-                                'text-blue-600 font-bold': link.active,
-                                'text-gray-300': !link.url
+                                'text-blue-600 font-bold': link.active
                             }">
                             <!-- Render label or icon -->
                             <i v-if="link.label.includes('Previous')" class="fa-solid fa-chevron-left"></i>
                             <i v-else-if="link.label.includes('Next')" class="fa-solid fa-chevron-right"></i>
                             <span class="px-1" v-else>{{ link.label }}</span>
-                        </component>
+                        </span>
                     </span>
                 </div>
             </div>
