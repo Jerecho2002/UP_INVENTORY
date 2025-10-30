@@ -18,6 +18,7 @@ class InventoryController extends Controller
     {
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
+        $status = $request->input('status');
         $itemClassifications = ItemClassification::all();
         $suppliers = Supplier::all();
         $locations = Location::all();
@@ -25,7 +26,7 @@ class InventoryController extends Controller
         $fundSources = FundSource::all();
 
         return inertia('Inventory/InventoryItem', [
-            'items' => $service->getPaginatedInventory($search, $costRange),
+            'items' => $service->getPaginatedInventory($search, $costRange, $status),
             'itemClassifications' => $itemClassifications,
             'suppliers' => $suppliers,
             'locations' => $locations,

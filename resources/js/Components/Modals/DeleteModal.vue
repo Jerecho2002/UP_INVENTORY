@@ -13,7 +13,7 @@ const props = defineProps({
   },
 });
 
-const isOpen = ref(false);
+const isOpen = ref(false);  
 
 function openModal() {
   isOpen.value = true;
@@ -23,13 +23,14 @@ function closeModal() {
   isOpen.value = false;
 }
 
+
+
 // ✅ Delete function using Inertia
 function confirmDelete() {
   router.delete(props.deleteUrl, {
     preserveScroll: true,
     onSuccess: () => {
       closeModal();
-      console.log("Item deleted successfully!");
     },
   });
 }
@@ -49,4 +50,5 @@ defineExpose({ openModal, closeModal });
             <slot name="DeleteItem" :close="closeModal" :confirm="confirmDelete" :message="props.message"></slot>
         </div>
     </div>
+
 </template>

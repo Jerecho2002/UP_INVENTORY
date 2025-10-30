@@ -27,7 +27,7 @@ defineExpose({ openModal, closeModal });
 
     <!-- Modal Content -->
     <div
-      class="bg-white w-full max-w-6xl rounded-lg drop-shadow-2xl p-4 relative animate-fadeIn max-h-[90vh]"
+      class="bg-white w-full max-w-6xl rounded-lg drop-shadow-2xl p-4 relative overflow-y-auto animate-fadeIn max-h-[90vh]"
     >
       <!-- Body -->
       <slot name="EditInventory" :closeModal="closeModal"></slot>

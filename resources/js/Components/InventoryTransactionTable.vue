@@ -65,8 +65,8 @@ const props = defineProps({
 
         </div>
         <!-- TABLE -->
-        <div>
-            <table class="overflow-x-auto w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
+        <div class="overflow-x-auto">
+            <table class=" w-full table-auto border-collapse mt-2 text-left bg-white text-xs sm:text-sm">
                 <thead class="bg-[#850038]">
                     <tr class="text-white">
                         <th v-for="tabh in tableHeader" :key="tabh.key"

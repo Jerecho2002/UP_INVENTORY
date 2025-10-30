@@ -56,10 +56,10 @@ const toggleSidebar = () => {
         <SideBar/>
       </aside>
       <!-- MAIN -->
-      <main class="flex-1 sm:p-5 md:p-6 m-2">
+      <main class="flex-1 sm:p-5 md:p-6 m-2 overflow-y-auto">
         <div>
           <PageHeader title="Reports" />
-          <div class="mt-[3rem]">
+          <div class="mt-[2rem]">
             <ReportFilterForm  
             :columns="columns"
             :rows="items"
