@@ -21,7 +21,7 @@ const props = defineProps({
       <div class="flex items-center sm:justify-start gap-3 px-5 py-6 text-2xl sm:text-3xl md:text-4xl"
         :class="overview.textColor">
         <i :class="overview.icon"></i>
-        <span class="font-bold text-gray-800 text-lg sm:text-xl md:text-2xl">0</span>
+        <span class="font-bold text-gray-800 text-lg sm:text-xl md:text-2xl">{{ overview.value }}</span>
       </div>
     </div>
   </div>

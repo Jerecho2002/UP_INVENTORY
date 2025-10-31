@@ -65,7 +65,7 @@ return [
     'po_number' => strtoupper($this->faker->unique()->bothify('PO###')),
     'remarks' => strtoupper($this->faker->unique()->bothify('RM###')),
     'date_acquired' => $this->faker->date('Y-m-d', 'now'),
-    'status' => $this->faker->boolean ? 1 : 0,
+    'status' => $this->faker->numberBetween(0, 2),
 ];
 
     }

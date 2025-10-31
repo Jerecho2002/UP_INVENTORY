@@ -7,7 +7,7 @@ use App\Models\InventoryTransaction;
 
 class InventoryTransactionService
 {
-    public function getPaginatedInventory($search = null, $costRange = null)
+    public function getPaginatedInventory($search = null, $costRange = null, $status)
     {
         // Start a query and eager-load 'property' and 'acknowledgementReceipts' relationships
         // This returns an Eloquent query builder instance
@@ -16,20 +16,23 @@ class InventoryTransactionService
             // Apply search filter only if $search has a value
             ->when($search, fn($query, $search) => $query->search($search))
 
-            // Apply cost range filter only if $costRange has a value
+            // Cost filter inside the inventoryItem relation
             ->when($costRange, function ($query, $costRange) {
                 [$min, $max] = explode('-', $costRange);
 
-                if ($min !== '' && $max !== '') {
-                    // Both bounds exist
-                    $query->whereBetween('unit_cost', [(float) $min, (float) $max]);
-                } elseif ($min !== '' && $max === '') {
-                    // Only minimum given → "₱50,000 and above"
-                    $query->where('unit_cost', '>=', (float) $min);
-                } elseif ($min === '' && $max !== '') {
-                    // Only maximum given → "Up to ₱50,000"
-                    $query->where('unit_cost', '<=', (float) $max);
-                }
+                $query->whereHas('inventoryItem', function ($q) use ($min, $max) {
+                    if ($min !== '' && $max !== '') {
+                        $q->whereBetween('unit_cost', [(float) $min, (float) $max]);
+                    } elseif ($min !== '' && $max === '') {
+                        $q->where('unit_cost', '>=', (float) $min);
+                    } elseif ($min === '' && $max !== '') {
+                        $q->where('unit_cost', '<=', (float) $max);
+                    }
+                });
+            })
+            // Apply status filter
+            ->when(!is_null($status), function ($query) use ($status) {
+                $query->where('status', $status);
             })
 
             // Limit the result to 8 items per page
