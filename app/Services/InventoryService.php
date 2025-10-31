@@ -31,6 +31,7 @@ class InventoryService
                     $query->where('unit_cost', '<=', (float) $max);
                 }
             })
+            // Apply status filter
             ->when(!is_null($status), function ($query) use ($status) {
                 $query->where('status', $status);
             })
