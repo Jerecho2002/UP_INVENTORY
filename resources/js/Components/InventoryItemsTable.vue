@@ -176,14 +176,15 @@ watch(() => form.quantity, (newVal) => {
     form.serial_numbers = Array.from({ length: qty }, (_, i) => form.serial_numbers[i] || "");
 });
 
-const showSuccess = ref(false);
+const showAddedSuccess = ref(false);
+const showEditSuccess = ref(false);
 
 const handleAddItem = (closeModal) => {
     form.post(route("items.store"), {
         onSuccess: () => {
             closeModal();     // close the Add Item form modal
             form.reset();     // reset form data
-            showSuccess.value = true;
+            showAddedSuccess.value = true;
 
             // Optional auto-close after 2 seconds
             // setTimeout(() => {
@@ -198,7 +199,8 @@ const handleUpdateItem = (id, closeModal) => {
         onSuccess: () => {
             closeModal(),
                 form.reset();
-                isEditing.value = false;
+            isEditing.value = false;
+            showEditSuccess.value = true;
         }
     });
 };
@@ -361,7 +363,8 @@ function getValue(obj, path) {
 
         <!--Item Add Success Modal -->
         <transition name="fade">
-            <div v-if="showSuccess" class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+            <div v-if="showAddedSuccess"
+                class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
                 <div class="bg-white m-5 rounded-2xl shadow-lg p-8 w-[100%] sm:w-[35rem] text-center animate-fade-in">
                     <!-- Success Icon -->
                     <div class="mx-auto mb-2 flex items-center justify-center w-16 h-16 rounded-full bg-[#C8EFD4]">
@@ -407,7 +410,7 @@ function getValue(obj, path) {
                             <span>Assign</span>
                         </button>
                         <!-- Close Button -->
-                        <button @click="showSuccess = false"
+                        <button @click="showAddedSuccess = false"
                             class="bg-[#41BD66] text-white px-6 py-3 rounded-md font-semibold hover:bg-green-800 transition">
                             <span>Confirm</span>
                         </button>
@@ -600,7 +603,7 @@ function getValue(obj, path) {
                                                             <div v-for="fdp in firstDropdown" :key="fdp.name"
                                                                 class="flex flex-col">
                                                                 <label class="block text-sm font-bold mb-1">{{ fdp.label
-                                                                }}</label>
+                                                                    }}</label>
                                                                 <select v-model="form[fdp.model]" class="w-full sm:w-[6rem] rounded-md border border-gray-300 px-3 py-3
                          bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038]
                          focus:outline-none focus:border-[#850038]">
@@ -674,6 +677,67 @@ function getValue(obj, path) {
 
                                         </template>
                                     </EditModal>
+
+                                    <!-- EDIT SUCESS MDDAL -->
+                                    <transition name="fade">
+                                        <div v-if="showEditSuccess"
+                                            class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+                                            <div
+                                                class="bg-white m-5 rounded-2xl shadow-lg p-8 w-[100%] sm:w-[35rem] text-center animate-fade-in">
+                                                <!-- Success Icon -->
+                                                <div
+                                                    class="mx-auto mb-2 flex items-center justify-center w-16 h-16 rounded-full bg-[#C8EFD4]">
+                                                    <svg class="h-10 w-10" viewBox="0 0 30 30" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M26.25 8.75H3.75V3.75H26.25V8.75ZM16.25 23.75C16.25 24.625 16.4125 25.4625 16.6875 26.25H5V10H25V16.3625C24.5875 16.3 24.175 16.25 23.75 16.25C19.6125 16.25 16.25 19.6125 16.25 23.75ZM18.75 16.25V14.375C18.75 14.025 18.475 13.75 18.125 13.75H11.875C11.525 13.75 11.25 14.025 11.25 14.375V16.25H18.75ZM25 22.5V18.75H22.5V22.5H18.75V25H22.5V28.75H25V25H28.75V22.5H25Z"
+                                                            fill="#41BD66" />
+                                                    </svg>
+
+                                                </div>
+
+                                                <!-- Message -->
+                                                <h2 class="text-2xl font-bold text-[#363232] mb-1">Added Success</h2>
+                                                <p class="text-[#888484] text-lg mb-6">
+                                                    Item added successfully!
+                                                </p>
+
+                                                <div class="flex justify-center gap-3">
+                                                    <button
+                                                        class="flex bg-[#54B3AB] text-white px-6 py-3 items-center gap-2 rounded-md font-semibold hover:bg-[#6cc6bf] transition">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <g clip-path="url(#clip0_2174_1494)">
+                                                                <path
+                                                                    d="M11.9931 11.4467C14.5005 11.4467 16.5331 9.41407 16.5331 6.9067C16.5331 4.39933 14.5005 2.3667 11.9931 2.3667C9.48575 2.3667 7.45312 4.39933 7.45312 6.9067C7.45312 9.41407 9.48575 11.4467 11.9931 11.4467Z"
+                                                                    fill="white" />
+                                                                <path
+                                                                    d="M7.9999 17.7667C8.01376 17.3979 8.13666 17.0414 8.35308 16.7424C8.56949 16.4433 8.8697 16.2152 9.21576 16.0868C9.56182 15.9583 9.93818 15.9354 10.2973 16.0208C10.6564 16.1062 10.9821 16.2962 11.2332 16.5667L13.8066 19.3334L18.3666 14.2467C16.4831 12.9911 14.2633 12.3356 11.9999 12.3667C10.4298 12.327 8.8701 12.6317 7.4304 13.2594C5.9907 13.8872 4.70598 14.8226 3.66657 16.0001C3.57864 16.1173 3.53178 16.2602 3.53324 16.4067V20.0001C3.53308 20.3468 3.66805 20.6801 3.90951 20.929C4.15098 21.1779 4.47993 21.323 4.82657 21.3334H10.5399L8.49324 19.1334C8.32382 18.9501 8.19287 18.7348 8.10814 18.5C8.0234 18.2653 7.9866 18.0159 7.9999 17.7667Z"
+                                                                    fill="white" />
+                                                                <path
+                                                                    d="M19.1735 21.3332C19.5202 21.3228 19.8491 21.1777 20.0906 20.9288C20.3321 20.6798 20.467 20.3466 20.4669 19.9998V17.4932L17.0469 21.3332H19.1735Z"
+                                                                    fill="white" />
+                                                                <path
+                                                                    d="M22.5135 12.4132C22.4481 12.3541 22.3716 12.3086 22.2884 12.2792C22.2052 12.2499 22.1171 12.2373 22.029 12.2423C21.941 12.2472 21.8548 12.2696 21.7755 12.3081C21.6961 12.3466 21.6252 12.4005 21.5668 12.4666L13.8202 21.1332L10.3535 17.4066C10.2966 17.34 10.2272 17.2854 10.1491 17.2457C10.0711 17.206 9.98598 17.182 9.8987 17.1752C9.81141 17.1684 9.72363 17.1789 9.64038 17.206C9.55713 17.2331 9.48004 17.2763 9.41351 17.3332C9.35102 17.3952 9.30143 17.469 9.26758 17.5502C9.23373 17.6314 9.21631 17.7186 9.21631 17.8066C9.21631 17.8946 9.23373 17.9817 9.26758 18.063C9.30143 18.1442 9.35102 18.2179 9.41351 18.2799L13.8668 23.0799L22.5602 13.3332C22.6723 13.2034 22.73 13.0352 22.7213 12.8639C22.7126 12.6925 22.6382 12.5311 22.5135 12.4132Z"
+                                                                    fill="white" />
+                                                            </g>
+                                                            <defs>
+                                                                <clipPath id="clip0_2174_1494">
+                                                                    <rect width="24" height="24" fill="white" />
+                                                                </clipPath>
+                                                            </defs>
+                                                        </svg>
+                                                        <span>Assign</span>
+                                                    </button>
+                                                    <!-- Close Button -->
+                                                    <button @click="showEditSuccess = false"
+                                                        class="bg-[#41BD66] text-white px-6 py-3 rounded-md font-semibold hover:bg-green-800 transition">
+                                                        <span>Confirm</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </transition>
 
 
                                     <!-- DELETE MODAL -->
