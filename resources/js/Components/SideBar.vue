@@ -30,7 +30,7 @@ const toggleDropdown = (name) => {
 
 <template>
     <div
-        class="py-7 text-lg font-semibold space-y-2 bg-white h-screen w-full sm:w-[16rem] md:w-[15rem] shadow-lg flex flex-col">
+        class="py-7 text-lg font-semibold space-y-2 bg-white h-full w-full sm:w-[16rem] md:w-[15rem] shadow-lg flex flex-col">
         <!-- Menu -->
         <ul class="flex-1">
             <li v-for="item in menuItems" :key="item.name" class="rounded-md">
@@ -75,7 +75,7 @@ const toggleDropdown = (name) => {
         </ul>
 
         <!-- Footer -->
-        <div class="mt-auto border-t border-gray-200 py-3">
+        <div class="mt-auto py-3">
             <span class="block text-center text-xs text-gray-500">
                 EasyLearning © UP Cebu.
             </span>
