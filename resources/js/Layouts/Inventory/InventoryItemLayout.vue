@@ -13,20 +13,25 @@ const columns = [
   { label: "Serial Number", key: 'serial_number' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
-  { label: "Status", key: 'status', 
+  {
+    label: "Status", key: 'status',
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
-      if (status === 0) { 
-        label = 'Inactive'; 
-        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full'; 
+      if (status === 0) {
+        label = 'Inactive';
+        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-ban"></i>';
       }
-      else if (status === 1) { 
-        label = 'Active'; 
-        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full'; 
+      else if (status === 1) {
+        label = 'Active';
+        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-circle-check"></i>';
       }
-      else if (status === 2) { label = 'Pending'; cls = 'text-yellow-700'; }
+      else if (status === 2) { 
+        label = 'Pending'; 
+        cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-clock"></i>';
+      }
       return `<span class="${cls}">${icon} ${label}</span>`;
     }
   },
@@ -49,23 +54,26 @@ const viewItems = [
   { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
   { label: "Unit Cost", key: "unit_cost", format: (val) => (val ? `₱${val}` : "N/A") },
   {
-    label: "Status",
-    key: "status",
+    label: "Status", key: 'status',
     format: (status) => {
-      let label = "Unknown",
-        cls = "text-gray-500";
+      let label = 'Unknown', cls = 'text-gray-500', icon = '';
       if (status === 0) {
-        label = "Inactive";
-        cls = "text-red-700";
-      } else if (status === 1) {
-        label = "Active";
-        cls = "text-[#14B449]";
-      } else if (status === 2) {
-        label = "Pending";
-        cls = "text-yellow-700";
+        label = 'Inactive';
+        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-ban"></i>';
       }
-      return `<span class="${cls}">${label}</span>`;
-    },
+      else if (status === 1) {
+        label = 'Active';
+        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-circle-check"></i>';
+      }
+      else if (status === 2) { 
+        label = 'Pending'; 
+        cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-clock"></i>';
+      }
+      return `<span class="${cls}">${icon} ${label}</span>`;
+    }
   },
 ];
 
@@ -111,11 +119,12 @@ const firstDropdown = [
 const secondDropdown = [
   { label: "Unit", model: "unit", options: 
                                             [{label: "unit", value: "unit"},
-                                             {label: "pc", value: "pc"}, 
+                                             {label: "pcs", value: "pcs"}, 
                                              {label: "box", value: "box"}]},
   { label: "Status", model: "status", options: 
                                             [{label: "Active", value: "1"},
-                                             {label: "Inactive", value: "0"},]},
+                                             {label: "Inactive", value: "0"},
+                                             {label: "Pending", value: "2"},]},
 ];
 
 const unitCostOptions = [
@@ -126,6 +135,7 @@ const unitCostOptions = [
 const Status = [
     { label: "Active", value: 1},
     { label: "Inactive", value: 0 },
+    { label: "Pending", value: 2},
 ];
 
 const page = usePage();

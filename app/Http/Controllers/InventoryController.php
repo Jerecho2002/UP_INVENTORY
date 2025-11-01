@@ -39,9 +39,10 @@ class InventoryController extends Controller
     {
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
+        $status = $request->input('status');
 
         return inertia('Inventory/InventoryTransaction', [
-            'items' => $service->getPaginatedInventory($search, $costRange),
+            'items' => $service->getPaginatedInventory($search, $costRange, $status),
         ]);
     }
 

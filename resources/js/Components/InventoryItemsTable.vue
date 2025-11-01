@@ -9,8 +9,6 @@ import EditModal from './Modals/EditModal.vue';
 import DeleteModal from './Modals/DeleteModal.vue';
 
 const props = defineProps({
-    searchItem: String,
-    selectedCostRange: String,
     columns: Array,
     rows: Array,
     unitCostOptions: Array,
@@ -75,6 +73,7 @@ const form = useForm({
 const search = ref(props.search || '');
 const cost_range = ref(props.cost_range || '');
 const status = ref(props.status || '');
+
 const calculateTotalAmount = () => {
     form.total_amount = form.quantity * form.unit_cost;
 };
@@ -520,8 +519,8 @@ function getValue(obj, path) {
                         <TableCell v-for="col in columns" :key="col.key">
                             <!-- For normal columns -->
                             <template v-if="col.key !== 'action'">
-                                <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
-                                <span v-else>{{ getValue(item, col.key) }}</span>
+                                <span v-if="col.format" v-html="col.format(item[col.key])"></span>
+                                <span v-else>{{ item[col.key] }}</span>
                             </template>
 
                             <!-- For Action column -->

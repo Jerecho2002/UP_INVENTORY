@@ -16,22 +16,23 @@ const columns = [
   { label: "Item Name", key: 'item_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
-  { label: "Status", key: 'status', 
+  {
+    label: "Status", key: 'status',
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
-      if (status === 0) { 
-        label = 'Inactive'; 
-        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full'; 
+      if (status === 0) {
+        label = 'Inactive';
+        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-ban"></i>';
       }
-      else if (status === 1) { 
-        label = 'Active'; 
-        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full'; 
-        icon = '<i class="fa-solid fa-circle-check"></i>'; 
+      else if (status === 1) {
+        label = 'Active';
+        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-circle-check"></i>';
       }
       else if (status === 2) { 
         label = 'Pending'; 
-        cls = 'text-yellow-700'; 
+        cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-clock"></i>';
       }
       return `<span class="${cls}">${icon} ${label}</span>`;
@@ -40,13 +41,13 @@ const columns = [
   { label: "Action", key: "action" }
 ]
 
+const totalItems = computed(() => items.value.total);
 
 const itemOverview = [
-  { title: "Total Items", icon: "fa-solid fa-cart-shopping text-[#06B6D4]", bgColor: "bg-[#06B6D4]" },
+  { title: "Total Items", icon: "fa-solid fa-cart-shopping text-[#06B6D4]", bgColor: "bg-[#06B6D4]", value: totalItems },
   { title: "Item Distribution", icon: "fa-solid fa-hand-holding-hand text-[#8B5CF6]", bgColor: "bg-[#8B5CF6]" },
   { title: "Low Stock Items", icon: "fa-solid fa-triangle-exclamation text-[#F59E0B]", bgColor: "bg-[#F59E0B]" },
   { title: "Out of Stock Items", icon: "fa-solid fa-ban text-[#DC2626]", bgColor: "bg-[#DC2626]" },
-
 ];
 
 const supplierChart = [
