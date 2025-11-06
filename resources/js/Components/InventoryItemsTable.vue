@@ -338,8 +338,8 @@ function getValue(obj, path) {
                             </div>
 
                             <div class="flex flex-col md:flex-row md:items-center text-sm font-semibold mt-8">
-                                <label class="block text-base font-bold">Total Amount:</label>
-                                <input v-model="form.total_amount" readonly placeholder="₱0.00"
+                                <label class="block text-base font-bold">Total Amount: ₱</label>
+                                <input v-model="form.total_amount" readonly placeholder="0.00"
                                     class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none" />
                             </div>
                         </div>

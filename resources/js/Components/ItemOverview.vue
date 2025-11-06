@@ -9,9 +9,9 @@ const props = defineProps({
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 w-full mx-auto">
     <div v-for="overview in itemOverview" :key="overview.title"
-      class="bg-white rounded-xl shadow-md flex flex-col justify-between hover:shadow-xl transition-shadow duration-300">
+      class="bg-white rounded-xl shadow-md flex flex-col justify-between transition-shadow duration-300">
       <!-- Header -->
-      <div :class="['p-4 sm:p-5 rounded-t-lg text-center sm:text-left', overview.bgColor]">
+      <div :class="['p-4 sm:p-5 rounded-t-lg sm:text-left', overview.bgColor]">
         <h1 class="text-white text-sm sm:text-base md:text-lg font-semibold truncate">
           {{ overview.title }}
         </h1>
