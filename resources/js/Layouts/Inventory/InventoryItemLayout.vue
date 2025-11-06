@@ -13,6 +13,7 @@ const columns = [
   { label: "Serial Number", key: 'serial_number' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
+  { label: "Supplier", key: 'supplier.supplier_name', format: (val) => val ?? 'N/A' },
   { label: "Status", key: 'status', 
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';

@@ -4,7 +4,7 @@
 </script>
 
 <template>
-   <Head title="UP | ItemDisposal" />
+   <Head title="UP | Item Disposal" />
     
         <div class="bg-[#F3F3F3]">
             <ItemDisposalLayout/>

@@ -18,11 +18,11 @@ onMounted(() => {
   new Chart(chartCanvasStatistics.value, {
     type: 'pie', // Change to 'line', 'pie', etc. if needed
     data: {
-      labels: ['January', 'February', 'March', 'April'],
+      labels: ['Supplied', 'Delivered', 'Cancelled'],
       datasets: [{
         label: 'Order Status',
-        data: [12, 19, 3, 5],
-        backgroundColor: ['#2E7D32'],
+        data: [12, 19, 3],
+        backgroundColor: ['#7E19FA', '#19FA21', '#FA2C19'], 
       }]
     },
     options: {
@@ -34,14 +34,6 @@ onMounted(() => {
   })
 })
 </script>
-<style scoped>
-/* You can style the canvas here */
-canvas {
-  max-width: 100%;
-  height: auto;
-}
-</style>
-
 <template>
   <div class="bg-white w-full h-auto sm:h-[34rem] rounded-xl shadow-lg p-2 sm:p-2 md:p-4">
     <h2 class="font-bold mb-2 text-lg text-center sm:text-left">{{ title }}</h2>
