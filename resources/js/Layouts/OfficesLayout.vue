@@ -25,7 +25,7 @@ const toggleSidebar = () => {
       <!-- MAIN -->
        <main class="flex-1 sm:p-5 md:p-6 m-2">
           <div>
-            <PageHeader title="Purchase" />
+            <PageHeader title="Offices" />
               <div class="mt-[3rem]">
                 
               </div>

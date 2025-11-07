@@ -1,48 +1,126 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { Chart } from 'chart.js/auto';
+import { Chart, LineController, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js/auto';
+
+
+Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale)
 
 const chartCanvasOrder = ref(null)
 const chartCanvasRequest = ref(null)
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 onMounted(() => {
-  new Chart(chartCanvasOrder.value, {
-    type: 'line', // Change to 'line', 'pie', etc. if needed
-    data: {
-      labels: ['January', 'February', 'March', 'April'],
-      datasets: [{
-        label: 'Order Status',
-        data: [12, 19, 3, 5],
-        backgroundColor: ['#2E7D32'],
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true },
-      }
-    }
-  })
+  if (chartCanvasOrder.value) {
+    const ctx = chartCanvasOrder.value.getContext('2d')
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Order Status',
+            data: [12, 19, 3, 5, 2, 3, 7],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)',
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(255, 159, 64)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(54, 162, 235)',
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)',
+            ],
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3, // smooth line curve
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: '#333' },
+          },
+          x: {
+            ticks: { color: '#333' },
+          },
+        },
+      },
+    })
+  }
 })
 
 onMounted(() => {
-  new Chart(chartCanvasRequest.value, {
-    type: 'line', // Change to 'line', 'pie', etc. if needed
-    data: {
-      labels: ['January', 'February', 'March', 'April'],
-      datasets: [{
-        label: 'Request Status',
-        data: [12, 19, 3, 5],
-        backgroundColor: ['#2E7D32'],
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true },
-      }
-    }
-  })
+  if (chartCanvasRequest.value) {
+    const ctx = chartCanvasRequest.value.getContext('2d')
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Request Status',
+            data: [12, 19, 3, 5, 2, 3, 7],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)',
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(255, 159, 64)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(54, 162, 235)',
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)',
+            ],
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3, // smooth line curve
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: '#333' },
+          },
+          x: {
+            ticks: { color: '#333' },
+          },
+        },
+      },
+    })
+  }
 })
 </script>
 

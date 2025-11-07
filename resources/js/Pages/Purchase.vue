@@ -1,13 +1,14 @@
 <script setup>
-    import PurchaseLayout from '@/Layouts/PurchaseLayout.vue';
+    import OfficesLayout from '@/Layouts/OfficesLayout.vue';
+import PurchaseLayout from '@/Layouts/OfficesLayout.vue';
     import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>
-   <Head title="UP | Purchase" />
+   <Head title="UP | Offices" />
     
         <div class="bg-[#F3F3F3]">
-            <PurchaseLayout/>
+            <OfficesLayout />
         </div> 
 
 </template>
