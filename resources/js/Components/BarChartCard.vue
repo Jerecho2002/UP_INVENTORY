@@ -126,7 +126,7 @@ onMounted(() => {
 
 <template>
 
-  <div class="w-full max-w-[1400px] mx-auto flex flex-col lg:flex-row flex-wrap gap-6 gap-4 sm:gap-5 h-auto">
+  <div class="w-full max-w-[1400px] mx-auto flex flex-col lg:flex-row flex-wrap gap-4 sm:gap-5 h-auto">
     <!-- Orders Card -->
     <div class="flex-1 min-w-[300px] bg-white p-4 sm:p-5 md:p-6 rounded-lg shadow-lg w-full">
       <h1 class="font-bold text-lg sm:text-xl text-gray-800 text-center md:text-left">
