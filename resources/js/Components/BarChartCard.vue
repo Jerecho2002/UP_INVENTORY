@@ -126,23 +126,28 @@ onMounted(() => {
 
 <template>
 
-  <div class="w-full sm:w-[90%] lg:w-[100%] mx-auto flex flex-col md:flex-row gap-4 h-auto sm:h-auto md:h-[24rem]">
+  <div class="w-full max-w-[1400px] mx-auto flex flex-col lg:flex-row flex-wrap gap-6 gap-4 sm:gap-5 h-auto">
     <!-- Orders Card -->
-    <div class="flex-1 bg-white p-4 sm:p-5 md:p-6 rounded-lg shadow-lg w-full">
-      <h1 class="font-bold text-lg sm:text-xl text-gray-800 text-center md:text-left">Orders</h1>
-      <div class="my-4 sm:my-5 flex justify-center items-center">
-        <canvas ref="chartCanvasOrder" class="w-full max-w-[600px] h-[200px] sm:h-[250px] md:h-[300px]"></canvas>
+    <div class="flex-1 min-w-[300px] bg-white p-4 sm:p-5 md:p-6 rounded-lg shadow-lg w-full">
+      <h1 class="font-bold text-lg sm:text-xl text-gray-800 text-center md:text-left">
+        Orders
+      </h1>
+      <div class="relative w-full h-[220px] sm:h-[260px] md:h-[300px] lg:h-[320px] mt-4">
+        <canvas ref="chartCanvasOrder" class="w-full h-full"></canvas>
       </div>
     </div>
 
     <!-- Request Card -->
-    <div class="flex-1 bg-white p-4 sm:p-5 md:p-6 rounded-lg shadow-lg w-full">
-      <h1 class="font-bold text-lg sm:text-xl text-gray-800 text-center md:text-left">Request</h1>
-      <div class="my-4 sm:my-5 flex justify-center items-center">
-        <canvas ref="chartCanvasRequest" class="w-full max-w-[600px] h-[200px] sm:h-[250px] md:h-[300px]"></canvas>
+    <div class="flex-1 min-w-[300px] bg-white p-4 sm:p-5 md:p-6 rounded-lg shadow-lg w-full">
+      <h1 class="font-bold text-lg sm:text-xl text-gray-800 text-center md:text-left">
+        Request
+      </h1>
+      <div class="relative w-full h-[220px] sm:h-[260px] md:h-[300px] lg:h-[320px] mt-4">
+        <canvas ref="chartCanvasRequest" class="w-full h-full"></canvas>
       </div>
     </div>
   </div>
+
 
 
 </template>

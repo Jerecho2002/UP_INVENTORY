@@ -8,11 +8,11 @@ const addModalRef = ref(null);
 
 <template>
 
-    <div class="flex flex-col sm:flex-row items-end mb-4 mt-[5rem]">
+    <div class="flex flex-col sm:flex-row items-end mb-4 mt-[3rem]">
         <AddModal ref="addModalRef">
             <template #AddAssignButton>
                 <button @click="addModalRef.openModal()"
-                    class="flex items-center gap-2 bg-[#0E6021] hover:bg-[#2a9754] text-white font-semibold px-4 py-2 rounded-md text-sm sm:text-base transition duration-150 w-full sm:w-auto">
+                    class="flex items-center gap-2 bg-[#0E6021] hover:bg-[#2a9754] text-white font-semibold px-4 py-2 rounded-md text-xs sm:text-sm transition duration-150 w-full sm:w-auto">
                     <i class="fa-solid fa-plus"></i>
                     <span>Assign</span>
                 </button>

@@ -74,7 +74,7 @@ const processedItems = computed(() =>
       <main class="flex-1 sm:p-5 md:p-6  mx-2 sm:mx-2 md:mx-0 overflow-y-auto">
         <!-- HEAD TITLE -->
         <PageHeader title="Transactions" />
-        <div class="bg-white rounded-lg p-4 drop-shadow-md mt-8 ">
+        <div class="bg-white rounded-lg p-2 drop-shadow-md mt-8 ">
           <!-- Inventory Transaction Table Component -->
           <InventoryTransactionTable :tableHeader=tableHeader :items=items />
         </div>

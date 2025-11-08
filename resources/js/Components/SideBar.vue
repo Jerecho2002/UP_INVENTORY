@@ -17,6 +17,7 @@ const menuItems = [
         ],
     },
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
+    // { name: "Offices & Types", icon: "fa-solid fa-network-wired", route: "reports.index" },
     { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
     { name: "Item Disposal", icon: "fa-solid fa-recycle", route: "item_disposal.index" },
 ];

@@ -35,7 +35,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="bg-white w-full h-auto sm:h-[34rem] rounded-xl shadow-lg p-2 sm:p-2 md:p-4">
+  <div class="bg-white w-full h-auto sm:h-[38rem] rounded-xl shadow-lg p-2 sm:p-2 md:p-4">
     <h2 class="font-bold mb-2 text-lg text-center sm:text-left">{{ title }}</h2>
 
     <!-- CHART -->
@@ -51,7 +51,7 @@ onMounted(() => {
     </div>
 
     <!-- DROPDOWN SUPPLIER LIST -->
-    <div class="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 my-4">
+    <div class="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 my-3">
       <div v-for="supplier in dropdownSupplierList" :key="supplier.model"
         class="flex flex-col items-center sm:items-start">
         <select v-model="itemForm.supplier[supplier.model]"

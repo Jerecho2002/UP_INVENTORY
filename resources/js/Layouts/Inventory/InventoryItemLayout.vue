@@ -45,9 +45,9 @@ const viewItems = [
   { label: "PO Number", key: "po_number" },
   { label: "Remarks", key: "remarks" },
   { label: "Item Name", key: "item_name" },
-  { label: "Description", key: "description" },
-  { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
   { label: "Unit Cost", key: "unit_cost", format: (val) => (val ? `₱${val}` : "N/A") },
+  { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
+  { label: "Description", key: "description" },
   { label: "Date Acquired", key: "date_acquired" },
   {
     label: "Status", key: 'status',

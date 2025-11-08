@@ -321,11 +321,12 @@ function getValue(obj, path) {
                         <!-- Right Side -->
                         <div class="space-y-4">
                             <div class="flex flex-col md:flex-row gap-4 mb-4">
+                            <!-- Invoices + Fund Sources -->
                                 <div v-for="inv in invoicesFundFields" :key="inv.model">
                                     <label class="block text-sm font-bold mb-1">{{ inv.label }}</label>
                                     <input v-model="form[inv.model]" :key="inv.model" type="text"
                                         :placeholder="inv.placeholder"
-                                        class="w-full sm:w-[16.8rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                        class="w-full sm:w-[16.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
                                     <div v-if="form.errors[inv.model]" class="text-red-500 text-sm">{{
                                         form.errors[inv.model] }}</div>
                                 </div>
