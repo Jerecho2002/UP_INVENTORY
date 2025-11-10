@@ -4,12 +4,12 @@ import { usePage } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
-import ReportFilterForm from "@/Components/ReportFilterForm.vue";
+import ReportTable from "@/Components/ReportTable.vue";
 
 
 const columns = [
   { label: "Item Name", key: 'item_name' },
-  { label: "Description", key: 'description' },
+  { label: "Supplier Name", key: 'supplier', format: (val) => val?.supplier_name ?? 'N/A' },
   { label: "Quantity", key: 'quantity' },
   { 
     label: "Stock Status", 
@@ -66,7 +66,7 @@ const toggleSidebar = () => {
         <div>
           <PageHeader title="Reports" />
           <div class="mt-[2rem]">
-            <ReportFilterForm  
+            <ReportTable  
             :columns="columns"
             :rows="items"
             />

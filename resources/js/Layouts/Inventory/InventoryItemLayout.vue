@@ -7,13 +7,13 @@ import InventoryItemsTable from "@/Components/InventoryItemsTable.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 
 const columns = [
+  { label: "Item Name", key: 'item_name' },
   { label: "Property Records", key: 'category' },
   { label: "Property Number", key: 'property_number' },
-  { label: "Item Name", key: 'item_name' },
   { label: "Serial Number", key: 'serial_number' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
-  { label: "Supplier", key: 'supplier.supplier_name', format: (val) => val ?? 'N/A' },
+  { label: "Supplier Name", key: 'supplier', format: (val) => val?.supplier_name ?? 'N/A' },
   { label: "Status", key: 'status', 
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
@@ -92,10 +92,10 @@ const inputFields = [
 ];
 
 const inputFieldsEdit = [
-  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text", readonly: true },
-  { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text", readonly: false },
-  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" , readonly: true},
   { label: "Serial Number", model: "serial_number", placeholder: "SER-####.", type: "text", readonly: false },
+  { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text", readonly: false },
+  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text", readonly: true }, 
+  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" , readonly: true},
 ];
 
 const requestFields = [
@@ -113,8 +113,6 @@ const firstDropdown = [
   { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
   { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name"},
   { label: "Locations", model: "location_id", name: "locations", option: "location_name"},
-  // { label: "Invoices", model: "invoice_id", name: "invoices", option: "invoice_number"},
-  // { label: "Fund Sources", model: "fund_source_id", name: "fundSources", option: "code"},
 ]
 
 const secondDropdown = [

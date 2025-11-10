@@ -36,13 +36,13 @@ watch(
 </script>
 
 <template>
-    <div class="p-2">
+    <div>
         <div>
-            <h1 class="text-[#850038] font-bold text-xl">Transaction History</h1>
+            <h1 class="flex p-4 text-[#850038] font-bold text-lg">Transaction History</h1>
         </div>
 
         <!-- FILTER DATE/COST RANGE/STATUS + SEARCH -->
-        <div class="flex flex-col sm:flex-row justify-between">
+        <div class="flex flex-col sm:flex-row justify-between mx-4">
             <!-- LEFT FILTERS -->
             <div class="flex flex-col md:flex-row gap-8 my-8">
                 <div>
@@ -122,7 +122,7 @@ watch(
         </div>
 
         <!-- Pagination -->
-        <div class="mt-2 flex justify-end">
+        <div class="mt-2 flex justify-end p-2">
             <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 
                 bg-gray-100 border border-gray-300 rounded-md px-3 py-1">
                 <p class="text-xs sm:text-sm border-r border-gray-300 px-3">

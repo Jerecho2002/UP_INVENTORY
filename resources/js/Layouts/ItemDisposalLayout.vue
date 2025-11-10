@@ -3,6 +3,7 @@ import { ref } from "vue";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
+import ItemDisposalTable from "@/Components/ItemDisposalTable.vue";
 
 
 const isSidebarOpen = ref(true);
@@ -26,8 +27,8 @@ const toggleSidebar = () => {
        <main class="flex-1 sm:p-5 md:p-6 m-2">
           <div>
             <PageHeader title="Item Disposal" />
-              <div class="mt-[3rem]">
-                
+              <div class="bg-white h-screen drop-shadow-md mt-[1rem]">
+                <ItemDisposalTable />
               </div>
           </div>
        </main>

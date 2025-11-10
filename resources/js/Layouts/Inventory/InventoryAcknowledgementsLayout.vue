@@ -5,6 +5,13 @@ import SideBar from '@/Components/SideBar.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import InventoryAcknowledgementsTable from '@/Components/InventoryAcknowledgementsTable.vue';
 
+
+const accountableField = [
+   { label: "Accountable Person", model: "", name: "accountablePerson", option: "classification_name"},
+   { label: "Issued By", model: "", name: "issued_by", option: "issued_by"},
+   { label: "Created By", model: "", name: "created_by", option: "creadted_by"},
+]
+
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
@@ -28,8 +35,9 @@ const toggleSidebar = () => {
         <!-- HEAD TITLE -->
         <PageHeader title="Acknowledgements" />
         <div class="w-full h-full">
-          <InventoryAcknowledgementsTable 
-          />
+          <InventoryAcknowledgementsTable
+          :accountableField="accountableField"
+          />  
         </div>
       </main>
     </div>
