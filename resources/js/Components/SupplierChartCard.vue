@@ -20,7 +20,7 @@ onMounted(() => {
     data: {
       labels: ['Supplied', 'Delivered', 'Cancelled'],
       datasets: [{
-        label: 'Order Status',
+        label: 'Count',
         data: [12, 19, 3],
         backgroundColor: ['#7E19FA', '#19FA21', '#FA2C19'], 
       }]
@@ -35,7 +35,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="bg-white w-full h-auto sm:h-[34rem] rounded-xl shadow-lg p-2 sm:p-2 md:p-4">
+  <div class="bg-white w-full h-auto sm:h-[38rem] rounded-xl shadow-lg p-2 sm:p-2 md:p-4">
     <h2 class="font-bold mb-2 text-lg text-center sm:text-left">{{ title }}</h2>
 
     <!-- CHART -->
@@ -51,11 +51,11 @@ onMounted(() => {
     </div>
 
     <!-- DROPDOWN SUPPLIER LIST -->
-    <div class="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 my-4">
+    <div class="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 my-3">
       <div v-for="supplier in dropdownSupplierList" :key="supplier.model"
         class="flex flex-col items-center sm:items-start">
         <select v-model="itemForm.supplier[supplier.model]"
-          class="border border-gray-300 rounded-md px-3 py-2 w-36 sm:w-44 md:w-52 text-xs sm:text-sm md:text-base focus:ring-2 focus:ring-[#850038] outline-none transition-all">
+          class="border border-gray-300 rounded-md px-3 py-2 w-36 sm:w-44 md:w-52 text-xs sm:text-sm md:text-base focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] outline-none transition-all">
           <option disabled value="">Select</option>
           <option v-for="option in supplier.options" :key="option" :value="option">
             {{ option }}

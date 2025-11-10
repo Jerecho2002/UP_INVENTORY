@@ -25,6 +25,7 @@ const props = defineProps({
     firstDropdown: Array,
     secondDropdown: Array,
     requestFields: Array,
+    invoicesFundFields: Array,
 });
 
 const page = usePage();
@@ -237,17 +238,61 @@ function getValue(obj, path) {
                     <!-- Form Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <!-- Left Side -->
-                        <div class="space-y-6 col-span-1 md:col-span-1">
+                        <div class="space-y-4 col-span-1 md:col-span-1">
                             <!-- Input Fields -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 ">
                                 <div class="space-y-4">
-                                    <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
-                                        <label class="block text-sm font-bold mb-1">{{ ip.label }}</label>
-                                        <input v-model="form[ip.model]" :key="ip.model" type="text"
-                                            :placeholder="ip.placeholder"
-                                            class="w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                                        <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">{{
-                                            form.errors[ip.model] }}</div>
+                                    <!-- First Dropdown -->
+                                    <div class="flex flex-col md:flex-row gap-4 mb-4">
+                                        <div v-for="fdp in firstDropdown" :key="fdp.name" class="flex flex-col">
+                                            <label class="block text-sm font-bold mb-1">{{ fdp.label }}</label>
+                                            <select v-model="form[fdp.model]" :key="fdp.model"
+                                                class="w-full sm:w-[10rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                                <option value="">Select</option>
+                                                <option v-for="item in props[fdp.name]" :key="item.id" :value="item.id">
+                                                    {{ item[fdp.option] || 'N/A' }}
+                                                </option>
+                                            </select>
+                                            <div v-if="form.errors[fdp.model]" class="text-red-500 text-sm">{{
+                                                form.errors[fdp.model] }}</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Second Dropdown -->
+                                    <div class="flex md:flex-row gap-4 mb-8">
+                                        <div v-for="sdf in secondDropdown" :key="sdf.label" class="flex gap-3">
+                                            <div>
+                                                <label class="block text-sm font-bold mb-1">{{ sdf.label }}</label>
+                                                <select v-model="form[sdf.model]"
+                                                    class="w-full sm:w-[10rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                                    <option value="">Select</option>
+                                                    <option v-for="op in sdf.options" :key="op.value" :value="op.value">
+                                                        {{
+                                                            op.label }}</option>
+                                                </select>
+                                                <div v-if="form.errors[sdf.model]" class="text-red-500 text-sm">{{
+                                                    form.errors[sdf.model] }}</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-bold mb-1">Date Acquired</label>
+                                            <input v-model="form.date_acquired"
+                                                class="rounded-md w-full sm:w-[10rem] border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"
+                                                type="date" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Quantity + Unit Cost -->
+                                    <div class="flex gap-4 sm:gap-8 w-full">
+                                        <div v-for="qcf in quantityCostFields" :key="qcf.quantityCostFields"
+                                            class="flex flex-col flex-1 min-w-[8rem] sm:min-w-[10rem] md:min-w-[15rem] lg:min-w-[14.3rem]">
+                                            <label class="block text-sm font-bold mb-1">{{ qcf.label }}</label>
+                                            <input v-model="form[qcf.model]" :key="qcf.model" :type="qcf.type"
+                                                :placeholder="qcf.placeholder" step="any"
+                                                class="w-full sm:w-[15.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800 focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
+                                            <div v-if="form.errors[qcf.model]" class="text-red-500 text-sm">{{
+                                                form.errors[qcf.model] }}</div>
+                                        </div>
                                     </div>
 
                                     <!-- Quantity + Serial Numbers -->
@@ -256,78 +301,49 @@ function getValue(obj, path) {
                                         <div v-for="(sn, index) in form.serial_numbers" :key="index">
                                             <input v-model="form.serial_numbers[index]" type="text"
                                                 :placeholder="`SER-${String(index + 1).padStart(3, '0')}`"
-                                                class="w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                                class="w-full sm:w-[rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
                                         </div>
                                     </div>
 
-                                    <!-- Quantity + Unit Cost -->
-                                    <div class="flex gap-4 sm:gap-6 w-full">
-                                        <div v-for="qcf in quantityCostFields" :key="qcf.quantityCostFields"
-                                            class="flex flex-col flex-1 min-w-[8rem] sm:min-w-[10rem] md:min-w-[15rem] lg:min-w-[14.3rem]">
-                                            <label class="block text-sm font-bold mb-1">{{ qcf.label }}</label>
-                                            <input v-model="form[qcf.model]" :key="qcf.model" :type="qcf.type"
-                                                :placeholder="qcf.placeholder" step="any"
-                                                class="w-full rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800 focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
-                                            <div v-if="form.errors[qcf.model]" class="text-red-500 text-sm">{{
-                                                form.errors[qcf.model] }}</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Request Fields -->
-                                    <div class="space-y-4">
-                                        <div v-for="rf in requestFields" :key="rf.model" class="flex flex-col">
-                                            <label class="block text-sm font-bold mb-1 ">{{ rf.label }}</label>
-                                            <input v-model="form[rf.model]" :key="rf.model" type="text"
-                                                :placeholder="rf.placeholder"
-                                                class="w-full sm:w-[30rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                                            <div v-if="form.errors[rf.model]" class="text-red-500 text-sm">{{
-                                                form.errors[rf.model] }}</div>
-                                        </div>
+                                    <!-- PAR/ICS NUMBER - ITEM NAME - PROPERTY NUMBER -->
+                                    <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
+                                        <label class="block text-sm font-bold mb-1">{{ ip.label }}</label>
+                                        <input v-model="form[ip.model]" :key="ip.model" type="text"
+                                            :placeholder="ip.placeholder"
+                                            class="w-full sm:w-[32rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                        <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">{{
+                                            form.errors[ip.model] }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Right Side -->
-                        <div>
-                            <!-- First Dropdown -->
-                            <div class="flex flex-col md:flex-row gap-4 mb-8">
-                                <div v-for="fdp in firstDropdown" :key="fdp.name" class="flex flex-col">
-                                    <label class="block text-sm font-bold mb-1">{{ fdp.label }}</label>
-                                    <select v-model="form[fdp.model]" :key="fdp.model"
-                                        class="w-full sm:w-[6rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                        <option value="">Select</option>
-                                        <option v-for="item in props[fdp.name]" :key="item.id" :value="item.id">
-                                            {{ item[fdp.option] || 'N/A' }}
-                                        </option>
-                                    </select>
-                                    <div v-if="form.errors[fdp.model]" class="text-red-500 text-sm">{{
-                                        form.errors[fdp.model] }}</div>
+                        <div class="space-y-4">
+                            <div class="flex flex-col md:flex-row gap-4 mb-4">
+                            <!-- Invoices + Fund Sources -->
+                                <div v-for="inv in invoicesFundFields" :key="inv.model">
+                                    <label class="block text-sm font-bold mb-1">{{ inv.label }}</label>
+                                    <input v-model="form[inv.model]" :key="inv.model" type="text"
+                                        :placeholder="inv.placeholder"
+                                        class="w-full sm:w-[16.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                    <div v-if="form.errors[inv.model]" class="text-red-500 text-sm">{{
+                                        form.errors[inv.model] }}</div>
                                 </div>
                             </div>
 
-                            <!-- Second Dropdown -->
-                            <div class="flex md:flex-row gap-3 mb-8">
-                                <div v-for="sdf in secondDropdown" :key="sdf.label" class="flex gap-3">
-                                    <div>
-                                        <label class="block text-sm font-bold mb-1">{{ sdf.label }}</label>
-                                        <select v-model="form[sdf.model]"
-                                            class="w-full sm:w-[6.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                            <option value="">Select</option>
-                                            <option v-for="op in sdf.options" :key="op.value" :value="op.value">{{
-                                                op.label }}</option>
-                                        </select>
-                                        <div v-if="form.errors[sdf.model]" class="text-red-500 text-sm">{{
-                                            form.errors[sdf.model] }}</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold mb-1">Date Acquired</label>
-                                    <input v-model="form.date_acquired"
-                                        class="rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"
-                                        type="date" />
+                            <!-- Request Fields -->
+                            <div class="space-y-4">
+                                <div v-for="rf in requestFields" :key="rf.model" class="flex flex-col">
+                                    <label class="block text-sm font-bold mb-1 ">{{ rf.label }}</label>
+                                    <input v-model="form[rf.model]" :key="rf.model" type="text"
+                                        :placeholder="rf.placeholder"
+                                        class="w-full sm:w-[34rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                    <div v-if="form.errors[rf.model]" class="text-red-500 text-sm">{{
+                                        form.errors[rf.model] }}</div>
                                 </div>
                             </div>
+
 
                             <div>
                                 <label class="block text-md font-semibold mb-1">Description</label>

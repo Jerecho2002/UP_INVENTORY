@@ -1,6 +1,6 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 
 const menuItems = [
     { name: "Dashboard", icon: "fa-solid fa-table-cells-large", route: "dashboard.index" },
@@ -9,23 +9,39 @@ const menuItems = [
         icon: "fa-solid fa-boxes-packing",
         children: [
             { name: "Items", route: "inventory.items" },
-            { name: "Transactions", route: "inventory.transactions" },
+            // { name: "Offices", route: "inventory.items" },
+            // { name: "Categories", route: "inventory.items" },
+            // { name: "Locations", route: "inventory.items" },
             { name: "Acknowledgements", route: "inventory.acknowledgements" },
+            { name: "Transactions", route: "inventory.transactions" },
         ],
     },
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
+    // { name: "Offices & Types", icon: "fa-solid fa-network-wired", route: "reports.index" },
     { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
-    { name: "Purchase", icon: "fa-solid fa-box-open", route: "purchase.index" },
     { name: "Item Disposal", icon: "fa-solid fa-recycle", route: "item_disposal.index" },
 ];
 
 const openDropdown = ref(null);
 
-// Toggle dropdown open/close based on the clicked item
+// Toggle dropdown open/close
 const toggleDropdown = (name) => {
     openDropdown.value = openDropdown.value === name ? null : name;
 };
 
+// Keep parent dropdown open if current route is a child
+watchEffect(() => {
+    menuItems.forEach((item) => {
+        if (item.children) {
+            const isChildActive = item.children.some((child) =>
+                route().current(child.route)
+            );
+            if (isChildActive) {
+                openDropdown.value = item.name;
+            }
+        }
+    });
+});
 </script>
 
 <template>
@@ -36,13 +52,18 @@ const toggleDropdown = (name) => {
             <li v-for="item in menuItems" :key="item.name" class="rounded-md">
                 <!-- If item has children -->
                 <div v-if="item.children" @click="toggleDropdown(item.name)"
-                    class="flex items-center gap-3 justify-between text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9] cursor-pointer transition-all duration-300">
+                    class="flex items-center gap-3 justify-between py-4 px-4 mx-2 sm:mx-3 rounded-md cursor-pointer transition-all duration-300"
+                    :class="[
+                        item.children.some((child) => route().current(child.route))
+                            ? 'bg-[#D9D9D9] font-semibold text-[#850038]'
+                            : 'text-[#3A3434] hover:bg-[#D9D9D9]'
+                    ]">
                     <div class="flex items-center gap-3">
                         <i :class="item.icon"></i>
                         <span>{{ item.name }}</span>
                     </div>
                     <i class="fa-solid transform transition-transform duration-300"
-                        :class="openDropdown === item.name ? 'fa-chevron-up rotate-180' : 'fa-chevron-down'"></i>
+                        :class="openDropdown === item.name ? 'fa-chevron-up rotate-360' : 'fa-chevron-down'"></i>
                 </div>
 
                 <!-- Link if no children -->

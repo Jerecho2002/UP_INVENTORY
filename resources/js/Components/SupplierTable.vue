@@ -7,7 +7,7 @@ const addModalRef = ref(null);
 </script>
 
 <template>
-    <div class="flex flex-col sm:flex-row items-end mb-4 mt-[5rem]">
+    <div class="flex flex-col sm:flex-row items-end mb-4 mt-[3rem]">
         <AddModal ref="addModalRef">
             <template #AddSupplierButton>
                 <button @click="addModalRef.openModal()"

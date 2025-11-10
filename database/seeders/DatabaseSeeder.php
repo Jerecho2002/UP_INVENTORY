@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // ✅ Inventory Items
-        $inventoryItems = InventoryItem::factory(30)->create([
+        $inventoryItems = InventoryItem::factory(100)->create([
             'item_classification_id' => fn() => $itemClassifications->random()->id,
             'supplier_id' => fn() => $suppliers->random()->id,
             'location_id' => fn() => $locations->random()->id,

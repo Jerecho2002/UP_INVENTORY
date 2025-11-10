@@ -72,61 +72,61 @@ function getValue(obj, path) {
 
 <template>
 
-    <!-- Filter Form -->
-    <div class="w-full bg-white p-4 rounded-lg shadow-md flex flex-col sm:flex-row items-start sm:items-center gap-4">
+    <!-- FILTER FORM -->
+    <div
+        class="w-full bg-white p-4 rounded-lg shadow-md flex flex-col lg:flex-row flex-wrap items-start lg:items-end gap-4">
         <!-- FROM -->
-        <div class="flex flex-col w-full sm:w-auto">
+        <div class="flex flex-col w-full sm:w-1/2 md:w-auto">
             <label class="text-sm font-bold mb-1">From</label>
             <input type="date" v-model="fromDate"
-                class="h-[2.5rem] sm:h-[3rem] w-full sm:w-48 px-3 text-xs rounded-md text-[#000000] cursor-pointer border focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                class="h-[2.8rem] w-full sm:w-48 px-3 text-sm rounded-md text-black border cursor-pointer focus:ring-2 focus:ring-blue-400 focus:outline-none" />
         </div>
 
         <!-- TO -->
-        <div class="flex flex-col w-full sm:w-auto">
+        <div class="flex flex-col w-full sm:w-1/2 md:w-auto">
             <label class="text-sm font-bold mb-1">To</label>
             <input type="date" v-model="toDate"
-                class="h-[2.5rem] sm:h-[3rem] w-full sm:w-48 px-3 text-xs rounded-md text-[#000000] cursor-pointer border focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                class="h-[2.8rem] w-full sm:w-48 px-3 text-sm rounded-md text-black border cursor-pointer focus:ring-2 focus:ring-blue-400 focus:outline-none" />
         </div>
 
         <!-- CATEGORY -->
-        <div class="flex flex-col w-full sm:w-auto">
+        <div class="flex flex-col w-full sm:w-1/2 md:w-auto">
             <label class="text-sm font-bold mb-1">Category</label>
             <select v-model="selectedStatus"
-                class="h-[2.5rem] sm:h-[3rem] w-full sm:w-40 px-3 text-xs cursor-pointer rounded-md text-[#000000] border focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                class="h-[2.8rem] w-full sm:w-40 px-3 text-sm rounded-md text-black border cursor-pointer focus:ring-2 focus:ring-blue-400 focus:outline-none">
                 <option value="">All</option>
                 <option value="1">In Stock</option>
                 <option value="0">Out of Stock</option>
+                <option value="2">Low Stock</option>
             </select>
         </div>
 
-        <!-- SEARCH AND EXPORT BUTTONS -->
-        <div class="flex sm:flex-row flex-col w-full sm:w-auto gap-4 sm:ml-auto mt-3 sm:mt-0">
+        <!-- SEARCH AND ACTION BUTTONS -->
+        <div class="flex flex-col sm:flex-row flex-wrap w-full lg:w-auto gap-3 lg:ml-auto">
             <!-- PRINT -->
-            <div class="flex flex-col w-full sm:w-auto top-3 relative">
-                <button
-                    class="flex items-center justify-center gap-2 bg-[#20C6D2] text-white font-semibold rounded-md h-[2.5rem] sm:h-[3rem] px-5 hover:bg-[#49dce6] transition duration-150">
-                    <i class="fa-solid fa-print"></i>
-                    <span>Print</span>
-                </button>
-            </div>
+            <button
+                class="flex items-center justify-center gap-2 bg-[#20C6D2] text-white font-semibold rounded-md h-[2.8rem] px-5 hover:bg-[#49dce6] transition duration-150 w-full sm:w-auto">
+                <i class="fa-solid fa-print"></i>
+                <span>Print</span>
+            </button>
+
             <!-- EXPORT -->
-            <div class="flex flex-col w-full sm:w-auto top-3 relative">
-                <button
-                    class="flex items-center justify-center gap-2 bg-[#20C6D2] text-white font-semibold rounded-md h-[2.5rem] sm:h-[3rem] px-5 hover:bg-[#49dce6] transition duration-150">
-                    <i class="fa-solid fa-file-export"></i>
-                    <span>Export</span>
-                </button>
-            </div>
+            <button
+                class="flex items-center justify-center gap-2 bg-[#20C6D2] text-white font-semibold rounded-md h-[2.8rem] px-5 hover:bg-[#49dce6] transition duration-150 w-full sm:w-auto">
+                <i class="fa-solid fa-file-export"></i>
+                <span>Export</span>
+            </button>
             <!-- SEARCH -->
-            <div class="flex flex-col w-full sm:w-auto top-3 relative">
+            <div class="relative w-full sm:w-64">
                 <span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </span>
                 <input type="search" placeholder="Search stock item" v-model="search"
-                    class="h-[2.5rem] sm:h-[3rem] w-full sm:w-96 pl-10 pr-3 text-sm rounded-full text-[#000000] border focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                    class="h-[2.8rem] w-full pl-10 pr-3 text-sm rounded-full text-black border focus:ring-2 focus:ring-blue-400 focus:outline-none" />
             </div>
         </div>
     </div>
+
 
     <!-- Table (horizontal scroll on small screens) -->
     <div class="overflow-x-auto">
