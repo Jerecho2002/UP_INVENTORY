@@ -27,6 +27,11 @@ const columns = [
         cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-circle-check"></i>';
       }
+      else if (status === 2) { 
+        label = 'Pending'; 
+        cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-clock"></i>';
+      }
       return `<span class="${cls}">${icon} ${label}</span>`;
     }
   },
@@ -134,6 +139,7 @@ const unitCostOptions = [
 
 const Status = [
     { label: "Recieved", value: 1},
+    { label: "Pending", value: 2},
     { label: "Cancelled", value: 0 },
 ];
 
