@@ -5,6 +5,21 @@ import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 import SupplierTable from "@/Components/SupplierTable.vue";
 
+const supplierOption = [
+  { label: "Supplier Name", model: "supplier_name", placeholder: "Supplier Name", type: "text" },
+  { label: "Contact Number", model: "contact_no", placeholder: "Contact Number", type: "text" },
+  { label: "Email", model: "email", placeholder: "Email", type: "text" },
+  { label: "Address", model: "address", placeholder: "Address", type: "text" },
+];
+
+const statusDropdown = [
+  { label: "Status", model: "status", options: 
+                                            [{label: "Active", value: "1"},
+                                             {label: "Inactive", value: "0"},
+                                            
+  ]},
+];
+
 
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
@@ -29,7 +44,10 @@ const toggleSidebar = () => {
           <div>
             <PageHeader title="Suppliers" />
               <div class="w-full h-full">
-                <SupplierTable /> 
+                <SupplierTable 
+                :supplierOption="supplierOption"
+                :statusDropdown="statusDropdown"
+                /> 
               </div>
           </div>
        </main>

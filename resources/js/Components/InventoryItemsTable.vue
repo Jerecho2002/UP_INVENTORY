@@ -320,8 +320,8 @@ function getValue(obj, path) {
 
                         <!-- Right Side -->
                         <div class="space-y-4">
+                            <!-- Invoices + Fund Sources -->
                             <div class="flex flex-col md:flex-row gap-4 mb-4">
-                                <!-- Invoices + Fund Sources -->
                                 <div v-for="inv in invoicesFundFields" :key="inv.model">
                                     <label class="block text-sm font-bold mb-1">{{ inv.label }}</label>
                                     <input v-model="form[inv.model]" :key="inv.model" type="text"
@@ -344,7 +344,7 @@ function getValue(obj, path) {
                                 </div>
                             </div>
 
-
+                            <!-- DESCRIPTION -->
                             <div>
                                 <label class="block text-md font-semibold mb-1">Description</label>
                                 <textarea v-model="form.description" placeholder="Input a description"
@@ -353,6 +353,7 @@ function getValue(obj, path) {
                                     form.errors.description }}</div>
                             </div>
 
+                            <!-- TOTAL AMOUNT -->
                             <div class="flex flex-col md:flex-row sm:items-center md:items-center text-sm font-semibold mt-8">
                                 <label class="block text-base font-bold">Total Amount: ₱</label>
                                 <input v-model="form.total_amount" readonly placeholder="0.00"
@@ -435,7 +436,7 @@ function getValue(obj, path) {
         </transition>
 
         <!-- ITEM EDIT SUCCESS MODAL -->
-        <transition name="fade">
+       
             <div v-if="showEditSuccess"
                 class="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm bg-black/30">
                 <div class="bg-white m-5 rounded-2xl shadow-lg p-8 w-[100%] sm:w-[35rem] text-center animate-fade-in">
@@ -471,13 +472,12 @@ function getValue(obj, path) {
 
                         <!-- Confirm Button -->
                         <button @click="showEditSuccess = false"
-                            class="bg-[#41BD66] text-white px-6 py-3 rounded-md font-semibold hover:bg-green-800 transition">
+                            class="bg-[#41BD66] text-white px-6 py-3 rounded-md font-semibold hover:bg-green-800">
                             <span>Confirm</span>
                         </button>
                     </div>
                 </div>
             </div>
-        </transition>
 
 
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
