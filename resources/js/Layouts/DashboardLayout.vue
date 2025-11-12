@@ -78,13 +78,13 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
     </aside>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 p-4 sm:p-5 md:p-6 overflow-y-auto mx-2">
+    <main class="flex-1 p-4 sm:p-5 md:p-6 overflow-y-auto mx-2 sm:mx-0">
       <PageHeader title="Dashboard" />
 
       <!-- MAIN FLEX LAYOUT -->
       <div class="flex flex-col lg:flex-row gap-4 my-5 flex-wrap">
         <!-- LEFT SECTION -->
-        <div class="flex-1 min-w-0">
+        <div class="flex-1 w-full lg:w-[22rem] xl:w-[25rem]">
           <ItemOverview :item-overview="itemOverview" />
           <div class="mt-3">
             <BarChartCard />

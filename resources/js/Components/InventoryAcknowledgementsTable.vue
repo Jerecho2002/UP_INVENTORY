@@ -34,7 +34,6 @@ const addModalRef = ref(null);
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <!-- LEFT -->
                         <div class="space-y-4 col-span-1 md:col-span-1">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5">
                                 <div class="space-y-4">
                                     <!-- ACCOUNTABLE/ISSUED/CREATED DROPDOWN -->
                                     <div class="flex flex-col md:flex-row gap-4">
@@ -123,7 +122,6 @@ const addModalRef = ref(null);
                                     </div>
 
                                 </div>
-                            </div>
                         </div>
 
                         <!-- RIGHT -->
@@ -184,7 +182,7 @@ const addModalRef = ref(null);
         </AddModal>
 
         <!-- SEARCH INPUT -->
-        <div class="relative ml-auto w-full sm:w-72 md:w-96">
+        <div class="relative ml-auto w-full sm:w-72 md:w-96 mt-3">
             <!-- Icon -->
             <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
                 <i class="fa-solid fa-magnifying-glass"></i>

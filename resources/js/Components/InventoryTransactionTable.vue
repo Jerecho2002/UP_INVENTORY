@@ -44,7 +44,7 @@ watch(
         <!-- FILTER DATE/COST RANGE/STATUS + SEARCH -->
         <div class="flex flex-col sm:flex-row justify-between mx-4">
             <!-- LEFT FILTERS -->
-            <div class="flex flex-col md:flex-row gap-8 my-8">
+            <div class="flex flex-col md:flex-row gap-8">
                 <div>
                     <input type="date"
                         class="h-[2.5rem] sm:h-[3rem] w-full sm:w-56 rounded-md cursor-pointer focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
@@ -91,7 +91,7 @@ watch(
         </div>
         <!-- TABLE -->
         <div class="overflow-x-auto">
-            <table class=" w-full table-auto border-collapse mt-2 text-left bg-white text-xs sm:text-sm">
+            <table class=" w-full table-auto border-collapse mt-8 text-left bg-white text-xs sm:text-sm">
                 <thead class="bg-[#850038]">
                     <tr class="text-white">
                         <th v-for="tabh in tableHeader" :key="tabh.key"
