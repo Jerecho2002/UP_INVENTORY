@@ -12,8 +12,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('item_classification_id');
             $table->unsignedInteger('supplier_id');
             $table->unsignedInteger('location_id');
-            $table->unsignedInteger('invoice_id');
-            $table->unsignedInteger('fund_source_id');
+            $table->string('invoice', 50)->nullable();
+            $table->string('fund_source', 50)->nullable();
             $table->string('item_name', 255)->nullable();
             $table->string('description', 255)->nullable();
             $table->string('category', 20)->nullable();
@@ -33,8 +33,6 @@ return new class extends Migration {
             $table->foreign('item_classification_id')->references('id')->on('item_classifications')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('supplier_id')->references('id')->on('suppliers')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('location_id')->references('id')->on('locations')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('invoice_id')->references('id')->on('invoices')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('fund_source_id')->references('id')->on('fund_sources')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

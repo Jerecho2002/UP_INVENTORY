@@ -10,8 +10,8 @@ class InventoryItem extends Model
     use HasFactory;
     protected $fillable = [
         'item_classification_id',
-        'fund_source_id',
-        'invoice_id',
+        'fund_source',
+        'invoice',
         'supplier_id',
         'location_id',
         'item_name',
@@ -29,16 +29,6 @@ class InventoryItem extends Model
         'date_acquired',
         'status'
     ];
-
-    public function fundSource()
-    {
-        return $this->belongsTo(FundSource::class);
-    }
-
-    public function invoice()
-    {
-        return $this->belongsTo(Invoice::class);
-    }
 
     public function supplier()
     {

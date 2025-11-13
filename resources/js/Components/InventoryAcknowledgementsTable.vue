@@ -24,6 +24,7 @@ const addModalRef = ref(null);
 
             <template #AcknowledgementForm="{ closeModal }">
                 <form @submit.prevent="handleAddItem(closeModal)" class="flex flex-col gap-3 sm:overflow-y-auto">
+                    <pre></pre>
                     <h2 class="text-2xl font-bold text-[#850038] mb-6">Assign</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <!-- LEFT -->
@@ -37,9 +38,8 @@ const addModalRef = ref(null);
                                             <select
                                                 class="w-full sm:w-[10rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                                 <option value="">Select</option>
-                                                <option v-for="option in acF.options" :key="option.id"
-                                                    :value="option.id">
-                                                    {{ option[acF.option] }}
+                                                <option>
+                                                    {{ acF.option }}
                                                 </option>
                                             </select>
                                         </div>

@@ -22,8 +22,8 @@ return [
     'item_classification_id' => ItemClassification::factory(),
     'supplier_id' => Supplier::factory(),
     'location_id' => Location::factory(),
-    'invoice_id' => Invoice::factory(),
-    'fund_source_id' => FundSource::factory(),
+    'invoice' => strtoupper($this->faker->unique()->bothify('INV###')),
+    'fund_source' => strtoupper($this->faker->unique()->bothify('FS###')),
     'item_name' => $this->faker->word(),
     'description' => $this->faker->sentence(),
 

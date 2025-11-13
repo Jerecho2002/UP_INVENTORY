@@ -9,6 +9,7 @@ import EditModal from './Modals/EditModal.vue';
 import DeleteModal from './Modals/DeleteModal.vue';
 
 const props = defineProps({
+    rooms: Array,
     columns: Array,
     rows: Array,
     unitCostOptions: Array,
@@ -52,8 +53,8 @@ const form = useForm({
     item_classification_id: "",
     supplier_id: "",
     location_id: "",
-    invoice_id: "",
-    fund_source_id: "",
+    invoice: "",
+    fund_source: "",
     item_name: "",
     description: "",
     category: "",
@@ -119,8 +120,8 @@ function openEditModal(item, open) {
     form.item_classification_id = item.item_classification_id;
     form.supplier_id = item.supplier_id;
     form.location_id = item.location_id;
-    form.invoice_id = item.invoice_id;
-    form.fund_source_id = item.fund_source_id;
+    form.invoice = item.invoice;
+    form.fund_source = item.fund_source;
     form.item_name = item.item_name;
     form.description = item.description;
     form.category = item.category;

@@ -12,12 +12,6 @@ class Supplier extends Model
 
     public $timestamps = false;
 
-    // Relationships
-    public function invoices()
-    {
-        return $this->hasMany(Invoice::class);
-    }
-
     public function inventoryItems()
     {
         return $this->hasMany(InventoryItem::class);

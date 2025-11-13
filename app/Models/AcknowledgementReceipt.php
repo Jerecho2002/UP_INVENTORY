@@ -13,7 +13,6 @@ class AcknowledgementReceipt extends Model
         'accountable_persons_id',
         'issued_by_id',
         'inventory_item_id',
-        'fund_source_id',
         'remarks',
         'created_by'
     ];
@@ -31,11 +30,6 @@ class AcknowledgementReceipt extends Model
     public function issuedBy()
     {
         return $this->belongsTo(AccountablePerson::class, 'issued_by_id');
-    }
-
-    public function fundSource()
-    {
-        return $this->belongsTo(FundSource::class);
     }
 
     public function creator()

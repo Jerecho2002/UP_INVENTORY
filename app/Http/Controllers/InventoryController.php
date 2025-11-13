@@ -10,28 +10,29 @@ use Illuminate\Http\Request;
 use App\Models\InventoryItem;
 use App\Models\ItemClassification;
 use App\Services\InventoryService;
+use Illuminate\Support\Facades\Http;
 use App\Services\InventoryTransactionService;
 
 class InventoryController extends Controller
 {
     public function InventoryItems(Request $request, InventoryService $service)
     {
+        $response = Http::get('http://127.0.0.1:8001/api/rooms');
+        $rooms = $response->json('rooms');
+
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $status = $request->input('status');
         $itemClassifications = ItemClassification::all();
         $suppliers = Supplier::all();
         $locations = Location::all();
-        $invoices = Invoice::all();
-        $fundSources = FundSource::all();
 
         return inertia('Inventory/InventoryItem', [
+            'rooms' => $rooms,
             'items' => $service->getPaginatedInventory($search, $costRange, $status),
             'itemClassifications' => $itemClassifications,
             'suppliers' => $suppliers,
             'locations' => $locations,
-            'invoices' => $invoices,
-            'fundSources' => $fundSources,
         ]);
     }
 
@@ -53,16 +54,12 @@ class InventoryController extends Controller
         $itemClassifications = ItemClassification::all();
         $suppliers = Supplier::all();
         $locations = Location::all();
-        $invoices = Invoice::all();
-        $fundSources = FundSource::all();
 
         return inertia('Inventory/InventoryAcknowledgements', [
             'items' => $service->getPaginatedInventory($search, $costRange),
             'itemClassifications' => $itemClassifications,
             'suppliers' => $suppliers,
             'locations' => $locations,
-            'invoices' => $invoices,
-            'fundSources' => $fundSources,
         ]);
     }
 
@@ -72,8 +69,8 @@ class InventoryController extends Controller
             'item_classification_id' => 'required|integer',
             'supplier_id' => 'required|integer',
             'location_id' => 'required|integer',
-            'invoice_id' => 'required|integer',
-            'fund_source_id' => 'required|integer',
+            'invoice' => 'required|integer',
+            'fund_source' => 'required|integer',
             'item_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
@@ -97,8 +94,8 @@ class InventoryController extends Controller
                 'item_classification_id' => $request->item_classification_id,
                 'supplier_id' => $request->supplier_id,
                 'location_id' => $request->location_id,
-                'invoice_id' => $request->invoice_id,
-                'fund_source_id' => $request->fund_source_id,
+                'invoice' => $request->invoice,
+                'fund_source' => $request->fund_source,
                 'item_name' => $request->item_name,
                 'description' => $request->description,
                 'category' => $request->category,

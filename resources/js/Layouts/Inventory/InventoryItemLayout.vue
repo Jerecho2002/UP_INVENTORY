@@ -110,14 +110,14 @@ const requestFields = [
 ]
 
 const invoicesFundFields = [
-  { label: "Invoice Number", model: "invoice_id", placeholder: "0000", type: "text", readonly: false },
-  { label: "Fund Source", model: "fund_source_id", placeholder: "000", type: "text", readonly: false },
+  { label: "Invoice Number", model: "invoice", placeholder: "0000", type: "text", readonly: false },
+  { label: "Fund Source", model: "fund_source", placeholder: "000", type: "text", readonly: false },
 ]
 
 const firstDropdown = [
   { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
   { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name"},
-  { label: "Locations", model: "location_id", name: "locations", option: "location_name"},
+  { label: "Rooms", model: "location_id", name: "rooms", option: "room_name"},
 ]
 
 const secondDropdown = [
@@ -150,6 +150,7 @@ const suppliers = computed(() => page.props.suppliers);
 const locations = computed(() => page.props.locations);
 const invoices = computed(() => page.props.invoices);
 const fundSources = computed(() => page.props.fundSources);
+const rooms = computed(() => page.props.rooms);
 
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
@@ -176,6 +177,7 @@ const toggleSidebar = () => {
         <PageHeader title="Items" />
         <div class="w-full h-full">
           <InventoryItemsTable 
+          :rooms="rooms"
           :columns="columns" 
           :rows="items"
           :unitCostOptions="unitCostOptions"

@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\InventoryItem;
+use App\Models\UserProfile;
 use Illuminate\Http\Request;
+use App\Models\InventoryItem;
 
 class InventoryService
 {
@@ -11,7 +12,7 @@ class InventoryService
     {
         // Start a query and eager-load 'property' and 'acknowledgementReceipts' relationships
         // This returns an Eloquent query builder instance
-        return InventoryItem::with('acknowledgementReceipts', 'itemClassification', 'supplier', 'location', 'invoice', 'fundSource')
+        return InventoryItem::with('acknowledgementReceipts', 'itemClassification', 'supplier', 'location')
 
             // Apply search filter only if $search has a value
             ->when($search, fn($query, $search) => $query->search($search))

@@ -5,16 +5,11 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Office;
-use App\Models\Invoice;
 use App\Models\Location;
-use App\Models\Property;
 use App\Models\Supplier;
-use App\Models\FundSource;
 use App\Models\UserOffice;
 use App\Models\UserProfile;
 use App\Models\InventoryItem;
-use App\Models\PurchaseOrder;
-use App\Models\PurchaseRequest;
 use Illuminate\Database\Seeder;
 use App\Models\AccountablePerson;
 use App\Models\AcknowledgementItem;
@@ -35,24 +30,16 @@ class DatabaseSeeder extends Seeder
         // ✅ Base data
         $users = User::factory(10)->create();
         $suppliers = Supplier::factory(5)->create();
-        $fundSources = FundSource::factory(3)->create();
         $offices = Office::factory(3)->create();
         $locations = Location::factory(5)->create();
         $itemClassifications = ItemClassification::factory(13)->create();
 
-        // ✅ Invoices
-        $invoices = Invoice::factory(5)->create([
-            'supplier_id' => fn() => $suppliers->random()->id,
-            'created_by'  => fn() => $users->random()->id,
-        ]);
 
         // ✅ Inventory Items
         $inventoryItems = InventoryItem::factory(100)->create([
             'item_classification_id' => fn() => $itemClassifications->random()->id,
             'supplier_id' => fn() => $suppliers->random()->id,
             'location_id' => fn() => $locations->random()->id,
-            'invoice_id' => fn() => $invoices->random()->id,
-            'fund_source_id' => fn() => $fundSources->random()->id,
         ]);
 
         // ✅ Inventory Transactions
@@ -70,7 +57,6 @@ class DatabaseSeeder extends Seeder
         $ackReceipts = AcknowledgementReceipt::factory(5)->create([
             'accountable_persons_id' => fn() => $accountablePersons->random()->id,
             'issued_by_id'           => fn() => $accountablePersons->random()->id,
-            'fund_source_id'         => fn() => $fundSources->random()->id,
             'inventory_item_id'      => fn() => $inventoryItems->random()->id,
             'created_by'             => fn() => $users->random()->id,
         ]);
