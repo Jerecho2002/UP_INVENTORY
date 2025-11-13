@@ -11,7 +11,6 @@ class AccountablePersonFactory extends Factory
     public function definition(): array
     {
         return [
-            'office_id' => Office::factory(),
             'status' => $this->faker->boolean ? 1 : 0,
             'user_id' => User::factory(),
         ];

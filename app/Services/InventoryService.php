@@ -12,7 +12,7 @@ class InventoryService
     {
         // Start a query and eager-load 'property' and 'acknowledgementReceipts' relationships
         // This returns an Eloquent query builder instance
-        return InventoryItem::with('acknowledgementReceipts', 'itemClassification', 'supplier', 'location')
+        return InventoryItem::with('acknowledgementReceipts', 'itemClassification', 'supplier')
 
             // Apply search filter only if $search has a value
             ->when($search, fn($query, $search) => $query->search($search))

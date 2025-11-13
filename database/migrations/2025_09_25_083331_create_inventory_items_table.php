@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('item_classification_id');
             $table->unsignedInteger('supplier_id');
-            $table->unsignedInteger('location_id');
+            $table->string('room_name', 50)->nullable();
             $table->string('invoice', 50)->nullable();
             $table->string('fund_source', 50)->nullable();
             $table->string('item_name', 255)->nullable();
@@ -32,7 +32,6 @@ return new class extends Migration {
 
             $table->foreign('item_classification_id')->references('id')->on('item_classifications')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('supplier_id')->references('id')->on('suppliers')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('location_id')->references('id')->on('locations')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

@@ -20,13 +20,11 @@ class InventoryController extends Controller
         $status = $request->input('status');
         $itemClassifications = ItemClassification::all();
         $suppliers = Supplier::all();
-        $locations = Location::all();
 
         return response()->json([
             'items' => $service->getPaginatedInventory($search, $costRange, $status),
             'itemClassifications' => $itemClassifications,
             'suppliers' => $suppliers,
-            'locations' => $locations,
         ]);
     }
 }

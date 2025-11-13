@@ -11,6 +11,7 @@ const columns = [
   { label: "Property Records", key: 'category' },
   { label: "Property Number", key: 'property_number' },
   { label: "Serial Number", key: 'serial_number' },
+  { label: "Rooms", key: 'room_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
   { label: "Supplier Name", key: 'supplier', format: (val) => val?.supplier_name ?? 'N/A' },
@@ -43,9 +44,9 @@ const viewItems = [
   { label: "Property Number", key: "property_number" },
   { label: "Serial Number", key: "serial_number" },
   { label: "Supplier", key: "supplier.supplier_name" },
-  { label: "Location", key: "location.location_name" },
-  { label: "Invoice", key: "invoice.invoice_number" },
-  { label: "Fund Source", key: "fund_source.code" },
+  { label: "Rooms", key: "room_name" },
+  { label: "Invoice", key: "invoice" },
+  { label: "Fund Source", key: "fund_source" },
   { label: "PR Number", key: "pr_number" },
   { label: "PO Number", key: "po_number" },
   { label: "Remarks", key: "remarks" },
@@ -115,10 +116,10 @@ const invoicesFundFields = [
 ]
 
 const firstDropdown = [
-  { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
-  { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name"},
-  { label: "Rooms", model: "location_id", name: "rooms", option: "room_name"},
-]
+  { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name", value: "id" },
+  { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name", value: "id" },
+  { label: "Rooms", model: "room_name", name: "rooms", option: "room_name", value: "room_name" },
+];
 
 const secondDropdown = [
   { label: "Unit", model: "unit", options: 
@@ -147,9 +148,6 @@ const page = usePage();
 const items = computed(() => page.props.items);
 const itemClassifications = computed(() => page.props.itemClassifications);
 const suppliers = computed(() => page.props.suppliers);
-const locations = computed(() => page.props.locations);
-const invoices = computed(() => page.props.invoices);
-const fundSources = computed(() => page.props.fundSources);
 const rooms = computed(() => page.props.rooms);
 
 const isSidebarOpen = ref(true);
@@ -184,9 +182,6 @@ const toggleSidebar = () => {
           :Status="Status"
           :itemClass="itemClassifications"
           :suppliers="suppliers"
-          :locations="locations"
-          :invoices="invoices"
-          :fundSources="fundSources"
           :view-items="viewItems"
           :edit-items="editItems"
           :input-fields="inputFields"

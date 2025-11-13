@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('accountable_persons', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('office_id');
             $table->tinyInteger('status')->default(0);
             $table->unsignedInteger('user_id');
 
-            $table->foreign('office_id')->references('id')->on('offices')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }

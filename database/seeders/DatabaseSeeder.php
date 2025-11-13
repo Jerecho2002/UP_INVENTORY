@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Office;
-use App\Models\Location;
 use App\Models\Supplier;
 use App\Models\UserOffice;
 use App\Models\UserProfile;
@@ -30,8 +28,6 @@ class DatabaseSeeder extends Seeder
         // ✅ Base data
         $users = User::factory(10)->create();
         $suppliers = Supplier::factory(5)->create();
-        $offices = Office::factory(3)->create();
-        $locations = Location::factory(5)->create();
         $itemClassifications = ItemClassification::factory(13)->create();
 
 
@@ -39,7 +35,6 @@ class DatabaseSeeder extends Seeder
         $inventoryItems = InventoryItem::factory(100)->create([
             'item_classification_id' => fn() => $itemClassifications->random()->id,
             'supplier_id' => fn() => $suppliers->random()->id,
-            'location_id' => fn() => $locations->random()->id,
         ]);
 
         // ✅ Inventory Transactions
@@ -49,7 +44,6 @@ class DatabaseSeeder extends Seeder
 
         // ✅ Accountable Persons
         $accountablePersons = AccountablePerson::factory(5)->create([
-            'office_id' => fn() => $offices->random()->id,
             'user_id'   => fn() => $users->random()->id,
         ]);
 
@@ -69,7 +63,6 @@ class DatabaseSeeder extends Seeder
         // ✅ User Offices
         UserOffice::factory(5)->create([
             'user_id'   => fn() => $users->random()->id,
-            'office_id' => fn() => $offices->random()->id,
         ]);
 
         // ✅ User Profiles

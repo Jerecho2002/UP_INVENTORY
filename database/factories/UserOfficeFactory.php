@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use App\Models\Office;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserOfficeFactory extends Factory
@@ -12,7 +11,6 @@ class UserOfficeFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'office_id' => Office::factory(),
             'status' => $this->faker->boolean ? 1 : 0,
         ];
     }

@@ -2,10 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Invoice;
-use App\Models\Location;
 use App\Models\Supplier;
-use App\Models\FundSource;
 use App\Models\ItemClassification;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,9 +18,9 @@ class InventoryItemFactory extends Factory
 return [
     'item_classification_id' => ItemClassification::factory(),
     'supplier_id' => Supplier::factory(),
-    'location_id' => Location::factory(),
-    'invoice' => strtoupper($this->faker->unique()->bothify('INV###')),
-    'fund_source' => strtoupper($this->faker->unique()->bothify('FS###')),
+    'room_name' => $this->faker->unique()->bothify('Room ###'),
+    'invoice' => strtoupper($this->faker->unique()->bothify('INV-###')),
+    'fund_source' => strtoupper($this->faker->unique()->bothify('FS-###')),
     'item_name' => $this->faker->word(),
     'description' => $this->faker->sentence(),
 
@@ -60,10 +57,10 @@ return [
     'unit' => $this->faker->randomElement(['pcs', 'box', 'unit']),
     'unit_cost' => $unitCost = $this->faker->randomFloat(2, 100, 5000),
     'total_amount' => $qty * $unitCost,
-    'serial_number' => strtoupper($this->faker->unique()->bothify('SER###')),
-    'pr_number' => strtoupper($this->faker->unique()->bothify('PR###')),
-    'po_number' => strtoupper($this->faker->unique()->bothify('PO###')),
-    'remarks' => strtoupper($this->faker->unique()->bothify('RM###')),
+    'serial_number' => strtoupper($this->faker->unique()->bothify('SER-###')),
+    'pr_number' => strtoupper($this->faker->unique()->bothify('PR-###')),
+    'po_number' => strtoupper($this->faker->unique()->bothify('PO-###')),
+    'remarks' => strtoupper($this->faker->unique()->bothify('RM-###')),
     'date_acquired' => $this->faker->date('Y-m-d', 'now'),
     'status' => $this->faker->numberBetween(0, 2),
 ];
