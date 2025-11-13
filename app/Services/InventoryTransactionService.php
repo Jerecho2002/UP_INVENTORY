@@ -11,7 +11,7 @@ class InventoryTransactionService
     {
         // Start a query and eager-load 'property' and 'acknowledgementReceipts' relationships
         // This returns an Eloquent query builder instance
-        return InventoryTransaction::with('inventoryItem', 'inventoryItem.invoice', 'inventoryItem.location.office')
+        return InventoryTransaction::with('inventoryItem')
 
             // Apply search filter only if $search has a value
             ->when($search, fn($query, $search) => $query->search($search))
