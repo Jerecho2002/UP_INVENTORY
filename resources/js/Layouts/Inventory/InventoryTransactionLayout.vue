@@ -17,13 +17,11 @@ const items = computed(() => page.props.items);
 
 const tableHeader = [
   { label: 'Item Name', key: 'inventory_item', format: (val) => val?.item_name ?? 'N/A' },
-  { label: 'Office Name', key: 'inventory_item', format: (val) => val?.location.office.office_name ?? 'N/A' },
   { label: 'Quantity', key: 'quantity' },
   { label: 'Unit Cost', key: 'inventory_item', format: (val) => val?.unit_cost ? `₱${(val.unit_cost)}` : 'N/A' },
   { label: 'Property Number', key: 'inventory_item', format: (val) => val?.category ?? 'N/A' },
   { label: 'PR Number', key: 'inventory_item', format: (val) => val?.pr_number ?? 'N/A' },
   { label: 'PO Number', key: 'inventory_item', format: (val) => val?.po_number ?? 'N/A' },
-  { label: 'Invoice Number', key: 'inventory_item', format: (val) => val?.invoice.invoice_number ?? 'N/A' },
   {
     label: "Status", key: 'status',
     format: (status) => {

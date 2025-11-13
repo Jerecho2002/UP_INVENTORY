@@ -8,7 +8,7 @@ class ReportService
 {
     public function getPaginatedInventory($search = null, $quantity = null, $from = null, $to = null)
     {
-        return InventoryItem::with('location', 'supplier')
+        return InventoryItem::with( 'supplier')
             ->when($search, function ($query) use ($search) {
                 return $query->search($search);
             })
