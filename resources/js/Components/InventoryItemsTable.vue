@@ -216,7 +216,7 @@ function getValue(obj, path) {
 
 <template>
     <!-- Add button + filters + search -->
-    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[5rem]">
+    <div class="flex flex-col sm:flex-row justify-between items-end gap-4 mb-4 mt-[4rem]">
         <AddModal ref="addModalRef">
             <!-- Add Item Button -->
             <template #AddItemButton>

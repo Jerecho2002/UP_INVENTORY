@@ -2,17 +2,18 @@
 
 namespace App\Services;
 
+use App\Models\AcknowledgementReceipt;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use App\Models\InventoryItem;
 
-class InventoryService
+class AcknowledgementRecieptService
 {
     public function getPaginatedInventory($search = null, $costRange = null, $status = null)
     {
         // Start a query and eager-load 'property' and 'acknowledgementReceipts' relationships
         // This returns an Eloquent query builder instance
-        return InventoryItem::with('acknowledgementReceipts', 'itemClassification', 'supplier', '')
+        return AcknowledgementReceipt::with( 'accountablePerson.user')
 
             // Apply search filter only if $search has a value
             ->when($search, fn($query, $search) => $query->search($search))

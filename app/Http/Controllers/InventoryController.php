@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\Location;
 use App\Models\Supplier;
 use App\Models\FundSource;
+use App\Services\AcknowledgementRecieptService;
 use Illuminate\Http\Request;
 use App\Models\InventoryItem;
 use App\Models\ItemClassification;
@@ -45,7 +46,7 @@ class InventoryController extends Controller
         ]);
     }
 
-    public function InventoryAcknowledgements(Request $request, InventoryService $service)
+    public function InventoryAcknowledgements(Request $request, AcknowledgementRecieptService $service)
     {
         $search = $request->input(key: 'search');
         $costRange = $request->input('cost_range');

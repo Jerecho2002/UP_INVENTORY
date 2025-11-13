@@ -19,21 +19,6 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function invoices()
-    {
-        return $this->hasMany(Invoice::class, 'created_by');
-    }
-
-    public function purchaseRequests()
-    {
-        return $this->hasMany(PurchaseRequest::class, 'created_by');
-    }
-
-    public function purchaseOrders()
-    {
-        return $this->hasMany(PurchaseOrder::class, 'created_by');
-    }
-
     public function acknowledgementReceipts()
     {
         return $this->hasMany(AcknowledgementReceipt::class, 'created_by');
