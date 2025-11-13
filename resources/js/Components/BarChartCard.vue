@@ -148,10 +148,4 @@ onMounted(() => {
     </div>
   </div>
 
-<<<<<<< HEAD
 </template>
-=======
-
-
-</template>
->>>>>>> 67ea0a81637291d0f3f67f97d2ada11c4a6b4687
