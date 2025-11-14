@@ -148,7 +148,7 @@ const page = usePage();
 const items = computed(() => page.props.items);
 const itemClassifications = computed(() => page.props.itemClassifications);
 const suppliers = computed(() => page.props.suppliers);
-const rooms = computed(() => page.props.rooms);
+const rooms = computed(() => page.props.rooms?.rooms || []);
 
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {

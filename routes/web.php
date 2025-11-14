@@ -1,10 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Application;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 

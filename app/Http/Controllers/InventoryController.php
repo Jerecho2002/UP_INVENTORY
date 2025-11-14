@@ -18,8 +18,19 @@ class InventoryController extends Controller
 {
     public function InventoryItems(Request $request, InventoryService $service)
     {
-        $response = Http::get('http://127.0.0.1:8001/api/rooms');
-        $rooms = $response->json('rooms');
+        $apiUrl = env('SYSTEM_B_API_URL') . '/rooms';
+        $token = env('SYSTEM_B_API_TOKEN');
+
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer {$token}",
+            'Accept' => 'application/json',
+        ])->get($apiUrl);
+
+        $rooms = $response->successful()
+            ? $response->json()
+            : [];
+
+        // dd($token, $apiUrl);
 
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
