@@ -39,14 +39,14 @@ const list = (items) => {
         <AddModal ref="addModalRef">
             <template #AddAssignButton>
                 <button @click="addModalRef.openModal()"
-                    class="flex items-center gap-2 bg-[#0E6021] hover:bg-[#2a9754] text-white font-semibold px-4 py-2 rounded-md text-xs sm:text-sm transition duration-150 w-full sm:w-auto">
+                    class="flex items-center gap-2 bg-[#0E6021]  hover:bg-[#2a9754] text-white font-semibold px-4 py-2 rounded-md text-xs sm:text-sm transition duration-150 w-full sm:w-auto">
                     <i class="fa-solid fa-plus"></i>
                     <span>Assign</span>
                 </button>
             </template>
 
             <template #AcknowledgementForm="{ closeModal }">
-                <form @submit.prevent="handleAddItem(closeModal)" class="flex flex-col gap-3 sm:overflow-y-auto">
+                <form @submit.prevent="handleAddItem(closeModal)" class="flex flex-col gap-3 sm:overflow-y-auto ">
                     <pre></pre>
                     <h2 class="text-2xl font-bold text-[#850038] mb-6">Assign</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
