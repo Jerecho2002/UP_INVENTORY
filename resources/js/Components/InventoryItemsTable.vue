@@ -49,7 +49,6 @@ const goToPage = (url) => {
 const form = useForm({
     item_classification_id: "",
     supplier_id: "",
-    room_name: "",
     invoice: "",
     fund_source: "",
     item_name: "",
@@ -116,7 +115,6 @@ function openEditModal(item, open) {
     form.id = item.id;
     form.item_classification_id = item.item_classification_id;
     form.supplier_id = item.supplier_id;
-    form.room_name = item.room_name;
     form.invoice = item.invoice;
     form.fund_source = item.fund_source;
     form.item_name = item.item_name;

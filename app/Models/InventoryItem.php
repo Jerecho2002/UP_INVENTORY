@@ -13,7 +13,6 @@ class InventoryItem extends Model
         'fund_source',
         'invoice',
         'supplier_id',
-        'room_name',
         'item_name',
         'description',
         'category',

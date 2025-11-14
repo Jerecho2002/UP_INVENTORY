@@ -11,7 +11,6 @@ const columns = [
   { label: "Property Records", key: 'category' },
   { label: "Property Number", key: 'property_number' },
   { label: "Serial Number", key: 'serial_number' },
-  { label: "Rooms", key: 'room_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
   { label: "Supplier Name", key: 'supplier', format: (val) => val?.supplier_name ?? 'N/A' },
@@ -28,11 +27,6 @@ const columns = [
         cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-circle-check"></i>';
       }
-      else if (status === 2) { 
-        label = 'Pending'; 
-        cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
-        icon = '<i class="fa-solid fa-clock"></i>';
-      }
       return `<span class="${cls}">${icon} ${label}</span>`;
     }
   },
@@ -44,7 +38,6 @@ const viewItems = [
   { label: "Property Number", key: "property_number" },
   { label: "Serial Number", key: "serial_number" },
   { label: "Supplier", key: "supplier.supplier_name" },
-  { label: "Rooms", key: "room_name" },
   { label: "Invoice", key: "invoice" },
   { label: "Fund Source", key: "fund_source" },
   { label: "PR Number", key: "pr_number" },
@@ -118,7 +111,6 @@ const invoicesFundFields = [
 const firstDropdown = [
   { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name", value: "id" },
   { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name", value: "id" },
-  { label: "Rooms", model: "room_name", name: "rooms", option: "room_name", value: "room_name" },
 ];
 
 const secondDropdown = [
@@ -127,7 +119,7 @@ const secondDropdown = [
                                              {label: "pcs", value: "pcs"}, 
                                              {label: "box", value: "box"}]},
   { label: "Status", model: "status", options: 
-                                            [{label: "Recieved", value: "1"},
+                                            [{label: "Received", value: "1"},
                                              {label: "Cancelled", value: "0"},
                                             
   ]},
@@ -140,7 +132,6 @@ const unitCostOptions = [
 
 const Status = [
     { label: "Recieved", value: 1},
-    { label: "Pending", value: 2},
     { label: "Cancelled", value: 0 },
 ];
 
@@ -148,7 +139,7 @@ const page = usePage();
 const items = computed(() => page.props.items);
 const itemClassifications = computed(() => page.props.itemClassifications);
 const suppliers = computed(() => page.props.suppliers);
-const rooms = computed(() => page.props.rooms?.rooms || []);
+// const rooms = computed(() => page.props.rooms?.rooms || []);
 
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
@@ -175,7 +166,6 @@ const toggleSidebar = () => {
         <PageHeader title="Items" />
         <div class="w-full h-full">
           <InventoryItemsTable 
-          :rooms="rooms"
           :columns="columns" 
           :rows="items"
           :unitCostOptions="unitCostOptions"

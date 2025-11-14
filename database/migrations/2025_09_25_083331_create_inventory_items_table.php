@@ -11,7 +11,6 @@ return new class extends Migration {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('item_classification_id');
             $table->unsignedInteger('supplier_id');
-            $table->string('room_name', 50)->nullable();
             $table->string('invoice', 50)->nullable();
             $table->string('fund_source', 50)->nullable();
             $table->string('item_name', 255)->nullable();
