@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Invoice;
-use App\Models\Location;
 use App\Models\Supplier;
-use App\Models\FundSource;
 use Illuminate\Http\Request;
 use App\Models\ItemClassification;
 use App\Services\InventoryService;
