@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invoice;
 use App\Models\Location;
 use App\Models\Supplier;
-use App\Models\FundSource;
 use App\Services\AcknowledgementRecieptService;
 use Illuminate\Http\Request;
 use App\Models\InventoryItem;
@@ -18,19 +16,18 @@ class InventoryController extends Controller
 {
     public function InventoryItems(Request $request, InventoryService $service)
     {
-        $apiUrl = env('SYSTEM_B_API_URL') . '/rooms';
-        $token = env('SYSTEM_B_API_TOKEN');
+        // API para mo fetch sa rooms
+        // $apiUrl = env('SYSTEM_B_API_URL') . '/rooms';
+        // $token = env('SYSTEM_B_API_TOKEN');
 
-        $response = Http::withHeaders([
-            'Authorization' => "Bearer {$token}",
-            'Accept' => 'application/json',
-        ])->get($apiUrl);
+        // $response = Http::withHeaders([
+        //     'Authorization' => "Bearer {$token}",
+        //     'Accept' => 'application/json',
+        // ])->get($apiUrl);
 
-        $rooms = $response->successful()
-            ? $response->json()
-            : [];
-
-        // dd($token, $apiUrl);
+        // $rooms = $response->successful()
+        //     ? $response->json()
+        //     : [];
 
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
@@ -39,7 +36,7 @@ class InventoryController extends Controller
         $suppliers = Supplier::all();
 
         return inertia('Inventory/InventoryItem', [
-            'rooms' => $rooms,
+            // 'rooms' => $rooms,
             'items' => $service->getPaginatedInventory($search, $costRange, $status),
             'itemClassifications' => $itemClassifications,
             'suppliers' => $suppliers,
@@ -76,7 +73,6 @@ class InventoryController extends Controller
         $request->validate([
             'item_classification_id' => 'required|integer',
             'supplier_id' => 'required|integer',
-            'room_name' => 'required|string|max:50',
             'invoice' => 'required|string|max:50',
             'fund_source' => 'required|string|max:50',
             'item_name' => 'required|string|max:255',
@@ -101,7 +97,6 @@ class InventoryController extends Controller
             InventoryItem::create([
                 'item_classification_id' => $request->item_classification_id,
                 'supplier_id' => $request->supplier_id,
-                'room_name' => $request->room_name,
                 'invoice' => $request->invoice,
                 'fund_source' => $request->fund_source,
                 'item_name' => $request->item_name,
@@ -131,7 +126,6 @@ class InventoryController extends Controller
         $request->validate([
             'item_classification_id' => 'required|integer',
             'supplier_id' => 'required|integer',
-            'room_name' => 'required|string|max:50',
             'invoice' => 'required|string|max:50',
             'fund_source' => 'required|string|max:50',
             'item_name' => 'required|string|max:255',
@@ -158,7 +152,6 @@ class InventoryController extends Controller
         $item->update([
             'item_classification_id' => $request->item_classification_id,
             'supplier_id' => $request->supplier_id,
-            'room_name' => $request->room_name,
             'invoice' => $request->invoice,
             'fund_source' => $request->fund_source,
             'item_name' => $request->item_name,

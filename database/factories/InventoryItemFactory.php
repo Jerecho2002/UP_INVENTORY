@@ -18,7 +18,6 @@ class InventoryItemFactory extends Factory
 return [
     'item_classification_id' => ItemClassification::factory(),
     'supplier_id' => Supplier::factory(),
-    'room_name' => $this->faker->unique()->bothify('Room ###'),
     'invoice' => strtoupper($this->faker->unique()->bothify('INV-###')),
     'fund_source' => strtoupper($this->faker->unique()->bothify('FS-###')),
     'item_name' => $this->faker->word(),
@@ -62,7 +61,7 @@ return [
     'po_number' => strtoupper($this->faker->unique()->bothify('PO-###')),
     'remarks' => strtoupper($this->faker->unique()->bothify('RM-###')),
     'date_acquired' => $this->faker->date('Y-m-d', 'now'),
-    'status' => $this->faker->numberBetween(0, 2),
+    'status' => $this->faker->numberBetween(0, 1),
 ];
 
     }
