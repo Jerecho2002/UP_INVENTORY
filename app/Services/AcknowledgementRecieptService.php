@@ -8,7 +8,7 @@ class AcknowledgementRecieptService
 {
     public function getPaginatedInventory($search = null, $costRange = null, $status = null)
     {
-        return AcknowledgementReceipt::with( 'accountablePerson.user')
+        return AcknowledgementReceipt::with( 'accountablePerson.user', 'inventoryItems')
             ->when($search, fn($query, $search) => $query->search($search))
             ->when($costRange, function ($query, $costRange) {
                 [$min, $max] = explode('-', $costRange);

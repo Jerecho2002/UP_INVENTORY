@@ -17,6 +17,15 @@ const props = defineProps({
 });
 
 const addModalRef = ref(null);
+const editModalRef = ref(null);
+const selectedViewItem = ref(null);
+
+function openViewModal(item, open) {
+  selectedViewItem.value = item;
+  // call the open function provided by the slot
+  if (typeof open === 'function') open();
+}
+
 
 function getValue(item, key) {
     if (!item || !key) return undefined;
@@ -43,8 +52,8 @@ const currentRows = computed(() => list(props.items));
 
 // ALL SELECTED CHECK
 const allSelected = computed(() => {
-  const rows = currentRows.value;
-  return rows.length > 0 && rows.every(r => selected.value.has(r.id));
+    const rows = currentRows.value;
+    return rows.length > 0 && rows.every(r => selected.value.has(r.id));
 });
 
 
@@ -52,31 +61,31 @@ const anySelected = computed(() => selected.value.size > 0);
 
 //TOGGLE SINGLE ROW
 function toggleRow(item) {
-  if (!item || item.id == null) return;
-  if (selected.value.has(item.id)) selected.value.delete(item.id);
-  else selected.value.add(item.id);
-  emit('update:selected', Array.from(selected.value));
-  emit('selection-changed', Array.from(selected.value));
+    if (!item || item.id == null) return;
+    if (selected.value.has(item.id)) selected.value.delete(item.id);
+    else selected.value.add(item.id);
+    emit('update:selected', Array.from(selected.value));
+    emit('selection-changed', Array.from(selected.value));
 }
 
 // TOGGLE ALL VISIBLE ROWS
 function toggleAllVisible() {
-  const rows = currentRows.value;
-  if (allSelected.value) {
-    rows.forEach(r => selected.value.delete(r.id));
-  } else {
-    rows.forEach(r => selected.value.add(r.id));
-  }
-  emit('update:selected', Array.from(selected.value));
-  emit('selection-changed', Array.from(selected.value));
+    const rows = currentRows.value;
+    if (allSelected.value) {
+        rows.forEach(r => selected.value.delete(r.id));
+    } else {
+        rows.forEach(r => selected.value.add(r.id));
+    }
+    emit('update:selected', Array.from(selected.value));
+    emit('selection-changed', Array.from(selected.value));
 }
 
 watch(currentRows, (newRows) => {
-  const idsInPage = new Set(newRows.map(r => r.id));
-  const newSel = new Set(Array.from(selected.value).filter(id => idsInPage.has(id)));
-  selected.value = newSel;
-  emit('update:selected', Array.from(selected.value));
-  emit('selection-changed', Array.from(selected.value));
+    const idsInPage = new Set(newRows.map(r => r.id));
+    const newSel = new Set(Array.from(selected.value).filter(id => idsInPage.has(id)));
+    selected.value = newSel;
+    emit('update:selected', Array.from(selected.value));
+    emit('selection-changed', Array.from(selected.value));
 });
 </script>
 
@@ -265,11 +274,51 @@ watch(currentRows, (newRows) => {
                             <span v-else>{{ getValue(item, col.key) ?? 'N/A' }}</span>
                         </template>
 
-                        <!-- Action cell: leave to consumer (still part of table) -->
+                        <!-- ACTION BUTTON -->
                         <template v-else>
-                            <slot name="action" :item="item">
-                                <!-- default: empty; parent can provide action buttons by using slot -->
-                            </slot>
+                            <div class="flex items-center gap-1">
+
+                                <!-- VIEW MODAL -->
+                                <ViewModal>
+                                    <!-- BUTTON -->
+                                    <template #ViewItemButton="{ open }">
+                                        <button type="button" class="text-blue-600 mx-1" title="View"
+                                            @click="() => openViewModal(item, open)">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </template>
+
+                                    <!-- VIEW BODY CONTENT -->
+                                    <template #ViewBodyContent>
+                                        <div v-if="selectedViewItem" class="font-bold text-2xl mb-4 text-[#850038]">
+                                            <h2>Item Details</h2>
+                                        </div>
+
+                                        <!-- DETAILS GRID -->
+                                        <div v-if="selectedViewItem" class="grid grid-cols-1 md:grid-cols-1 gap-2">
+                                            <div class="space-y-3 mt-5">
+                                                <div v-for="col in viewItems" :key="col.label"
+                                                    class="flex md:items-start gap-3">
+                                                    <!-- LABEL -->
+                                                    <label class="w-40 shrink-0 font-semibold text-gray-700 text-left">
+                                                        {{ col.label }}
+                                                    </label>
+
+                                                    <!-- VALUE (plain or formatted) -->
+                                                    <p v-if="!col.format"
+                                                        class="text-gray-800 leading-snug break-words whitespace-normal max-w-[calc(100%-10rem)]">
+                                                        {{ getValue(selectedViewItem, col.key) ?? 'N/A' }}
+                                                    </p>
+
+                                                    <div v-else v-html="col.format(getValue(selectedViewItem, col.key))"
+                                                        class="text-gray-800 leading-snug break-words whitespace-normal max-w-[calc(100%-10rem)]">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </ViewModal>
+                            </div>
                         </template>
                     </TableCell>
                 </tr>

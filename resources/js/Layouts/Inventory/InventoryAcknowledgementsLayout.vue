@@ -8,14 +8,14 @@ import InventoryAcknowledgementsTable from '@/Components/InventoryAcknowledgemen
 
 const columns = [
   { label: '', key: 'select' },
+  { label: "Item Name", key: "inventory_items", format: (val) => val?.item_name ?? 'N/A'  },
+  { label: "Quantity", key: "inventory_items", format: (val) => val?.quantity ?? 'N/A'  },
+  { label: "Unit", key: "inventory_items", format: (val) => val ?.unit ?? 'N/A' },
+  { label: "Unit Cost", key: "inventory_items", format: (val) => val?.unit_cost ? `₱${val.unit_cost}` : 'N/A' },
+  { label: "Propety Number", key: "inventory_items", format: (val) => val?.property_number ?? 'N/A'  },
   { label: "Accountable Person", key: 'accountable_person.user', format: (val) => val?.email ?? 'N/A'   },
   { label: "Issued By", key: "issuedBy", format: (val) => val?.full_name ?? 'N/A'  },
-  { label: "Created By", key: "created_by" },
   { label: "Date Recieved", key: "par_date" },
-  { label: "Item Name", key: "item_name" },
-  { label: "Quantity", key: "quantity"},
-  { label: "Unit", key: "unit", format: (val) => val ?? 'N/A' },
-  { label: "Unit Cost", key: "unit_cost", format: (val) => val ? `₱${val}` : 'N/A' },
   { label: "Status", key: 'status', 
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
@@ -94,7 +94,7 @@ const toggleSidebar = () => {
       </aside>
 
       <!-- Main --> 
-      <main class="flex-1 sm:p-5 md:p-6 overflow-hidden ">
+      <main class="flex-1 sm:p-5 md:p-6 overflow-hidden overflow-y-auto">
         <!-- HEAD TITLE -->
         <PageHeader title="Acknowledgements" />
         <div class="w-full h-full">
