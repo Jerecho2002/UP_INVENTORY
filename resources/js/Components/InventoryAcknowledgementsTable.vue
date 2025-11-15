@@ -6,7 +6,6 @@ import TableCell from './TableCell.vue';
 
 const props = defineProps({
     accountableField: Array,
-    firstDropdown: Array,
     secondDropdown: Array,
     quantityCostFields: Array,
     inputFields: Array,
@@ -14,6 +13,7 @@ const props = defineProps({
     requestFields: Array,
     columns: Array,
     items: Array,
+    rows: Array,
 });
 
 const addModalRef = ref(null);
@@ -29,10 +29,57 @@ function getValue(item, key) {
 }
 
 const list = (items) => {
-  if (!items) return [];
-  return Array.isArray(items) ? items : (items.data ?? []);
+    if (!items) return [];
+    return Array.isArray(items) ? items : (items.data ?? []);
 };
+
+const emit = defineEmits(['update:selected', 'selection-changed']);
+
+// SELECTION SET OF IDS
+const selected = ref(new Set());
+
+// CURRENT VISIBLE ROWS
+const currentRows = computed(() => list(props.items));
+
+// ALL SELECTED CHECK
+const allSelected = computed(() => {
+  const rows = currentRows.value;
+  return rows.length > 0 && rows.every(r => selected.value.has(r.id));
+});
+
+
+const anySelected = computed(() => selected.value.size > 0);
+
+//TOGGLE SINGLE ROW
+function toggleRow(item) {
+  if (!item || item.id == null) return;
+  if (selected.value.has(item.id)) selected.value.delete(item.id);
+  else selected.value.add(item.id);
+  emit('update:selected', Array.from(selected.value));
+  emit('selection-changed', Array.from(selected.value));
+}
+
+// TOGGLE ALL VISIBLE ROWS
+function toggleAllVisible() {
+  const rows = currentRows.value;
+  if (allSelected.value) {
+    rows.forEach(r => selected.value.delete(r.id));
+  } else {
+    rows.forEach(r => selected.value.add(r.id));
+  }
+  emit('update:selected', Array.from(selected.value));
+  emit('selection-changed', Array.from(selected.value));
+}
+
+watch(currentRows, (newRows) => {
+  const idsInPage = new Set(newRows.map(r => r.id));
+  const newSel = new Set(Array.from(selected.value).filter(id => idsInPage.has(id)));
+  selected.value = newSel;
+  emit('update:selected', Array.from(selected.value));
+  emit('selection-changed', Array.from(selected.value));
+});
 </script>
+
 <template>
     <!-- <pre>{{ items }}</pre> -->
     <div class="flex flex-col sm:flex-row items-end mb-4 mt-[3rem]">
@@ -40,14 +87,13 @@ const list = (items) => {
             <template #AddAssignButton>
                 <button @click="addModalRef.openModal()"
                     class="flex items-center gap-2 bg-[#0E6021]  hover:bg-[#2a9754] text-white font-semibold px-4 py-2 rounded-md text-xs sm:text-sm transition duration-150 w-full sm:w-auto">
-                    <i class="fa-solid fa-plus"></i>
+                    <i class="fa-solid fa-user-check"></i>
                     <span>Assign</span>
                 </button>
             </template>
 
             <template #AcknowledgementForm="{ closeModal }">
                 <form @submit.prevent="handleAddItem(closeModal)" class="flex flex-col gap-3 sm:overflow-y-auto ">
-                    <pre></pre>
                     <h2 class="text-2xl font-bold text-[#850038] mb-6">Assign</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <!-- LEFT -->
@@ -64,22 +110,6 @@ const list = (items) => {
                                                 {{ acF.option }}
                                             </option>
                                         </select>
-                                    </div>
-                                </div>
-
-                                <!-- CATEGORIES/SUPPLIERS/LOCATIONS DROPDOWN -->
-                                <div class="flex md:flex-row gap-4 mb-4">
-                                    <div v-for="fdp in firstDropdown" :key="fdp.name" class="flex flex-col">
-                                        <label class="block text-sm font-bold mb-1">{{ fdp.label }}</label>
-                                        <select
-                                            class="w-full sm:w-[10rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                            <option value="">Select</option>
-                                            <option v-for="item in props[fdp.name]" :key="item.id" :value="item.id">
-                                                {{ item[fdp.option] || 'N/A' }}
-                                            </option>
-                                        </select>
-                                        <!-- <div v-if="form.errors[fdp.model]" class="text-red-500 text-sm">{{
-                                                form.errors[fdp.model] }}</div> -->
                                     </div>
                                 </div>
 
@@ -104,16 +134,6 @@ const list = (items) => {
                                         <input
                                             class="rounded-md w-full sm:w-[10rem] border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"
                                             type="date" />
-                                    </div>
-                                </div>
-
-                                <!-- Quantity + Unit Cost -->
-                                <div class="flex md:flex-row gap-4 mb-8">
-                                    <div v-for="qcf in quantityCostFields" :key="qcf.quantityCostFields"
-                                        class="flex flex-col">
-                                        <label class="block text-sm font-bold mb-1">{{ qcf.label }}</label>
-                                        <input :placeholder="qcf.placeholder" step="any"
-                                            class="w-full sm:w-[15.6rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm text-gray-800 focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150" />
                                     </div>
                                 </div>
 
@@ -142,40 +162,40 @@ const list = (items) => {
                         <!-- RIGHT -->
                         <div class="space-y-4">
                             <!-- INVOICES & FUND SOURCES FIELDS -->
-                            <div class="flex flex-col md:flex-row gap-4 mb-4">
+                            <!-- <div class="flex flex-col md:flex-row gap-4 mb-4">
                                 <div v-for="inv in invoicesFundFields" :key="inv.model">
                                     <label class="block text-sm font-bold mb-1">{{ inv.label }}</label>
                                     <input :placeholder="inv.placeholder"
                                         class="w-full sm:w-[16.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                                    <!-- <div v-if="form.errors[inv.model]" class="text-red-500 text-sm">{{
-                                        form.errors[inv.model] }}</div> -->
+                                    <div v-if="form.errors[inv.model]" class="text-red-500 text-sm">{{
+                                        form.errors[inv.model] }}</div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- PR/PO/REMARKS FIELDS -->
-                            <div class="space-y-4">
+                            <!-- <div class="space-y-4">
                                 <div v-for="rf in requestFields" :key="rf.model" class="flex flex-col">
                                     <label class="block text-sm font-bold mb-1 ">{{ rf.label }}</label>
                                     <input :placeholder="rf.placeholder"
                                         class="w-full sm:w-[34rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                                    <!-- <div v-if="form.errors[rf.model]" class="text-red-500 text-sm">{{
-                                        form.errors[rf.model] }}</div> -->
+                                    <div v-if="form.errors[rf.model]" class="text-red-500 text-sm">{{
+                                        form.errors[rf.model] }}</div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- DESCRIPTION -->
-                            <!-- <div>
+                            <div>
                                 <label class="block text-md font-semibold mb-1">Description</label>
-                                <textarea v-model="form.description" placeholder="Input a description"
+                                <textarea placeholder="Input a description"
                                     class="w-full h-32 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"></textarea>
-                                <div v-if="form.errors.description" class="text-red-500 text-sm">{{
-                                    form.errors.description }}</div>
-                            </div> -->
+                                <!-- <div v-if="form.errors.description" class="text-red-500 text-sm">{{
+                                    form.errors.description }}</div> -->
+                            </div>
 
                             <!-- TOTAL AMOUNT -->
                             <!-- <div class="flex flex-col md:flex-row sm:items-center md:items-center text-sm font-semibold mt-8">
                                 <label class="block text-base font-bold">Total Amount: ₱</label>
-                                <input v-model="form.total_amount" readonly placeholder="0.00"
+                                <input readonly placeholder="0.00"
                                     class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none" />
                             </div> -->
                         </div>
@@ -215,23 +235,42 @@ const list = (items) => {
                 <tr class="text-white">
                     <th v-for="col in columns" :key="col.key"
                         class="p-2 sm:p-3 md:p-4 align-middle first:rounded-tl-lg last:rounded-tr-lg">
-                        {{ col.label }}
+                        <!-- If this is the select column, show select-all checkbox -->
+                        <template v-if="col.key === 'select'">
+                            <input type="checkbox" class="w-4 h-4 text-[#0E6021]     rounded" :checked="allSelected"
+                                @change="toggleAllVisible" aria-label="Select all" />
+                        </template>
+
+                        <!-- Otherwise show normal header label -->
+                        <template v-else>
+                            {{ col.label }}
+                        </template>
                     </th>
                 </tr>
             </thead>
-            <tbody class="text-gray-700">
-                <tr v-for="item in list(items)" :key="item.id" class="even:bg-gray-200">
-                    <TableCell v-for="col in columns" :key="col.key">
-                        <template v-if="col.key !== 'action'">
-                            <!-- If there's a format function: call it with (value, item).
-               The format should return HTML string if you want v-html, or plain string. -->
-                            <span v-if="col.format" v-html="col.format(getValue(item, col.key), item)"></span>
 
-                            <!-- Otherwise show the resolved value -->
+            <tbody class="text-gray-700">
+                <tr v-for="item in currentRows" :key="item.id" class="even:bg-gray-200">
+                    <TableCell v-for="col in columns" :key="col.key" class="align-middle">
+                        <!-- Checkbox column -->
+                        <template v-if="col.key === 'select'">
+                            <input type="checkbox" class="w-4 h-4 text-[#0E6021] rounded"
+                                :checked="selected.has(item.id)" @change.prevent="toggleRow(item)"
+                                :aria-label="`Select item ${item.id}`" />
+                        </template>
+
+                        <!-- Normal cells -->
+                        <template v-else-if="col.key !== 'action'">
+                            <span v-if="col.format" v-html="col.format(getValue(item, col.key), item)"></span>
                             <span v-else>{{ getValue(item, col.key) ?? 'N/A' }}</span>
                         </template>
 
-                        <!-- action column will be handled elsewhere -->
+                        <!-- Action cell: leave to consumer (still part of table) -->
+                        <template v-else>
+                            <slot name="action" :item="item">
+                                <!-- default: empty; parent can provide action buttons by using slot -->
+                            </slot>
+                        </template>
                     </TableCell>
                 </tr>
             </tbody>

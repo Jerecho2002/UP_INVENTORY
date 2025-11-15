@@ -7,6 +7,7 @@ import PageHeader from '@/Components/PageHeader.vue';
 import InventoryAcknowledgementsTable from '@/Components/InventoryAcknowledgementsTable.vue';
 
 const columns = [
+  { label: '', key: 'select' },
   { label: "Accountable Person", key: 'accountable_person.user', format: (val) => val?.email ?? 'N/A'   },
   { label: "Issued By", key: "issuedBy", format: (val) => val?.full_name ?? 'N/A'  },
   { label: "Created By", key: "created_by" },
@@ -46,17 +47,7 @@ const accountableField = [
    { label: "Created By", model: "", name: "created_by", option: "creadted_by"},
 ];
 
-const firstDropdown = [
-  { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name"},
-  { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name"},
-  { label: "Locations", model: "location_id", name: "locations", option: "location_name"},
-];
-
 const secondDropdown = [
-  { label: "Unit", model: "unit", options: 
-                                            [{label: "unit", value: "unit"},
-                                             {label: "pcs", value: "pcs"}, 
-                                             {label: "box", value: "box"}]},
   { label: "Status", model: "status", options: 
                                             [{label: "Recieved", value: "1"},
                                              {label: "Cancelled", value: "0"},
@@ -64,21 +55,15 @@ const secondDropdown = [
   ]},
 ];
 
-const quantityCostFields = [
-  { label: "Quantity", model: "quantity", placeholder: "0", type: "number"},
-  { label: "Unit Cost", model: "unit_cost", placeholder: "0", type: "number"},
-];
-
 const inputFields = [
+  { label: "Room", model: "item_name", placeholder: "Room 000", type: "text" },
   { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
-  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text" },
-  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
 
-const invoicesFundFields = [
-  { label: "Invoice Number", model: "invoice_id", placeholder: "0000", type: "text", readonly: false },
-  { label: "Fund Source", model: "fund_source_id", placeholder: "000", type: "text", readonly: false },
-];
+// const invoicesFundFields = [
+//   { label: "Invoice Number", model: "invoice_id", placeholder: "0000", type: "text", readonly: false },
+//   { label: "Fund Source", model: "fund_source_id", placeholder: "000", type: "text", readonly: false },
+// ];
 
 const requestFields = [
   { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
@@ -117,12 +102,13 @@ const toggleSidebar = () => {
           :accountableField="accountableField"
           :firstDropdown="firstDropdown"
           :secondDropdown="secondDropdown"
-          :quantityCostFields="quantityCostFields"
           :inputFields="inputFields"
           :invoicesFundFields="invoicesFundFields"
           :requestFields="requestFields"
           :items="items"
           :columns="columns"
+          @update:selected="ids => selectedIds = ids"
+          @selection-changed="ids => console.log('selection', ids)" 
           />  
         </div>
       </main>
