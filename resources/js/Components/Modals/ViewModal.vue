@@ -16,12 +16,7 @@ defineExpose({ openModal, closeModal });
 
 <template>
   <!-- Pass openModal to the slot -->
- <div>
-   <slot name="ViewItemButton" :open="openModal"></slot>
- </div>
- <div>
-    <slot name="ViewAckButton" :open="openModal"></slot>
- </div>
+  <slot name="ViewItemButton" :open="openModal"></slot>
 
   <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="absolute inset-0 bg-black opacity-50 backdrop-blur-md"></div>
