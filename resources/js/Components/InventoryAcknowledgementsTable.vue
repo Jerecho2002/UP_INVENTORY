@@ -20,13 +20,6 @@ const addModalRef = ref(null);
 const editModalRef = ref(null);
 const selectedViewItem = ref(null);
 
-function openViewModal(item, open) {
-  selectedViewItem.value = item;
-  // call the open function provided by the slot
-  if (typeof open === 'function') open();
-}
-
-
 function getValue(item, key) {
     if (!item || !key) return undefined;
     // if key is already a function (rare), call it with item
