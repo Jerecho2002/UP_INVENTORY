@@ -62,8 +62,8 @@ const toggleSidebar = () => {
         <SideBar/>
       </aside>
       <!-- MAIN -->
-      <main class="flex-1 sm:p-5 md:p-6 m-2 overflow-y-auto">
-        <div>
+      <main class="flex-1 sm:p-5 md:p-6 overflow-y-auto">
+        <div class="m-2">
           <PageHeader title="Reports" />
           <div class="mt-[2rem]">
             <ReportTable  

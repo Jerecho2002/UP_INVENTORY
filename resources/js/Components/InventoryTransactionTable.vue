@@ -6,7 +6,7 @@ import { Link, router } from '@inertiajs/vue3';
 
 const props = defineProps({
     tableHeader: Array,
-    items: Array,
+    items: Object,
 })
 
 const search = ref(props.search || '');

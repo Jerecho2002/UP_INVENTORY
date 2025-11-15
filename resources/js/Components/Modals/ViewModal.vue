@@ -20,7 +20,7 @@ defineExpose({ openModal, closeModal });
 
   <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="absolute inset-0 bg-black opacity-50 backdrop-blur-md"></div>
-    <div class="bg-white w-[90%] max-w-md rounded-lg shadow-2xl  p-6 relative animate-fadeIn">
+    <div class="bg-white w-[90%] max-w-md rounded-lg shadow-2xl  p-6 relative animate-pop-in">
       <button @click="closeModal" class="absolute top-4 right-4 flex items-center justify-center 
          w-7 h-7 rounded-full bg-black text-white 
          hover:bg-gray-800 transition duration-200 focus:outline-none">

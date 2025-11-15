@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from "vue";
-import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
   deleteUrl: String,
@@ -24,11 +23,6 @@ function closeModal() {
 function confirmDelete() {
   closeModal();
   showSuccess.value = true;
-  setTimeout(() => {
-    router.delete(props.deleteUrl, {
-      preserveScroll: true,
-    });
-  }, 1500);
 }
 
 defineExpose({ openModal, closeModal });
@@ -41,7 +35,7 @@ defineExpose({ openModal, closeModal });
   <!-- Delete Confirmation Modal -->
   <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="absolute inset-0 bg-black opacity-50 backdrop-blur-md"></div>
-    <div class="bg-white w-[60rem] max-w-md rounded-lg shadow-2xl p-6 relative animate-fadeIn">
+    <div class="bg-white w-[60rem] max-w-md rounded-lg shadow-2xl p-6 relative animate-pop-in">
       <slot name="DeleteItem" :close="closeModal" :confirm="confirmDelete" :message="props.message"></slot>
     </div>
   </div>
@@ -50,7 +44,7 @@ defineExpose({ openModal, closeModal });
   <transition name="fade">
     <div v-if="showSuccess"
       class="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-40 backdrop-blur-sm">
-      <div class="bg-white rounded-2xl shadow-xl p-8 w-[90%] sm:w-[30rem] text-center animate-fade-in">
+      <div class="bg-white rounded-2xl shadow-xl p-8 w-[90%] sm:w-[30rem] text-center animate-pop-in">
         <div class="mx-auto mb-3 flex items-center justify-center w-16 h-16 rounded-full bg-[#C8EFD4]">
           <svg class="h-24 w-24" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="50" height="50" rx="25" fill="#C8EFD4" />
@@ -66,7 +60,7 @@ defineExpose({ openModal, closeModal });
         </p>
 
         <button @click="showSuccess = false"
-          class="bg-[#41BD66] text-white px-6 py-3 rounded-md font-semibold hover:bg-green-700 transition">
+          class="bg-[#41BD66] text-white px-6 py-3 rounded-md font-semibold hover:bg-green-700">
           Confirm
         </button>
       </div>

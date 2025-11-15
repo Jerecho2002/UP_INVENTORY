@@ -23,7 +23,7 @@ const columns = [
         icon = '<i class="fa-solid fa-ban"></i>';
       }
       else if (status === 1) {
-        label = 'Recieved';
+        label = 'Received';
         cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-circle-check"></i>';
       }
@@ -86,8 +86,6 @@ const quantityCostFields = [
 
 const inputFields = [
   { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
-  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text" },
-  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
 
 const inputFieldsEdit = [
@@ -98,6 +96,8 @@ const inputFieldsEdit = [
 ];
 
 const requestFields = [
+  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text" },
+  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
   { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
   { label: "Purchase Orders", model: "po_number", placeholder: "PO-###", type: "text" },
   { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
@@ -131,7 +131,7 @@ const unitCostOptions = [
 ];
 
 const Status = [
-    { label: "Recieved", value: 1},
+    { label: "Received", value: 1},
     { label: "Cancelled", value: 0 },
 ];
 
@@ -161,27 +161,29 @@ const toggleSidebar = () => {
       </aside>
 
       <!-- Main --> 
-      <main class="flex-1 sm:p-5 md:p-6 m-2 overflow-hidden overflow-y-auto">
+      <main class="flex-1 sm:p-5 md:p-6 md:mx-0 overflow-y-auto">
         <!-- HEAD TITLE -->
-        <PageHeader title="Items" />
-        <div class="w-full h-full">
-          <InventoryItemsTable 
-          :columns="columns" 
-          :rows="items"
-          :unitCostOptions="unitCostOptions"
-          :Status="Status"
-          :itemClass="itemClassifications"
-          :suppliers="suppliers"
-          :view-items="viewItems"
-          :edit-items="editItems"
-          :input-fields="inputFields"
-          :inputFieldsEdit="inputFieldsEdit"
-          :quantity-cost-fields="quantityCostFields"
-          :firstDropdown="firstDropdown"
-          :secondDropdown="secondDropdown"
-          :requestFields="requestFields"
-          :invoicesFundFields="invoicesFundFields"
-          />
+        <div class="m-2">
+          <PageHeader title="Items" />
+            <div class="w-full h-full">
+              <InventoryItemsTable 
+                :columns="columns" 
+                :rows="items"
+                :unitCostOptions="unitCostOptions"
+                :Status="Status"
+                :itemClass="itemClassifications"
+                :suppliers="suppliers"
+                :view-items="viewItems"
+                :edit-items="editItems"
+                :input-fields="inputFields"
+                :inputFieldsEdit="inputFieldsEdit"
+                :quantity-cost-fields="quantityCostFields"
+                :firstDropdown="firstDropdown"
+                :secondDropdown="secondDropdown"
+                :requestFields="requestFields"
+                :invoicesFundFields="invoicesFundFields"
+                />
+            </div>
         </div>
       </main>
     </div>

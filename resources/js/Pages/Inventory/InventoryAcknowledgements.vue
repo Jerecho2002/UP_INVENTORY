@@ -1,5 +1,6 @@
 <script setup>
     import InventoryAcknowledgementsLayout from '@/Layouts/Inventory/InventoryAcknowledgementsLayout.vue';
+    import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>

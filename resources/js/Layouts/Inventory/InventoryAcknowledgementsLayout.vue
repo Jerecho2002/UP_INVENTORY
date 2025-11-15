@@ -12,10 +12,10 @@ const columns = [
   { label: "Quantity", key: "inventory_items", format: (val) => val?.quantity ?? 'N/A'  },
   { label: "Unit", key: "inventory_items", format: (val) => val ?.unit ?? 'N/A' },
   { label: "Unit Cost", key: "inventory_items", format: (val) => val ?.unit_cost ? `₱${val.unit_cost}` : 'N/A' },
-  { label: "Propety Number", key: "inventory_items", format: (val) => val?.property_number ?? 'N/A'  },
+  { label: "Property Number", key: "inventory_items", format: (val) => val?.property_number ?? 'N/A'  },
   { label: "Accountable Person", key: 'accountable_person.user', format: (val) => val?.email ?? 'N/A'   },
   { label: "Issued By", key: "issuedBy", format: (val) => val?.full_name ?? 'N/A'  },
-  { label: "Date Recieved", key: "par_date" },
+  { label: "Date Received", key: "par_date" },
   { label: "Status", key: 'status', 
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
@@ -57,19 +57,11 @@ const secondDropdown = [
 
 const inputFields = [
   { label: "Room", model: "item_name", placeholder: "Room 000", type: "text" },
-  { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text" },
 ];
 
-// const invoicesFundFields = [
-//   { label: "Invoice Number", model: "invoice_id", placeholder: "0000", type: "text", readonly: false },
-//   { label: "Fund Source", model: "fund_source_id", placeholder: "000", type: "text", readonly: false },
-// ];
-
-const requestFields = [
-  { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
-  { label: "Purchase Orders", model: "po_number", placeholder: "PO-###", type: "text" },
-  { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
-]
+const itemSelectedField = [
+  { label: "Item Selected", model: "item_name"},
+];
 
 const page = usePage();
 const items = computed(() => page.props.items);
@@ -79,6 +71,8 @@ const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
+
+const firstDropdown = ref(null);
 </script>
 
 <template>
@@ -96,21 +90,22 @@ const toggleSidebar = () => {
       <!-- Main --> 
       <main class="flex-1 sm:p-5 md:p-6 overflow-hidden ">
         <!-- HEAD TITLE -->
-        <PageHeader title="Acknowledgements" />
-        <div class="w-full h-full">
-          <InventoryAcknowledgementsTable
-          :accountableField="accountableField"
-          :firstDropdown="firstDropdown"
-          :secondDropdown="secondDropdown"
-          :inputFields="inputFields"
-          :invoicesFundFields="invoicesFundFields"
-          :requestFields="requestFields"
-          :items="items"
-          :columns="columns"
-          @update:selected="ids => selectedIds = ids"
-          @selection-changed="ids => console.log('selection', ids)" 
-          />  
+       <div class="m-2">
+          <PageHeader title="Acknowledgements" />
+          <div class="w-full h-full">
+            <InventoryAcknowledgementsTable
+            :accountableField="accountableField"
+            :firstDropdown="firstDropdown"
+            :secondDropdown="secondDropdown"
+            :inputFields="inputFields"
+            :itemSelectedField="itemSelectedField"
+            :items="items.data"
+            :columns="columns"
+            @update:selected="ids => selectedIds = ids"
+            @selection-changed="ids => console.log('selection', ids)" 
+            />  
         </div>
+       </div>
       </main>
     </div>
   </div>

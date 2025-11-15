@@ -39,7 +39,7 @@ const columns = [
 const totalItems = computed(() => items.value.total);
 
 const itemOverview = [
-  { title: "Total Items", icon: "fa-solid fa-cart-shopping text-[#06B6D4]", bgColor: "bg-[#06B6D4]", value: totalItems }, 
+  { title: "Total Items", icon: "fa-solid fa-boxes-stacked text-[#06B6D4]", bgColor: "bg-[#06B6D4]", value: totalItems }, 
   { title: "Item Distribution", icon: "fa-solid fa-hand-holding-hand text-[#8B5CF6]", bgColor: "bg-[#8B5CF6]" },
   { title: "Low Stock Items", icon: "fa-solid fa-triangle-exclamation text-[#F59E0B]", bgColor: "bg-[#F59E0B]" },
   { title: "Out of Stock Items", icon: "fa-solid fa-ban text-[#DC2626]", bgColor: "bg-[#DC2626]" },
@@ -78,8 +78,9 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
     </aside>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 p-4 sm:p-5 md:p-6 overflow-y-auto mx-2 sm:mx-0">
-      <PageHeader title="Dashboard" />
+    <main class="flex-1 p-4 sm:p-5 md:p-6 overflow-y-auto">
+      <div class="mx-4">
+        <PageHeader title="Dashboard" />
 
       <!-- MAIN FLEX LAYOUT -->
       <div class="flex flex-col lg:flex-row gap-4 my-5 flex-wrap">
@@ -103,6 +104,7 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
           />
           <UserActivity title="Recent Activity" />
         </div>
+      </div>
       </div>
     </main>
   </div>

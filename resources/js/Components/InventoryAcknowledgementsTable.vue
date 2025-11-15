@@ -7,10 +7,8 @@ import TableCell from './TableCell.vue';
 const props = defineProps({
     accountableField: Array,
     secondDropdown: Array,
-    quantityCostFields: Array,
     inputFields: Array,
-    invoicesFundFields: Array,
-    requestFields: Array,
+    itemSelectedField: Array,
     columns: Array,
     items: Array,
     rows: Array,
@@ -43,8 +41,8 @@ const currentRows = computed(() => list(props.items));
 
 // ALL SELECTED CHECK
 const allSelected = computed(() => {
-  const rows = currentRows.value;
-  return rows.length > 0 && rows.every(r => selected.value.has(r.id));
+    const rows = currentRows.value;
+    return rows.length > 0 && rows.every(r => selected.value.has(r.id));
 });
 
 
@@ -52,31 +50,31 @@ const anySelected = computed(() => selected.value.size > 0);
 
 //TOGGLE SINGLE ROW
 function toggleRow(item) {
-  if (!item || item.id == null) return;
-  if (selected.value.has(item.id)) selected.value.delete(item.id);
-  else selected.value.add(item.id);
-  emit('update:selected', Array.from(selected.value));
-  emit('selection-changed', Array.from(selected.value));
+    if (!item || item.id == null) return;
+    if (selected.value.has(item.id)) selected.value.delete(item.id);
+    else selected.value.add(item.id);
+    emit('update:selected', Array.from(selected.value));
+    emit('selection-changed', Array.from(selected.value));
 }
 
 // TOGGLE ALL VISIBLE ROWS
 function toggleAllVisible() {
-  const rows = currentRows.value;
-  if (allSelected.value) {
-    rows.forEach(r => selected.value.delete(r.id));
-  } else {
-    rows.forEach(r => selected.value.add(r.id));
-  }
-  emit('update:selected', Array.from(selected.value));
-  emit('selection-changed', Array.from(selected.value));
+    const rows = currentRows.value;
+    if (allSelected.value) {
+        rows.forEach(r => selected.value.delete(r.id));
+    } else {
+        rows.forEach(r => selected.value.add(r.id));
+    }
+    emit('update:selected', Array.from(selected.value));
+    emit('selection-changed', Array.from(selected.value));
 }
 
 watch(currentRows, (newRows) => {
-  const idsInPage = new Set(newRows.map(r => r.id));
-  const newSel = new Set(Array.from(selected.value).filter(id => idsInPage.has(id)));
-  selected.value = newSel;
-  emit('update:selected', Array.from(selected.value));
-  emit('selection-changed', Array.from(selected.value));
+    const idsInPage = new Set(newRows.map(r => r.id));
+    const newSel = new Set(Array.from(selected.value).filter(id => idsInPage.has(id)));
+    selected.value = newSel;
+    emit('update:selected', Array.from(selected.value));
+    emit('selection-changed', Array.from(selected.value));
 });
 </script>
 
@@ -113,7 +111,7 @@ watch(currentRows, (newRows) => {
                                     </div>
                                 </div>
 
-                                <!-- UNIT/STATUS/DATE ACQUIRED FIELDS  -->
+                                <!-- STATUS/DATE ACQUIRED FIELDS  -->
                                 <div class="flex md:flex-row gap-4 mb-8">
                                     <div v-for="sdf in secondDropdown" :key="sdf.label" class="flex gap-3">
                                         <div>
@@ -137,17 +135,7 @@ watch(currentRows, (newRows) => {
                                     </div>
                                 </div>
 
-                                <!-- SERIAL NUMBERS -->
-                                <!-- <div v-if="form.quantity > 0" class="flex flex-col gap-2 mt-4">
-                                        <label class="block text-sm font-bold mb-1">Serial Numbers</label>
-                                        <div v-for="(sn, index) in form.serial_numbers" :key="index">
-                                            <input v-model="form.serial_numbers[index]" type="text"
-                                                :placeholder="`SER-${String(index + 1).padStart(3, '0')}`"
-                                                class="w-full sm:w-[rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                                        </div>
-                                    </div> -->
-
-                                <!-- ITEM NAME/PAR-ICS-NUMBER/PROPERTY NUMBER -->
+                                <!-- ROOMS -->
                                 <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
                                     <label class="block text-sm font-bold mb-1">{{ ip.label }}</label>
                                     <input :placeholder="ip.placeholder"
@@ -156,48 +144,25 @@ watch(currentRows, (newRows) => {
                                             form.errors[ip.model] }}</div> -->
                                 </div>
 
+                                <!-- REMARKS -->
+                                <div>
+                                    <label class="block text-md font-semibold mb-1">Remarks</label>
+                                    <textarea placeholder="Input a remarks"
+                                        class="w-full sm:w-[32rem] h-32 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"></textarea>
+                                    <!-- <div v-if="form.errors.description" class="text-red-500 text-sm">{{
+                                    form.errors.description }}</div> -->
+                                </div>
                             </div>
                         </div>
 
                         <!-- RIGHT -->
                         <div class="space-y-4">
-                            <!-- INVOICES & FUND SOURCES FIELDS -->
-                            <!-- <div class="flex flex-col md:flex-row gap-4 mb-4">
-                                <div v-for="inv in invoicesFundFields" :key="inv.model">
-                                    <label class="block text-sm font-bold mb-1">{{ inv.label }}</label>
-                                    <input :placeholder="inv.placeholder"
-                                        class="w-full sm:w-[16.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                                    <div v-if="form.errors[inv.model]" class="text-red-500 text-sm">{{
-                                        form.errors[inv.model] }}</div>
+                            <!-- ITEM SELECTED -->
+                            <div v-for="select in itemSelectedField" :key="select.model">
+                                <label class="block text-sm font-bold mb-1">{{ select.label }}</label>
+                                <div class="bg-[#F8F8F8] border border-gray-300 rounded-md h-[24.6rem]">
                                 </div>
-                            </div> -->
-
-                            <!-- PR/PO/REMARKS FIELDS -->
-                            <!-- <div class="space-y-4">
-                                <div v-for="rf in requestFields" :key="rf.model" class="flex flex-col">
-                                    <label class="block text-sm font-bold mb-1 ">{{ rf.label }}</label>
-                                    <input :placeholder="rf.placeholder"
-                                        class="w-full sm:w-[34rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                                    <div v-if="form.errors[rf.model]" class="text-red-500 text-sm">{{
-                                        form.errors[rf.model] }}</div>
-                                </div>
-                            </div> -->
-
-                            <!-- DESCRIPTION -->
-                            <div>
-                                <label class="block text-md font-semibold mb-1">Description</label>
-                                <textarea placeholder="Input a description"
-                                    class="w-full h-32 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"></textarea>
-                                <!-- <div v-if="form.errors.description" class="text-red-500 text-sm">{{
-                                    form.errors.description }}</div> -->
                             </div>
-
-                            <!-- TOTAL AMOUNT -->
-                            <!-- <div class="flex flex-col md:flex-row sm:items-center md:items-center text-sm font-semibold mt-8">
-                                <label class="block text-base font-bold">Total Amount: ₱</label>
-                                <input readonly placeholder="0.00"
-                                    class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none" />
-                            </div> -->
                         </div>
                     </div>
 
@@ -264,7 +229,7 @@ watch(currentRows, (newRows) => {
                             <span v-if="col.format" v-html="col.format(getValue(item, col.key), item)"></span>
                             <span v-else>{{ getValue(item, col.key) ?? 'N/A' }}</span>
                         </template>
-                        
+
                     </TableCell>
                 </tr>
             </tbody>
