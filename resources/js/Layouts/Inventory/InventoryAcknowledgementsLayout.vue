@@ -12,7 +12,7 @@ const columns = [
   { label: "Quantity", key: "inventory_items", format: (val) => val?.quantity ?? 'N/A'  },
   { label: "Unit", key: "inventory_items", format: (val) => val ?.unit ?? 'N/A' },
   { label: "Unit Cost", key: "inventory_items", format: (val) => val ?.unit_cost ? `₱${val.unit_cost}` : 'N/A' },
-  { label: "Propety Number", key: "property_number" },
+  { label: "Propety Number", key: "inventory_items", format: (val) => val?.property_number ?? 'N/A'  },
   { label: "Accountable Person", key: 'accountable_person.user', format: (val) => val?.email ?? 'N/A'   },
   { label: "Issued By", key: "issuedBy", format: (val) => val?.full_name ?? 'N/A'  },
   { label: "Date Recieved", key: "par_date" },
