@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Location;
 use App\Models\Supplier;
 use App\Services\AcknowledgementRecieptService;
 use Illuminate\Http\Request;
