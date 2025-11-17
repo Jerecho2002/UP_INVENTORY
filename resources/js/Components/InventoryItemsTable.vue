@@ -316,7 +316,7 @@ function getValue(obj, path) {
                                             <div v-for="(sn, index) in form.serial_numbers" :key="index">
                                                 <input v-model="form.serial_numbers[index]" type="text"
                                                     :placeholder="`SER-${String(index + 1).padStart(3, '0')}`"
-                                                    class="w-full sm:w-[rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                                    class="w-full sm:w-[32rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
                                             </div>
                                         </div>
 
@@ -396,7 +396,7 @@ function getValue(obj, path) {
             <!--Item Add Success Modal -->
             <div v-if="showAddedSuccess"
                 class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-                <div class="bg-white m-5 rounded-2xl shadow-lg p-8 w-[100%] sm:w-[35rem] text-center">
+                <div class="bg-white m-5 rounded-2xl shadow-lg p-8 w-[100%] sm:w-[35rem] text-center animate-pop-in">
                     <!-- Success Icon -->
                     <div class="mx-auto mb-2 flex items-center justify-center w-16 h-16 rounded-full bg-[#C8EFD4]">
                         <svg class="h-10 w-10" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -629,7 +629,7 @@ function getValue(obj, path) {
                                                                                 class="block text-sm font-bold mb-1">{{
                                                                                     fdp.label
                                                                                 }}</label>
-                                                                            <select v-model="form[fdp.model]" class="w-full sm:w-[10rem] rounded-md border border-gray-300 px-3 py-3
+                                                                            <select v-model="form[fdp.model]" class="w-full sm:w-[15.7rem] rounded-md border border-gray-300 px-3 py-3
                          bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038]
                          focus:outline-none focus:border-[#850038]">
                                                                                 <option value="">Select</option>
@@ -652,7 +652,7 @@ function getValue(obj, path) {
                                                                                     class="block text-sm font-bold mb-1">{{
                                                                                         sdf.label }}</label>
                                                                                 <select v-model="form[sdf.model]"
-                                                                                    class="w-full sm:w-[10rem] rounded-md border border-gray-300 px-3 py-3  bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                                                                    class="w-full sm:w-[10.3rem] rounded-md border border-gray-300 px-3 py-3  bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                                                                     <option value="">Select</option>
                                                                                     <option v-for="op in sdf.options"
                                                                                         :key="op.value"
@@ -684,7 +684,7 @@ function getValue(obj, path) {
                                                                                 :type="qcf.type"
                                                                                 :placeholder="qcf.placeholder"
                                                                                 step="any"
-                                                                                class="w-full sm:w-[15.2rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                                                                class="w-full sm:w-[15.7rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
                                                                             <div v-if="form.errors[qcf.model]"
                                                                                 class="text-red-500 text-sm">
                                                                                 {{ form.errors[qcf.model] }}
@@ -700,13 +700,22 @@ function getValue(obj, path) {
                                                                         <input v-model="form[ip.model]" :type="ip.type"
                                                                             :placeholder="ip.placeholder"
                                                                             :readonly="ip.readonly" :class="[
-                                                                                'w-full sm:w-[31.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150',
+                                                                                'w-full sm:w-[32rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038] transition duration-150',
                                                                                 ip.readonly ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'text-gray-800'
                                                                             ]" />
                                                                         <div v-if="form.errors[ip.model]"
                                                                             class="text-red-500 text-sm">
                                                                             {{ form.errors[ip.model] }}
                                                                         </div>
+                                                                    </div>
+
+
+                                                                    <!--DESCRIPTION -->
+                                                                    <div>
+                                                                        <label
+                                                                            class="block text-md font-semibold mt-4">Description</label>
+                                                                        <textarea v-model="form.description"
+                                                                            class="w-full sm:w-[32rem] h-36 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"></textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -725,7 +734,7 @@ function getValue(obj, path) {
                                                                         <input v-model="form[inv.model]"
                                                                             :key="inv.model" type="text"
                                                                             :placeholder="inv.placeholder"
-                                                                            class="w-full  sm:w-[16.8rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                                                            class="w-full sm:w-[16.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
                                                                         <div v-if="form.errors[inv.model]"
                                                                             class="text-red-500 text-sm">{{
                                                                                 form.errors[inv.model] }}</div>
@@ -740,17 +749,10 @@ function getValue(obj, path) {
                                                                             rf.label }}</label>
                                                                         <input v-model="form[rf.model]" type="text"
                                                                             :placeholder="rf.placeholder"
-                                                                            class="w-full sm:w-[34.6rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                                                            class="w-full sm:w-[34rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
                                                                     </div>
                                                                 </div>
 
-                                                                <!--DESCRIPTION -->
-                                                                <div>
-                                                                    <label
-                                                                        class="block text-md font-semibold mt-4">Description</label>
-                                                                    <textarea v-model="form.description"
-                                                                        class="w-full h-36 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"></textarea>
-                                                                </div>
                                                                 <!-- TOTAL AMOUNT -->
                                                                 <div
                                                                     class="flex flex-col md:flex-row text-sm sm:items-center md:items-center font-semibold mt-12">

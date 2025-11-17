@@ -17,7 +17,12 @@ defineExpose({ openModal, closeModal });
 <template>
   <div>
     <!-- Edit Button Slot -->
-    <slot name="EditItemButton" :open="openModal"></slot>
+    <div>
+      <slot name="EditItemButton" :open="openModal"></slot>
+    </div>
+     <div>
+      <slot name="UpdateAssignButton" :open="openModal"></slot>
+    </div>
   </div>
 
   <!-- Modal -->
@@ -27,10 +32,10 @@ defineExpose({ openModal, closeModal });
 
     <!-- Modal Content -->
     <div
-      class="bg-white w-full max-w-6xl rounded-lg drop-shadow-2xl p-4 relative overflow-y-auto animate-pop-in max-h-[90vh]"
-    >
+      class="bg-white w-full max-w-6xl rounded-lg drop-shadow-2xl p-4 relative overflow-y-auto animate-pop-in max-h-[90vh]">
       <!-- Body -->
       <slot name="EditInventory" :closeModal="closeModal"></slot>
+      <slot name="UpdateAssignForm" :closeModal="closeModal"></slot>
     </div>
   </div>
 </template>
