@@ -26,6 +26,9 @@ defineExpose({ openModal, closeModal });
     <slot name="AddAssignButton"></slot>
   </div>
   <div>
+    <slot name="AddReAssignButton"></slot>
+  </div>
+  <div>
     <slot name="AddSupplierButton"></slot>
   </div>
 
@@ -37,7 +40,8 @@ defineExpose({ openModal, closeModal });
       class="bg-white w-full max-w-6xl rounded-lg drop-shadow-2xl p-4 relative overflow-y-auto max-h-[90vh] animate-pop-in">
       <!-- Pass the close function (and optional submit handler) -->
       <slot name="InventoryForm" :closeModal="closeModal"></slot>
-      <slot name="AcknowledgementForm" :closeModal="closeModal"></slot>
+      <slot name="AssignForm" :closeModal="closeModal"></slot>
+      <slot name="ReAssignForm" :closeModal="closeModal"></slot>
       <slot name="SupplierForm" :closeModal="closeModal"></slot>
     </div>
   </div>
