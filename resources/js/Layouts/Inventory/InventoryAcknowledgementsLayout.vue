@@ -7,16 +7,16 @@ import PageHeader from '@/Components/PageHeader.vue';
 import InventoryAcknowledgementsTable from '@/Components/InventoryAcknowledgementsTable.vue';
 
 const columns = [
-  { label: '', key: 'select' },
-  { label: "Item Name", key: "inventory_items", format: (val) => val?.item_name ?? 'N/A'  },
-  { label: "Quantity", key: "inventory_items", format: (val) => val?.quantity ?? 'N/A'  },
-  { label: "Unit", key: "inventory_items", format: (val) => val ?.unit ?? 'N/A' },
-  { label: "Unit Cost", key: "inventory_items", format: (val) => val ?.unit_cost ? `₱${val.unit_cost}` : 'N/A' },
-  { label: "Property Number", key: "inventory_items", format: (val) => val?.property_number ?? 'N/A'  },
-  { label: "Accountable Person", key: 'accountable_person.user', format: (val) => val?.email ?? 'N/A'   },
-  { label: "Issued By", key: "issuedBy", format: (val) => val?.full_name ?? 'N/A'  },
-  { label: "Date Received", key: "par_date" },
-  { label: "Status", key: 'status', 
+  { label: "", key: "select_all" },
+  { label: "Item Name", key: "item_name"},
+  { label: "Quantity", key: "quantity" },
+  { label: "Unit", key: "unit" },
+  { label: "Unit Cost", key: "unit_cost", format: (val) => val ? `₱${val}` : 'N/A' },
+  { label: "Property Number", key: "property_number" },
+  { label: "PAR/ICS Number", key: 'category' },
+  { label: "Suppliers", key: "supplier", format: (val) => val?.supplier_name ?? 'N/A'  },
+  { label: "Date Acquired", key: "date_acquired" },
+  { label: "Status", key: 'status',
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
       if (status === 0) {
@@ -40,20 +40,19 @@ const columns = [
   { label: "Action", key: "action" }
 ];
 
-
 const accountableField = [
-   { label: "Accountable Person", model: "", name: "accountablePerson", option: "classification_name"},
-   { label: "Issued By", model: "", name: "issued_by", option: "issued_by"},
-   { label: "Created By", model: "", name: "created_by", option: "creadted_by"},
+  { label: "Accountable Person", model: "accountable_persons_id", name: "users", option: "email", value: "id" },
+  { label: "Issued By", model: "issued_by_id", name: "users", option: "email", value: "id" },
+  { label: "Created By", model: "created_by", name: "users", option: "email", value: "id" },
 ];
 
-const secondDropdown = [
-  { label: "Status", model: "status", options: 
-                                            [{label: "Recieved", value: "1"},
-                                             {label: "Cancelled", value: "0"},
+// const secondDropdown = [
+//   { label: "Status", model: "status", options: 
+//                                             [{label: "Recieved", value: "1"},
+//                                              {label: "Cancelled", value: "0"},
                                             
-  ]},
-];
+//   ]},
+// ];
 
 const inputFields = [
   { label: "Room", model: "item_name", placeholder: "Room 000", type: "text" },
@@ -65,7 +64,7 @@ const itemSelectedField = [
 
 const page = usePage();
 const items = computed(() => page.props.items);
-
+const users = computed(() => page.props.users);
 
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
@@ -99,7 +98,8 @@ const firstDropdown = ref(null);
             :secondDropdown="secondDropdown"
             :inputFields="inputFields"
             :itemSelectedField="itemSelectedField"
-            :items="items.data"
+            :items="items"
+            :users="users"
             :columns="columns"
             @update:selected="ids => selectedIds = ids"
             @selection-changed="ids => console.log('selection', ids)" 

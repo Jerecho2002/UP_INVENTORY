@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcknowledgementReceipt;
+use App\Models\User;
 use App\Models\Supplier;
-use App\Services\AcknowledgementRecieptService;
 use Illuminate\Http\Request;
 use App\Models\InventoryItem;
 use App\Models\ItemClassification;
 use App\Services\InventoryService;
 use Illuminate\Support\Facades\Http;
 use App\Services\InventoryTransactionService;
+use App\Services\AcknowledgementRecieptService;
 
 class InventoryController extends Controller
 {
@@ -56,16 +58,42 @@ class InventoryController extends Controller
     public function InventoryAcknowledgements(Request $request, AcknowledgementRecieptService $service)
     {
         $search = $request->input(key: 'search');
-        $costRange = $request->input('cost_range');
-        $itemClassifications = ItemClassification::all();
-        $suppliers = Supplier::all();
+        $users = User::all();
+        // $costRange = $request->input('cost_range');
 
         return inertia('Inventory/InventoryAcknowledgements', [
-            'items' => $service->getPaginatedInventory($search, $costRange),
-            'itemClassifications' => $itemClassifications,
-            'suppliers' => $suppliers,
+            'items' => $service->getPaginatedInventory($search),
+            'users' => $users,
         ]);
     }
+
+    public function InventoryAcknowledgementsStore(Request $request)
+    {
+        $request->validate([
+    'inventory_item_id' => 'required|array',
+    'inventory_item_id.*' => 'required|exists:inventory_items,id', // <-- fix here
+    'accountable_persons_id' => 'required|exists:accountable_persons,id',
+    'issued_by_id' => 'required|exists:users,id',
+    'created_by' => 'required|exists:users,id',
+    'par_date' => 'required|date',
+    'remarks' => 'nullable|string',
+]);
+
+
+        foreach ($request->inventory_item_id as $itemId) {
+            AcknowledgementReceipt::create([
+                'inventory_item_id' => $itemId,
+                'accountable_persons_id' => $request->accountable_persons_id,
+                'issued_by_id' => $request->issued_by_id,
+                'created_by' => $request->created_by,
+                'par_date' => $request->par_date,
+                'remarks' => $request->remarks,
+            ]);
+        }
+
+        return redirect()->route('inventory.acknowledgements')->with('success', 'Items assigned successfully!');
+    }
+
 
     public function store(Request $request)
     {

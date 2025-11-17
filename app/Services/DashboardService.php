@@ -11,7 +11,7 @@ class DashboardService
     {
         return InventoryItem::with('supplier')
             ->when($search, fn($query, $search) => $query->search($search))
-            ->paginate(8)
+            ->paginate(10)
             ->withQueryString();
     }
 

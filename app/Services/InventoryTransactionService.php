@@ -26,7 +26,7 @@ class InventoryTransactionService
             ->when(!is_null($status), function ($query) use ($status) {
                 $query->where('status', $status);
             })
-            ->paginate(8)
+            ->paginate(10)
             ->withQueryString();
     }
 

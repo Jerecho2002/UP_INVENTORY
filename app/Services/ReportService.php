@@ -23,7 +23,7 @@ class ReportService
             ->when($to, function ($query) use ($to) {
                 return $query->whereDate('created_at', '<=', $to);
             })
-            ->paginate(8)
+            ->paginate(10)
             ->withQueryString();
     }
 

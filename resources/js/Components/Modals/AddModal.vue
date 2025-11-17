@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
-
+const props = defineProps({
+  selectedItems: Array
+})
 const isOpen = ref(false);
 const hiding = ref(false)
 

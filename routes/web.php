@@ -8,6 +8,7 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::get('/inventory/items', [InventoryController::class, 'InventoryItems'])->name('inventory.items');
     Route::get('/inventory/transactions', [InventoryController::class, 'InventoryTransactions'])->name('inventory.transactions');
     Route::get('/inventory/acknowledgements', [InventoryController::class, 'InventoryAcknowledgements'])->name('inventory.acknowledgements');
+    Route::post('/inventory/acknowledgements/store', [InventoryController::class, 'InventoryAcknowledgementsStore'])->name('inventory.acknowledgements.store');
     Route::post('/items/store', [InventoryController::class, 'store'])->name('items.store');
     Route::put('/items/{id}', [InventoryController::class, 'update'])->name('items.update');
     Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');

@@ -42,4 +42,17 @@ class AcknowledgementReceipt extends Model
         return $this->hasMany(AcknowledgementItem::class, 'acknowledgement_id');
     }
 
+    public function scopeSearch($query, $term)
+    {
+        if (!$term) {
+            return $query;
+        }
+
+        return $query->whereHas('inventoryItems', function ($q) use ($term) {
+            $q->where('item_name', 'like', "%{$term}%")
+                ->orWhere('unit', 'like', "%{$term}%")
+                ->orWhere('property_number', 'like', "%{$term}%")
+                ->orWhere('category', 'like', "%{$term}%");
+        });
+    }
 }
