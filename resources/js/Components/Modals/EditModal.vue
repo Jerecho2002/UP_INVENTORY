@@ -36,6 +36,7 @@ defineExpose({ openModal, closeModal });
       <!-- Body -->
       <slot name="EditInventory" :closeModal="closeModal"></slot>
       <slot name="UpdateAssignForm" :closeModal="closeModal"></slot>
+      <slot name="UpdateReAssignForm" :closeModal="closeModal"></slot>
     </div>
   </div>
 </template>

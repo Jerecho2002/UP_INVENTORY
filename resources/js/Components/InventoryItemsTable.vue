@@ -603,7 +603,7 @@ function getValue(obj, path) {
                                         <!-- EDIT MODAL -->
                                         <EditModal ref="editModalRef">
                                             <template #EditItemButton="{ open }">
-                                                <button type="button" class="text-[#54B3AB] hover:text[#54B3AB] mx-1"
+                                                <button class="text-[#54B3AB] hover:text[#54B3AB] mx-1"
                                                     title="Edit" @click="() => openEditModal(item, open)">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </button>
