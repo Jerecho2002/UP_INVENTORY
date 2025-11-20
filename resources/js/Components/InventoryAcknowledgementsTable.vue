@@ -3,7 +3,6 @@ import TableCell from './TableCell.vue';
 import { usePage, useForm, Link, router } from '@inertiajs/vue3';
 import { reactive, computed, ref, watch } from 'vue';
 import { debounce } from 'lodash';
-import AddModal from './Modals/AddModal.vue';
 
 const props = defineProps({
     accountableField: Array,
