@@ -3,8 +3,16 @@ import { ref, computed, readonly } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
-import InventoryItemsTable from "@/Components/InventoryItemsTable.vue";
+import InventoryTable from "@/Components/InventoryTable.vue";
 import PageHeader from "@/Components/PageHeader.vue";
+import AddButton from "@/Components/Buttons/AddButton.vue";
+import InventoryFormModal from "@/Components/Modals/InventoryFormModal.vue";
+import InventoryFilters from "@/Components/InventoryFilters.vue";
+import ImportButton from "@/Components/Buttons/ImportButton.vue";
+import ExportButton from "@/Components/Buttons/ExportButton.vue";
+import ConvertButton from "@/Components/Buttons/ConvertButton.vue";
+
+
 
 const columns = [
   { label: "Item Name", key: 'item_name' },
@@ -128,16 +136,60 @@ const unitCostOptions = [
     { label: "₱50,000 Above", value: "50000-99999999" },
 ];
 
-const Status = [
+const filterStatus = [
     { label: "Received", value: 1},
     { label: "Cancelled", value: 0 },
 ];
 
+const addButton = [
+  {title: "Add Item" , icon: "fa-solid fa-plus" }
+];
+
 const page = usePage();
-const items = computed(() => page.props.items);
-const itemClassifications = computed(() => page.props.itemClassifications);
-const suppliers = computed(() => page.props.suppliers);
+const items = computed(() => page.props.items || []);
+const itemClassifications = computed(() => page.props.itemClassifications || []);
+const suppliers = computed(() => page.props.suppliers || []);
 // const rooms = computed(() => page.props.rooms?.rooms || []);
+
+//INVENTORY FILTER 
+let search = ref('');
+let status = ref(null);
+let cost_range = ref(null);
+
+
+// MODAL FUNCTION
+let formMode = ref('create'); // CREATE || EDIT || VIEW
+let showFormModal = ref(false);
+let currentItem = ref({});
+
+function openAdd(item) {
+  currentItem.value = item;
+  showFormModal.value = true;
+};
+
+function handleView(item) {
+  formMode.value = 'view';
+  currentItem.value = item;
+  showFormModal.value = true;
+}
+
+function handleEdit(item) {
+  formMode.value = 'edit';
+  currentItem.value = item ;
+  showFormModal.value = true;
+}
+
+function handleSubmit (item) {
+  console.log('submit', item) 
+  showFormModal.value = false;
+}
+
+function confirmDelete(item) {
+  // call delete API or Inertia.delete(...)
+  console.log('delete confirmed', item);
+  showDeleteModal.value = false;
+}
+
 
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
@@ -149,7 +201,7 @@ const toggleSidebar = () => {
 <template>
   <div class="h-screen flex flex-col bg-gray-100 overflow-hidden">
     <!-- Pass toggle event -->
-    <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />
+    <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />  
 
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
@@ -164,22 +216,49 @@ const toggleSidebar = () => {
         <div class="m-2">
           <PageHeader title="Items" />
             <div class="w-full h-full">
-              <InventoryItemsTable 
-                :columns="columns" 
-                :rows="items"
-                :unitCostOptions="unitCostOptions"
-                :Status="Status"
-                :itemClass="itemClassifications"
-                :suppliers="suppliers"
-                :view-items="viewItems"
-                :edit-items="editItems"
-                :input-fields="inputFields"
-                :inputFieldsEdit="inputFieldsEdit"
-                :quantity-cost-fields="quantityCostFields"
+                <div class="flex gap-2 justify-end mt-6">
+                  <ConvertButton />
+                  <ImportButton />
+                  <ExportButton />
+                </div>
+                
+              <div class="flex flex-col md:flex-row justify-between mt-10">
+                <AddButton
+                  @click="openAdd"
+                  :addButton="addButton"
+                />
+
+                <InventoryFilters
+                  :search="search"
+                  :cost_range="cost_range"
+                  :status="status"
+                  :unitCostOptions="unitCostOptions" 
+                  :filterStatus="filterStatus"
+                  @update:search="search = $event"
+                  @update:status="status = $event"
+                  @update:cost_range="cost_range = $event"
+                />
+              </div>
+
+              <InventoryFormModal
+                v-if="showFormModal"
+                @created="refreshItems"
+                :mode="formMode"
                 :firstDropdown="firstDropdown"
                 :secondDropdown="secondDropdown"
-                :requestFields="requestFields"
+                :quantityCostFields="quantityCostFields"
+                :input-fields="inputFields"
                 :invoicesFundFields="invoicesFundFields"
+                :requestFields="requestFields"
+                :itemClass="itemClassifications"
+                :suppliers="suppliers"
+                @submit="handleSubmit"
+                @close="() => showFormModal = false"
+              />
+
+              <InventoryTable 
+                :columns="columns" 
+                :rows="items"
                 />
             </div>
         </div>

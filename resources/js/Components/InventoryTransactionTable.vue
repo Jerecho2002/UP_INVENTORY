@@ -3,8 +3,6 @@ import TableCell from './TableCell.vue';
 import { ref, watch } from 'vue';
 import { debounce } from 'lodash';
 import { Link, router, useForm } from '@inertiajs/vue3';
-import AddModal from './Modals/AddModal.vue';
-import EditModal from './Modals/EditModal.vue';
 
 const props = defineProps({
     tableHeader: Array,

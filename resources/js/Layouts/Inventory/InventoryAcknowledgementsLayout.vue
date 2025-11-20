@@ -92,6 +92,7 @@ const firstDropdown = ref(null);
        <div class="m-2">
           <PageHeader title="Acknowledgements" />
           <div class="w-full h-full">
+
             <InventoryAcknowledgementsTable
             :accountableField="accountableField"
             :inputFields="inputFields"
