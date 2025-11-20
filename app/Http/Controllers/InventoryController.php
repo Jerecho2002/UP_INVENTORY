@@ -2,33 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcknowledgementReceipt;
 use App\Models\User;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Models\InventoryItem;
+use App\Services\RoomApiService;
 use App\Models\ItemClassification;
 use App\Services\InventoryService;
-use Illuminate\Support\Facades\Http;
+use App\Http\Requests\InventoryStoreRequest;
+use App\Http\Requests\InventoryUpdateRequest;
 use App\Services\InventoryTransactionService;
-use App\Services\AcknowledgementRecieptService;
+use App\Services\AcknowledgementReceiptService;
+use App\Http\Requests\InventoryAcknowledgementStoreRequest;
 
 class InventoryController extends Controller
 {
-    public function InventoryItems(Request $request, InventoryService $service)
+    public function InventoryItems(Request $request, InventoryService $service, RoomApiService $roomsApi)
     {
-        // API para mo fetch sa rooms
-        // $apiUrl = env('SYSTEM_B_API_URL') . '/rooms';
-        // $token = env('SYSTEM_B_API_TOKEN');
-
-        // $response = Http::withHeaders([
-        //     'Authorization' => "Bearer {$token}",
-        //     'Accept' => 'application/json',
-        // ])->get($apiUrl);
-
-        // $rooms = $response->successful()
-        //     ? $response->json()
-        //     : [];
+        // $rooms = $roomsApi->fetchRooms();
 
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
@@ -38,7 +29,7 @@ class InventoryController extends Controller
 
         return inertia('Inventory/InventoryItem', [
             // 'rooms' => $rooms,
-            'items' => $service->getPaginatedInventory($search, $costRange, $status),
+            'items' => $service->filterAndPaginate($search, $costRange, $status),
             'itemClassifications' => $itemClassifications,
             'suppliers' => $suppliers,
         ]);
@@ -51,153 +42,42 @@ class InventoryController extends Controller
         $status = $request->input('status');
 
         return inertia('Inventory/InventoryTransaction', [
-            'items' => $service->getPaginatedInventory($search, $costRange, $status),
+            'items' => $service->filterAndPaginate($search, $costRange, $status),
         ]);
     }
 
-    public function InventoryAcknowledgements(Request $request, AcknowledgementRecieptService $service)
+    public function InventoryAcknowledgements(Request $request, AcknowledgementReceiptService $service)
     {
         $search = $request->input(key: 'search');
         $users = User::all();
         // $costRange = $request->input('cost_range');
 
         return inertia('Inventory/InventoryAcknowledgements', [
-            'items' => $service->getPaginatedInventory($search),
+            'items' => $service->filterAndPaginate($search),
             'users' => $users,
         ]);
     }
 
-    public function InventoryAcknowledgementsStore(Request $request)
+    public function InventoryAcknowledgementsStore(InventoryAcknowledgementStoreRequest $request, AcknowledgementReceiptService $service)
     {
-        $request->validate([
-    'inventory_item_id' => 'required|array',
-    'inventory_item_id.*' => 'required|exists:inventory_items,id', // <-- fix here
-    'accountable_persons_id' => 'required|exists:accountable_persons,id',
-    'issued_by_id' => 'required|exists:users,id',
-    'created_by' => 'required|exists:users,id',
-    'par_date' => 'required|date',
-    'remarks' => 'nullable|string',
-]);
-
-
-        foreach ($request->inventory_item_id as $itemId) {
-            AcknowledgementReceipt::create([
-                'inventory_item_id' => $itemId,
-                'accountable_persons_id' => $request->accountable_persons_id,
-                'issued_by_id' => $request->issued_by_id,
-                'created_by' => $request->created_by,
-                'par_date' => $request->par_date,
-                'remarks' => $request->remarks,
-            ]);
-        }
+        $service->createAcknowledgements($request->validated());
 
         return redirect()->route('inventory.acknowledgements')->with('success', 'Items assigned successfully!');
     }
 
 
-    public function store(Request $request)
+    public function store(InventoryStoreRequest $request, InventoryService $service)
     {
-        $request->validate([
-            'item_classification_id' => 'required|integer',
-            'supplier_id' => 'required|integer',
-            'invoice' => 'required|string|max:50',
-            'fund_source' => 'required|string|max:50',
-            'item_name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category' => 'nullable|string|max:255',
-            'quantity' => 'required|integer|min:1',
-            'unit' => 'required|string|max:50',
-            'unit_cost' => 'required|numeric',
-            'serial_numbers' => 'required|array|min:1',
-            'serial_numbers.*' => 'required|string|max:50',
-            'property_number' => 'required|string|max:50',
-            'pr_number' => 'required|string|max:50',
-            'po_number' => 'required|string|max:50',
-            'remarks' => 'required|string|max:50',
-            'date_acquired' => 'required|date',
-            'status' => 'nullable|string|max:50',
-        ]);
-
-        foreach ($request->serial_numbers as $index => $serialNumber) {
-            $propertyNumber = $request->property_number . '-' . str_pad($index + 1, 2, '0', STR_PAD_LEFT);
-
-            InventoryItem::create([
-                'item_classification_id' => $request->item_classification_id,
-                'supplier_id' => $request->supplier_id,
-                'invoice' => $request->invoice,
-                'fund_source' => $request->fund_source,
-                'item_name' => $request->item_name,
-                'description' => $request->description,
-                'category' => $request->category,
-                'quantity' => 1, // per record
-                'unit' => $request->unit,
-                'unit_cost' => $request->unit_cost,
-                'total_amount' => $request->unit_cost,
-                'property_number' => $propertyNumber,
-                'serial_number' => $serialNumber, // <- single column
-                'pr_number' => $request->pr_number,
-                'po_number' => $request->po_number,
-                'remarks' => $request->remarks,
-                'date_acquired' => $request->date_acquired,
-                'status' => $request->status,
-            ]);
-        }
+        $service->createinventoryItems($request->validated());
 
         return redirect()->route('inventory.items');
     }
 
 
-    public function update(Request $request, $id)
+    public function update(InventoryUpdateRequest $request, $id, InventoryService $service)
     {
-        // Validate incoming request
-        $request->validate([
-            'item_classification_id' => 'required|integer',
-            'supplier_id' => 'required|integer',
-            'invoice' => 'required|string|max:50',
-            'fund_source' => 'required|string|max:50',
-            'item_name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category' => 'nullable|string|max:255',
-            'quantity' => 'required|integer',
-            'unit' => 'required|string|max:50',
-            'unit_cost' => 'required|numeric',
-            'total_amount' => 'nullable|numeric',
-            'property_number' => 'required|string|max:50',
-            'serial_number' => 'required|string|max:50',
-            'pr_number' => 'required|string|max:50',
-            'po_number' => 'required|string|max:50',
-            'remarks' => 'required|string|max:50',
-            'date_acquired' => 'required|date',
-            'status' => 'nullable|integer',
-        ]);
+        $service->updateInventoryItem($id, $request->validated());
 
-        $item = InventoryItem::findOrFail($id);
-        // Calculate the total amount if necessary
-        $totalAmount = $request->quantity * $request->unit_cost;
-
-        // Create a new InventoryItem using mass assignment
-        $item->update([
-            'item_classification_id' => $request->item_classification_id,
-            'supplier_id' => $request->supplier_id,
-            'invoice' => $request->invoice,
-            'fund_source' => $request->fund_source,
-            'item_name' => $request->item_name,
-            'description' => $request->description,
-            'category' => $request->category,
-            'quantity' => $request->quantity,
-            'unit' => $request->unit,
-            'unit_cost' => $request->unit_cost,
-            'total_amount' => $totalAmount,
-            'property_number' => $request->property_number,
-            'serial_number' => $request->serial_number,
-            'pr_number' => $request->pr_number,
-            'po_number' => $request->po_number,
-            'remarks' => $request->remarks,
-            'date_acquired' => $request->date_acquired,
-            'status' => $request->status,
-        ]);
-
-        // Redirect back or to a specific page after successful submission
         return redirect()->route('inventory.items');
     }
 

@@ -6,7 +6,7 @@ use App\Models\InventoryTransaction;
 
 class InventoryTransactionService
 {
-    public function getPaginatedInventory($search = null, $costRange = null, $status)
+    public function filterAndPaginate($search = null, $costRange = null, $status)
     {
         return InventoryTransaction::with('inventoryItem')
             ->when($search, fn($query, $search) => $query->search($search))

@@ -19,7 +19,7 @@ const menuItems = [
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
     // { name: "Offices & Types", icon: "fa-solid fa-network-wired", route: "reports.index" },
     { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
-    { name: "Item Archiving", icon: "fa-solid fa-recycle", route: "item_disposal.index" },
+    { name: "Item Archiving", icon: "fa-solid fa-recycle", route: "item_archiving.index" },
 ];
 
 const openDropdown = ref(null);
