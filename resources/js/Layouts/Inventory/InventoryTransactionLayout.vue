@@ -42,6 +42,21 @@ const tableHeader = [
   { label: "Action", key: "action" }
 ]
 
+const accountableField = [
+  { label: "New Accountable Person", model: "accountable_persons_id", name: "users", option: "email", value: "id" },
+  { label: "Issued By", model: "issued_by_id", name: "users", option: "email", value: "id" },
+  // { label: "Created By", model: "created_by", name: "users", option: "email", value: "id" }, 
+];
+
+const inputFields = [
+  { label: "Rooms", model: "item_name", placeholder: "Room 000", type: "text" },
+];
+
+const itemSelectedField = [
+  { label: "Item Selected", model: "item_name"},
+];
+
+
 const processedItems = computed(() =>
   items.value.data.map((item) => {
     const newItem = { ...item }
@@ -72,9 +87,15 @@ const processedItems = computed(() =>
       <main class="flex-1 sm:p-5 md:p-6  mx-2 sm:mx-2 md:mx-0 overflow-y-auto">
         <!-- HEAD TITLE -->
         <PageHeader title="Transactions" />
-        <div class="bg-white rounded-lg drop-shadow-md mt-8 ">
+        <div class="w-full h-full">
           <!-- Inventory Transaction Table Component -->
-          <InventoryTransactionTable :tableHeader=tableHeader :items=items />
+          <InventoryTransactionTable 
+          :tableHeader=tableHeader 
+          :items=items 
+          :accountableField="accountableField"
+          :inputFields="inputFields"
+          :itemSelectedField="itemSelectedField"
+          />
         </div>
       </main>
     </div>

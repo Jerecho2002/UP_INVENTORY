@@ -43,7 +43,7 @@ const columns = [
 const accountableField = [
   { label: "Accountable Person", model: "accountable_persons_id", name: "users", option: "email", value: "id" },
   { label: "Issued By", model: "issued_by_id", name: "users", option: "email", value: "id" },
-  { label: "Created By", model: "created_by", name: "users", option: "email", value: "id" },
+  // { label: "Created By", model: "created_by", name: "users", option: "email", value: "id" }, 
 ];
 
 // const secondDropdown = [
@@ -55,7 +55,7 @@ const accountableField = [
 // ];
 
 const inputFields = [
-  { label: "Room", model: "item_name", placeholder: "Room 000", type: "text" },
+  { label: "Rooms", model: "item_name", placeholder: "Room 000", type: "text" },
 ];
 
 const itemSelectedField = [
@@ -87,16 +87,16 @@ const firstDropdown = ref(null);
       </aside>
 
       <!-- Main --> 
-      <main class="flex-1 sm:p-5 md:p-6 overflow-hidden ">
+      <main class="flex-1 sm:p-5 md:p-6 overflow-y-auto">
         <!-- HEAD TITLE -->
        <div class="m-2">
           <PageHeader title="Acknowledgements" />
           <div class="w-full h-full">
             <InventoryAcknowledgementsTable
             :accountableField="accountableField"
+            :inputFields="inputFields"
             :firstDropdown="firstDropdown"
             :secondDropdown="secondDropdown"
-            :inputFields="inputFields"
             :itemSelectedField="itemSelectedField"
             :items="items"
             :users="users"

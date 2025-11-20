@@ -91,8 +91,6 @@ const inputFields = [
 const inputFieldsEdit = [
   { label: "Serial Number", model: "serial_number", placeholder: "SER-####.", type: "text", readonly: false },
   { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text", readonly: false },
-  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text", readonly: true }, 
-  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" , readonly: true},
 ];
 
 const requestFields = [

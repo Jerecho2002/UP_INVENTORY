@@ -28,6 +28,9 @@ defineExpose({ openModal, closeModal });
   <div>
     <slot name="AddSupplierButton"></slot>
   </div>
+  <div>
+    <slot name="ReAssignButton"></slot>
+  </div>
 
   <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="absolute inset-0 bg-black opacity-50 backdrop-blur-md"></div>
@@ -39,6 +42,7 @@ defineExpose({ openModal, closeModal });
       <slot name="InventoryForm" :closeModal="closeModal"></slot>
       <slot name="AcknowledgementForm" :closeModal="closeModal"></slot>
       <slot name="SupplierForm" :closeModal="closeModal"></slot>
+      <slot name="ReAssignForm" :closeModal="closeModal"></slot>
     </div>
   </div>
 </template>
