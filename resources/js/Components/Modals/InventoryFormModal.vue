@@ -11,16 +11,20 @@ const props = defineProps({
     invoicesFundFields: { type: Array, default: () => [] },
     quantityCostFields: { type: Array, default: () => [] },
     requestFields: { type: Array, default: () => [] },
+    totalAmount: { type: Array, default: () => [] },
     itemClass: { type: Array, default: () => [] },
     suppliers: { type: Array, default: () => [] },
+    inputFieldsEdit: { type: Array, default: () => [] },
+    
 });
 
 const page = usePage();
 
-const emit = defineEmits(['submit', 'close']);
+const emit = defineEmits(['submit', 'close', 'created']);
 
 
 const form = useForm({
+    id: null,
     item_classification_id: "",
     supplier_id: "",
     invoice: "",
@@ -31,7 +35,7 @@ const form = useForm({
     quantity: "",
     unit: "",
     unit_cost: "",
-    total_amount: "",
+    total_amount: 0,
     property_number: "",
     serial_numbers: [], // FOR ADD ITEM
     serial_number: "", // FOR EDIT ITEM
@@ -47,13 +51,11 @@ const isEditing = ref(false);
 const calculateTotalAmount = () => {
     const qty = Number(form.quantity) || 0;
     const cost = Number(form.unit_cost) || 0;
-
     const total = qty * cost;
 
-    form.total_amount = total.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+    form.total_amount = total
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 watch(
@@ -63,19 +65,14 @@ watch(
 
 watch(() => form.item_classification_id, (newVal) => {
     if (isEditing.value || !newVal) return;
-
-    // Find the selected classification object
     const selectedClass = props.itemClass.find(c => c.id === newVal);
 
     if (selectedClass) {
         const code = selectedClass.classification_code;
-
-        // Get current year and month (with leading zero for month)
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, "0");
 
-        // Update the input fields (PAR/ICS and Property Number)
         if (code) {
             const formatted = `${code}-${year}-${month}-`;
             form.category = formatted;
@@ -87,6 +84,35 @@ watch(() => form.item_classification_id, (newVal) => {
     }
 });
 
+// --- EDIT MODE ---
+watch(() => props.initialValues, (item) => {
+    if (props.mode !== 'edit' || !item) return;
+    
+    isEditing.value = true;
+
+    form.id = item.id ?? null;
+    form.item_classification_id = item.item_classification_id ?? "";
+    form.supplier_id = item.supplier_id ?? "";
+    form.invoice = item.invoice ?? "";
+    form.fund_source = item.fund_source ?? "";
+    form.item_name = item.item_name ?? "";
+    form.description = item.description ?? "";
+    form.category = item.category ?? "";
+    form.quantity = item.quantity ?? 1;
+    form.unit = item.unit ?? "";
+    form.unit_cost = item.unit_cost ?? 0;
+    form.total_amount = item.total_amount ?? 0;
+    form.property_number = item.property_number ?? "";
+    form.serial_number = item.serial_number ?? [];
+    form.pr_number = item.pr_number ?? "";
+    form.po_number = item.po_number ?? "";
+    form.remarks = item.remarks ?? "";
+    form.date_acquired = item.date_acquired
+        ? item.date_acquired.split("T")[0]
+        : "";
+    form.status = item.status ?? "";
+}, { immediate: true });
+
 
 
 watch(() => form.quantity, (newVal) => {
@@ -96,33 +122,48 @@ watch(() => form.quantity, (newVal) => {
         form.serial_numbers = [];
         return;
     }
-
-    // Adjust number of fields based on quantity
     form.serial_numbers = Array.from({ length: qty }, (_, i) => form.serial_numbers[i] || "");
 });
 
 function submit() {
-    if (typeof form.serial_numbers === 'string' && form.serial_numbers.length) {
-        form.serial_numbers = form.serial_numbers.split(',').map(s => s.trim());
+     form.total_amount = parseFloat(form.total_amount);
+    if (props.mode === "edit") {
+        if (!form.id) {
+            console.error('Edit mode but form.id is missing', form);
+            return;
+        }
+
+        form.put(route('items.update', form.id), {
+            onSuccess: () => {
+                emit('close');
+                emit('submit', form);
+            },
+            onError: (errors) => {
+                console.error('Update failed', errors);
+            },
+        });
+    } else {
+        form.post(route('items.store'), {
+            onSuccess: () => {
+                emit('close');
+                emit('created');
+                form.reset();
+            },
+            onError: (errors) => {
+                console.error('Create failed', errors);
+            },
+        });
     }
-    form.post(route('items.store'), {
-        onSuccess: () => {
-            emit('close');
-            form.reset();
-            emit('created');
-        },
-    });
 }
 
 </script>
-
 
 <template>
     <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold text-[#850038] mb-6">
-                    {{ mode === 'edit' ? 'Edit Item' : mode === 'view' ? 'View Item' : 'Add Item' }}
+                    {{ mode === 'edit' ? 'Edit Item' : mode === 'view' ? 'Item Details' : 'Add Item' }}
                 </h3>
             </div>
 
@@ -188,8 +229,7 @@ function submit() {
                                 </div>
 
                                 <!-- SERIAL NUMBERS -->
-                                <div v-if="form.quantity > 0" class="flex flex-col gap-2 mt-4">
-                                    <label class="block text-sm font-bold mb-1">Serial Numbers</label>
+                                <div v-if="form.quantity > 0" class="flex flex-col gap-2">
                                     <div v-for="(sn, index) in form.serial_numbers" :key="index">
                                         <input v-model="form.serial_numbers[index]" type="text"
                                             :placeholder="`SER-${String(index + 1).padStart(3, '0')}`"
@@ -198,9 +238,10 @@ function submit() {
                                 </div>
 
                                 <!-- ITEM NAME -->
-                                <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
+                                <div v-for="ip in (mode === 'edit' ? inputFieldsEdit : inputFields)" :key="ip.model"
+                                    class="flex flex-col">
                                     <label class="block text-sm font-bold mb-1">{{ ip.label }}</label>
-                                    <input v-model="form[ip.model]" :key="ip.model" type="text"
+                                    <input v-model="form[ip.model]" :key="ip.model"  :readonly="ip.readonly" type="text"
                                         :placeholder="ip.placeholder"
                                         class="w-full sm:w-[32rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
                                     <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">{{
@@ -220,17 +261,6 @@ function submit() {
                     </div>
                     <!-- RIGHT -->
                     <div class="space-y-4">
-                        <!-- Invoices + Fund Sources -->
-                        <div class="flex flex-col md:flex-row gap-4 mb-4">
-                            <div v-for="inv in invoicesFundFields" :key="inv.model">
-                                <label class="block text-sm font-bold mb-1">{{ inv.label }}</label>
-                                <input v-model="form[inv.model]" :key="inv.model" type="text"
-                                    :placeholder="inv.placeholder"
-                                    class="w-full sm:w-[16.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                                <div v-if="form.errors[inv.model]" class="text-red-500 text-sm">{{
-                                    form.errors[inv.model] }}</div>
-                            </div>
-                        </div>
                         <!-- REQUEST FIELDS -->
                         <div class="space-y-4">
                             <div v-for="rf in requestFields" :key="rf.model" class="flex flex-col">
@@ -243,12 +273,25 @@ function submit() {
                             </div>
                         </div>
 
+                        <!-- Invoices + Fund Sources -->
+                        <div class="flex flex-col md:flex-row gap-4 mb-4">
+                            <div v-for="inv in invoicesFundFields" :key="inv.model">
+                                <label class="block text-sm font-bold mb-1">{{ inv.label }}</label>
+                                <input v-model="form[inv.model]" :key="inv.model" type="text"
+                                    :placeholder="inv.placeholder"
+                                    class="w-full sm:w-[16.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                <div v-if="form.errors[inv.model]" class="text-red-500 text-sm">{{
+                                    form.errors[inv.model] }}</div>
+                            </div>
+                        </div>
+
                         <!-- TOTAL AMOUNT -->
-                        <div
-                            class="flex flex-col md:flex-row sm:items-center md:items-center text-sm font-semibold mt-8">
-                            <label class="block text-base font-bold">Total Amount: ₱</label>
-                            <input v-model="form.total_amount" readonly placeholder="0.00"
-                                class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none" />
+                        <div class="flex md:flex-row sm:items-center md:items-center text-sm font-semibold">
+                            <div v-for="total in totalAmount" :key="total.label" class="flex items-center gap-3 mt-12">
+                                <label class="block text-base font-bold">{{ total.label }}:</label>
+                                <input v-model="form.total_amount" readonly placeholder="0.00"
+                                    class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -258,7 +301,7 @@ function submit() {
                     <button type="button" @click="$emit('close')"
                         class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">Cancel</button>
                     <button type="submit"
-                        class="bg-[#0E6021] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">Add</button>
+                        class="bg-[#0E6021] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">  {{ mode === 'edit' ? "Update" : "Add" }}</button>
                 </div>
             </form>
 

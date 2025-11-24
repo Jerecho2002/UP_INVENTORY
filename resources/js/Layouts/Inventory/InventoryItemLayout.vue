@@ -1,4 +1,5 @@
 <script setup>
+import { router } from '@inertiajs/vue3';
 import { ref, computed, readonly } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
@@ -11,6 +12,7 @@ import InventoryFilters from "@/Components/InventoryFilters.vue";
 import ImportButton from "@/Components/Buttons/ImportButton.vue";
 import ExportButton from "@/Components/Buttons/ExportButton.vue";
 import ConvertButton from "@/Components/Buttons/ConvertButton.vue";
+import DeleteModal from "@/Components/Modals/DeleteModal.vue";
 
 
 
@@ -131,14 +133,21 @@ const secondDropdown = [
   ]},
 ];
 
+const totalAmount = [
+  { label: "Total Amount"}
+];
+
+
 const unitCostOptions = [
-    { label: "₱0 - ₱50,000", value: "0-50000" },
-    { label: "₱50,000 Above", value: "50000-99999999" },
+    { label: "Unit Cost", options: [{label: "0-50000", value: "0-50000"},
+                                    {label: "₱50,000 Above", value: "50000-99999999"},
+  ]},
 ];
 
 const filterStatus = [
-    { label: "Received", value: 1},
-    { label: "Cancelled", value: 0 },
+    {label: "Status", options: [{ label: "Received", value: 1},
+                                { label: "Cancelled", value: 0 },
+  ]},
 ];
 
 const addButton = [
@@ -160,9 +169,11 @@ let cost_range = ref(null);
 // MODAL FUNCTION
 let formMode = ref('create'); // CREATE || EDIT || VIEW
 let showFormModal = ref(false);
+let showDeleteModal = ref(false);
 let currentItem = ref({});
 
 function openAdd(item) {
+  formMode.value = 'create';
   currentItem.value = item;
   showFormModal.value = true;
 };
@@ -179,16 +190,38 @@ function handleEdit(item) {
   showFormModal.value = true;
 }
 
-function handleSubmit (item) {
-  console.log('submit', item) 
-  showFormModal.value = false;
+function handleDelete(item) {
+  currentItem.value = item;
+  showDeleteModal.value = true;
 }
+
+function handleSubmit (item) {
+  Inertia.post('/items', item, {
+    onSuccess: () => {
+      showFormModal.value = false;
+      refreshItems();
+    },
+    onError: (errors) => {
+      console.error('Validation errors:', errors);
+    }
+  });
+}
+
 
 function confirmDelete(item) {
   // call delete API or Inertia.delete(...)
   console.log('delete confirmed', item);
   showDeleteModal.value = false;
+  refreshItems();
 }
+
+function refreshItems() {
+  // Reload the current Inertia page so items table updates
+  router.reload({
+    only: ['items'] // optional but faster if you only need items
+  });
+}
+
 
 
 const isSidebarOpen = ref(true);
@@ -216,7 +249,7 @@ const toggleSidebar = () => {
         <div class="m-2">
           <PageHeader title="Items" />
             <div class="w-full h-full">
-                <div class="flex gap-2 justify-end mt-6">
+                <div class="flex flex-col md:flex-row gap-2 justify-end mt-6">
                   <ConvertButton />
                   <ImportButton />
                   <ExportButton />
@@ -237,6 +270,7 @@ const toggleSidebar = () => {
                   @update:search="search = $event"
                   @update:status="status = $event"
                   @update:cost_range="cost_range = $event"
+                  :mode="'inventory'"
                 />
               </div>
 
@@ -250,8 +284,11 @@ const toggleSidebar = () => {
                 :input-fields="inputFields"
                 :invoicesFundFields="invoicesFundFields"
                 :requestFields="requestFields"
+                :inputFieldsEdit="inputFieldsEdit"
+                :totalAmount="totalAmount"
                 :itemClass="itemClassifications"
                 :suppliers="suppliers"
+                :initialValues="currentItem"
                 @submit="handleSubmit"
                 @close="() => showFormModal = false"
               />
@@ -259,6 +296,16 @@ const toggleSidebar = () => {
               <InventoryTable 
                 :columns="columns" 
                 :rows="items"
+                @view="handleView"
+                @edit="handleEdit"
+                @delete="handleDelete"
+                />
+
+               <DeleteModal
+                v-if="showDeleteModal"
+                :item="currentItem"
+                @confirm="confirmDelete"
+                @close="() => showDeleteModal = false"
                 />
             </div>
         </div>

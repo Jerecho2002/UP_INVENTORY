@@ -4,8 +4,7 @@ import { usePage } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
-import ReportTable from "@/Components/ReportTable.vue";
-
+import InventoryTable from "@/Components/InventoryTable.vue";
 
 const columns = [
   { label: "Item Name", key: 'item_name' },
@@ -66,9 +65,9 @@ const toggleSidebar = () => {
         <div class="m-2">
           <PageHeader title="Reports" />
           <div class="mt-[2rem]">
-            <ReportTable  
-            :columns="columns"
-            :rows="items"
+            <InventoryTable 
+              :columns="columns" 
+              :rows="items"
             />
           </div>
         </div>

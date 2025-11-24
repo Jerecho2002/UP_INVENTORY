@@ -5,8 +5,9 @@ import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import ItemOverview from "@/Components/ItemOverview.vue";
 import PageHeader from "@/Components/PageHeader.vue";
-import DashboardTable from "@/Components/DashboardTable.vue";
 import BarChartCard from "@/Components/BarChartCard.vue";
+import InventoryFilters from "@/Components/InventoryFilters.vue";
+import InventoryTable from "@/Components/InventoryTable.vue";
 import SupplierChartCard from "@/Components/SupplierChartCard.vue";
 import UserActivity from "@/Components/UserActivity.vue";
 
@@ -58,6 +59,11 @@ const dropdownSupplierChart = [
 const page = usePage();
 const items = computed(() => page.props.items);
 
+//INVENTORY FILTER 
+let search = ref('');
+let status = ref(null);
+let cost_range = ref(null);
+
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
 </script>
@@ -81,30 +87,41 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
     <main class="flex-1 p-4 sm:p-5 md:p-6 overflow-y-auto">
       <div class="mx-4">
         <PageHeader title="Dashboard" />
+          <div class="flex flex-col lg:flex-row gap-4 my-5 flex-wrap">
+            <div class="flex-1 w-full lg:w-[22rem] xl:w-[25rem]">
+              <ItemOverview :item-overview="itemOverview" />
+              <div class="mt-3">
+                <BarChartCard />
+              </div>
+              <div class="my-5">
+                <InventoryFilters class="justify-end"
+                      :search="search"
+                      :cost_range="cost_range"
+                      :status="status"
+                      @update:search="search = $event"
+                      @update:status="status = $event"
+                      @update:cost_range="cost_range = $event"
+                      :mode="'dashboard'"
+                      />
+              </div>
+              <div class="my-5">
+                <InventoryTable
+                  :columns="columns"
+                  :rows="items"
+                />
+              </div>
+            </div>
 
-      <!-- MAIN FLEX LAYOUT -->
-      <div class="flex flex-col lg:flex-row gap-4 my-5 flex-wrap">
-        <!-- LEFT SECTION -->
-        <div class="flex-1 w-full lg:w-[22rem] xl:w-[25rem]">
-          <ItemOverview :item-overview="itemOverview" />
-          <div class="mt-3">
-            <BarChartCard />
+              <!-- RIGHT SECTION -->
+              <div class="w-full lg:w-[22rem] xl:w-[25rem] space-y-4 flex-shrink-0">
+                <SupplierChartCard
+                  title="Supplier Statistics"
+                  :supplier-chart="supplierChart"
+                  :dropdown-supplier-list="dropdownSupplierChart"
+                />
+                <UserActivity title="Recent Activity" />
+              </div>
           </div>
-          <div class="my-5">
-            <DashboardTable :columns="columns" :rows="items" />
-          </div>
-        </div>
-
-        <!-- RIGHT SECTION -->
-        <div class="w-full lg:w-[22rem] xl:w-[25rem] space-y-4 flex-shrink-0">
-          <SupplierChartCard
-            title="Supplier Statistics"
-            :supplier-chart="supplierChart"
-            :dropdown-supplier-list="dropdownSupplierChart"
-          />
-          <UserActivity title="Recent Activity" />
-        </div>
-      </div>
       </div>
     </main>
   </div>
