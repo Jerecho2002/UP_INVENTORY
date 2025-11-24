@@ -1,9 +1,36 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
-import SupplierTable from "@/Components/SupplierTable.vue";
+import InventoryTable from "@/Components/InventoryTable.vue";
+import AddButton from "@/Components/Buttons/AddButton.vue";
+
+
+const columns = [
+  { label: "Supplier Name", key: 'supplier', format: (val) => val?.supplier_name ?? 'N/A' },
+  { label: "Contact"},
+  { label: "Email"},
+  { label: "Address"},
+  { label: "Status", key: 'status', 
+    format: (status) => {
+      let label = 'Unknown', cls = 'text-gray-500', icon = '';
+      if (status === 0) {
+        label = 'Cancelled';
+        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-ban"></i>';
+      }
+      else if (status === 1) {
+        label = 'Received';
+        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-circle-check"></i>';
+      }
+      return `<span class="${cls}">${icon} ${label}</span>`;
+    }
+  },
+  { label: "Action", key: "action" }
+]
 
 const supplierOption = [
   { label: "Supplier Name", model: "supplier_name", placeholder: "Supplier Name", type: "text" },
@@ -19,6 +46,23 @@ const statusDropdown = [
                                             
   ]},
 ];
+
+const addButton = [
+  {title: "Add Supplier" , icon: "fa-solid fa-plus" }
+];
+
+const page = usePage();
+const items = computed(() => page.props.items || []);
+const suppliers = computed(() => page.props.suppliers || []);
+
+let formMode = ref('create'); // CREATE || EDIT || VIEW
+let showFormModal = ref(false);
+let currentItem = ref({});
+
+function openAdd(item) {
+  currentItem.value = item;
+  showFormModal.value = true;
+};
 
 
 const isSidebarOpen = ref(true);
@@ -41,17 +85,25 @@ const toggleSidebar = () => {
     
       <!-- MAIN -->
        <main class="flex-1 sm:p-5 md:p-6 overflow-hidden m-2">
-          <div>
             <PageHeader title="Suppliers" />
               <div class="w-full h-full">
-                <SupplierTable 
-                :supplierOption="supplierOption"
-                :statusDropdown="statusDropdown"
-                /> 
-              </div>
-          </div>
+                <div class="mt-10">
+                  <AddButton 
+                    @click="openAdd"
+                    :addButton="addButton"
+                  />
+                </div>
+
+                <InventoryTable 
+                  :columns="columns" 
+                  :rows="items"
+                  :suppliers="suppliers"
+                />
+
+
+                </div>
        </main>
-      
+       
     </div>
   </div>
 </template>

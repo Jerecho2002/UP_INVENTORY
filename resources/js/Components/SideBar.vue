@@ -9,27 +9,23 @@ const menuItems = [
         icon: "fa-solid fa-boxes-packing",
         children: [
             { name: "Items", route: "inventory.items" },
-            // { name: "Offices", route: "inventory.items" },
-            // { name: "Categories", route: "inventory.items" },
-            // { name: "Locations", route: "inventory.items" },
             { name: "Acknowledgements", route: "inventory.acknowledgements" },
             { name: "Transactions", route: "inventory.transactions" },
         ],
     },
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
-    // { name: "Offices & Types", icon: "fa-solid fa-network-wired", route: "reports.index" },
     { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
     { name: "Item Archiving", icon: "fa-solid fa-recycle", route: "item_disposal.index" },
 ];
 
 const openDropdown = ref(null);
 
-// Toggle dropdown open/close
+
 const toggleDropdown = (name) => {
     openDropdown.value = openDropdown.value === name ? null : name;
 };
 
-// Keep parent dropdown open if current route is a child
+
 watchEffect(() => {
     menuItems.forEach((item) => {
         if (item.children) {

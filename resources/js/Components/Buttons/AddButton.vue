@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-    addButton: Array,
+    addButton: String,
 })
 </script>
 
