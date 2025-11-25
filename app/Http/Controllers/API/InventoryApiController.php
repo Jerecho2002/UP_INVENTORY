@@ -8,7 +8,7 @@ use App\Models\ItemClassification;
 use App\Services\InventoryService;
 use App\Http\Controllers\Controller;
 
-class InventoryController extends Controller
+class InventoryApiController extends Controller
 {
     public function index(Request $request, InventoryService $service)
     {
@@ -19,7 +19,7 @@ class InventoryController extends Controller
         $suppliers = Supplier::all();
 
         return response()->json([
-            'items' => $service->getPaginatedInventory($search, $costRange, $status),
+            'items' => $service->filterAndPaginateInventory($search, $costRange, $status),
             'itemClassifications' => $itemClassifications,
             'suppliers' => $suppliers,
         ]);

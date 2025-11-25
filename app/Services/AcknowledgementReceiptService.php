@@ -7,7 +7,7 @@ use App\Models\AcknowledgementReceipt;
 
 class AcknowledgementReceiptService
 {
-    public function filterAndPaginate(
+    public function filterAndPaginateAcknowledgementReceipt(
         ?string $search = null,
         ?string $costRange = null,
         int|string|null $status = null,
@@ -21,7 +21,7 @@ class AcknowledgementReceiptService
             )
             ->when($costRange, function ($query, $costRange) {
 
-                // Always return 2 values; fill missing ones as null  
+                // Always return 2 values; fill missing ones as null
                 [$min, $max] = array_pad(explode('-', $costRange), 2, null);
 
                 // Convert empty strings to null

@@ -29,20 +29,20 @@ class InventoryController extends Controller
 
         return inertia('Inventory/InventoryItem', [
             // 'rooms' => $rooms,
-            'items' => $service->filterAndPaginate($search, $costRange, $status),
+            'items' => $service->filterAndPaginateInventory($search, $costRange, $status),
             'itemClassifications' => $itemClassifications,
             'suppliers' => $suppliers,
         ]);
     }
 
-    public function InventoryTransactions(Request $request, InventoryTransactionService $service)
+    public function InventoryTransactions(Request $request, InventoryService $service)
     {
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $status = $request->input('status');
 
         return inertia('Inventory/InventoryTransaction', [
-            'items' => $service->filterAndPaginate($search, $costRange, $status),
+            'items' => $service->filterAndPaginateTransaction($search, $costRange, $status),
         ]);
     }
 
@@ -53,7 +53,7 @@ class InventoryController extends Controller
         // $costRange = $request->input('cost_range');
 
         return inertia('Inventory/InventoryAcknowledgements', [
-            'items' => $service->filterAndPaginate($search),
+            'items' => $service->filterAndPaginateAcknowledgementReceipt($search),
             'users' => $users,
         ]);
     }

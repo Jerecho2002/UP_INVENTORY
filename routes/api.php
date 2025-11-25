@@ -1,6 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\InventoryController;
+use App\Http\Controllers\API\InventoryApiController;
 
-Route::get('/inventoryitems', [InventoryController::class, 'index']);
+Route::get('/inventoryitems', [InventoryApiController::class, 'index']);
