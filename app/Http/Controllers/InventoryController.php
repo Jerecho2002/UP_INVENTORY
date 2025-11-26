@@ -11,7 +11,6 @@ use App\Models\ItemClassification;
 use App\Services\InventoryService;
 use App\Http\Requests\InventoryStoreRequest;
 use App\Http\Requests\InventoryUpdateRequest;
-use App\Services\InventoryTransactionService;
 use App\Services\AcknowledgementReceiptService;
 use App\Http\Requests\InventoryAcknowledgementStoreRequest;
 
@@ -89,4 +88,18 @@ class InventoryController extends Controller
         return redirect()->back()->with('success', 'Item deleted successfully.');
     }
 
+    public function convert(Request $request, InventoryService $service)
+    {
+        return $service->convertToCsv($request);
+    }
+
+    public function importCsv(Request $request, InventoryService $service)
+    {
+        return $service->importCsv($request);
+    }
+
+    public function exportCsv(InventoryService $service)
+    {
+        return $service->exportCsv();
+    }
 }

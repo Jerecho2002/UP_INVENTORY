@@ -4,6 +4,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ItemArchivingController;
 
 Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::get('/inventory/items', [InventoryController::class, 'InventoryItems'])->name('inventory.items');
@@ -19,12 +20,14 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::get('/report', [ReportController::class, 'searchBar'])->name('reports.index');
 
     Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+
+    Route::get('item_archiving', [ItemArchivingController::class, 'index'])->name('item_archiving.index');
+
+    Route::post('/convert-excel-to-csv', [InventoryController::class, 'convert']);
+    Route::post('/import-csv', [InventoryController::class, 'importCsv']);
+    Route::get('/export-csv', [InventoryController::class, 'exportCsv']);
+
 });
-
-Route::get('/item_archiving', function () {
-    return inertia("ItemDisposal");
-})->name("item_archiving.index");
-
 
 Route::get('/dummy-auth', function () {
     // Temporary Authentication

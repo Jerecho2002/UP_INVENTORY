@@ -1,13 +1,12 @@
 <script setup>
-import { router } from '@inertiajs/vue3';
-
-function exportExcel() {
-    window.location.href = '/inventory/export'; // triggers download
+function exportCsv() {
+  // Just open the route in a new tab to trigger download
+  window.location.href = '/export-csv';
 }
 </script>
 
 <template>
-    <button @click="exportExcel"
+    <button @click="exportCsv"
         class="flex items-center justify-center gap-2 bg-[#850038] text-white font-semibold rounded-md h-[2.8rem] px-5 hover:bg-[#a60648] transition duration-150 w-full sm:w-auto">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
             <path
