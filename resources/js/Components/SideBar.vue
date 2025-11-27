@@ -10,7 +10,7 @@ const menuItems = [
         children: [
             { name: "Items", route: "inventory.items" },
             { name: "Acknowledgements", route: "inventory.acknowledgements" },
-            { name: "Transactions", route: "inventory.transactions" },
+            { name: "Assigned", route: "inventory.transactions" },
         ],
     },
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },

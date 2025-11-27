@@ -1,7 +1,6 @@
 <script setup>
-import { usePage, useForm, Link, router } from '@inertiajs/vue3';
-import { reactive, computed, ref, watch } from 'vue';
-import { debounce } from 'lodash';
+import { usePage, router } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
 import TableCell from './TableCell.vue';
 
 
@@ -9,6 +8,7 @@ const props = defineProps({
     // rooms: Array, // -> InventoryTable
     columns: Array, // -> InventoryTable
     rows: Object, // -> InventoryTable
+    users: Array,
     unitCostOptions: Array, // InventoryFilter
     Status: Array, // -> InventoryFilter
     itemClass: Array, // InventoryForm
@@ -27,7 +27,8 @@ const props = defineProps({
     status: String, // InventoryFilter
 });
 
-defineEmits(['view', 'edit', 'delete']); 
+const emit = defineEmits(['view', 'edit', 'delete', 'update:selected', 'selection-changed']);
+
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -50,6 +51,38 @@ function getValue(obj, path) {
     return path.split('.').reduce((acc, key) => acc?.[key], obj) ?? 'N/A'
 }
 
+// SELECTABLE ROWS/IDS
+const selectedIDs = ref([]);
+
+const allSelected = computed(() => {
+    return props.rows?.data?.length > 0 &&
+        props.rows.data.every(i => selectedIDs.value.includes(i.id));
+});
+
+function toggleSelectAll() {
+    if (allSelected.value) {
+        selectedIDs.value = [];
+    } else {
+        selectedIDs.value = props.rows.data.map(i => i.id);
+    }
+
+    emit("update:selected", selectedIDs.value);
+    emit("selection-changed", selectedIDs.value);
+}
+function toggleCheck(item) {
+    const id = item.id;
+
+    if (selectedIDs.value.includes(id)) {
+        selectedIDs.value = selectedIDs.value.filter(x => x !== id);
+    } else {
+        selectedIDs.value.push(id);
+    }
+
+    emit("update:selected", selectedIDs.value);
+    emit("selection-changed", selectedIDs.value);
+}
+
+
 </script>
 
 <template>
@@ -59,37 +92,50 @@ function getValue(obj, path) {
         <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">
             <thead class="bg-[#850038]">
                 <tr class="text-white">
-                    <th v-for="col in columns" :key="col.key"
-                        class="p-2 sm:p-3 md:p-4 align-middle first:rounded-tl-lg last:rounded-tr-lg">
-                        {{ col.label }}
+                    <th v-for="col in props.columns" :key="col.key"
+                        class="p-2 sm:p-3 md:p-4 first:rounded-tl-lg last:rounded-tr-lg">
+
+                        <!-- SELECT ALL CHECKBOX -->
+                        <template v-if="col.key === 'select_all'">
+                            <input type="checkbox" class="w-4 h-4" :checked="allSelected" @change="toggleSelectAll" />
+                        </template>
+
+                        <!-- NORMAL HEADER -->
+                        <template v-else>
+                            {{ col.label }}
+                        </template>
                     </th>
                 </tr>
             </thead>
 
             <tbody class="text-gray-700">
-                <tr v-for="item in rows.data" :key="item.id" class="even:bg-gray-200">
-                    <TableCell v-for="col in columns" :key="col.key">
-                        <!-- For normal columns -->
-                        <template v-if="col.key !== 'action'">
-                            <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
-                            <span v-else>{{ getValue(item, col.key) }}</span>
+                <tr v-for="item in props.rows.data" :key="item.id" class="even:bg-gray-200">
+                    <TableCell v-for="col in props.columns" :key="col.key">
+
+                        <!-- ROW CHECKBOX -->
+                        <template v-if="col.key === 'select_all'">
+                            <input type="checkbox" class="w-4 h-4 text-[#0E6021]"
+                                :checked="selectedIDs.includes(item.id)" @click="toggleCheck(item)" />
                         </template>
 
-                        <!-- For Action column -->
+                        <!-- NORMAL CELLS -->
+                        <template v-else-if="col.key !== 'action'">
+                            <span v-if="col.format" v-html="col.format(getValue(item, col.key))"></span>
+                            <span v-else>{{ getValue(item, col.key) ?? 'N/A' }}</span>
+                        </template>
+
+                        <!-- ACTION BUTTONS -->
                         <template v-else>
                             <div class="flex items-center gap-2">
-                                <button @click="$emit('view', item)"
-                                    class="text-[#3F3F3F] hover:text-[#6d6d6d]" title="View Item">
+                                <button @click="$emit('view', item)" class="text-[#3F3F3F]">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
-                                
-                                <button @click="$emit('edit', item)"
-                                    class="text-[#54B3AB] hover:text-[#66a9a3]" title="Edit Item">
+
+                                <button @click="$emit('edit', item)" class="text-[#54B3AB]">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
 
-                                <button @click="$emit('delete', item)"
-                                    class="text-red-600 hover:text-red-800" title="Delete Item">
+                                <button @click="$emit('delete', item)" class="text-red-600">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -101,7 +147,7 @@ function getValue(obj, path) {
     </div>
 
     <!-- Pagination -->
-    <div class="mt-2 flex justify-end">
+    <div class="mt-2 flex justify-end mx-2">
         <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 
                 bg-gray-100 border border-gray-300 rounded-md px-3 py-1">
             <p class="text-xs sm:text-sm border-r border-gray-300 px-3">

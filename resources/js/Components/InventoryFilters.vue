@@ -9,7 +9,7 @@ const props = defineProps({
     search: { type: String, default: '' },
     status: { type: String, default: '' },
     cost_range: { type: String, default: '' },
-    mode: { type: String, default: 'inventory' }, // inventory || dashboard
+    mode: { type: String, default: 'inventory' },
 });
 
 
@@ -31,15 +31,37 @@ function fetchInventory(params = {}) {
 const debouncedFetchInventory = debounce(fetchInventory, 300);
 
 //DASHBOARD FETCH
-function fetchDashboardSearch(searchString) {
-    router.get('/dashboard', { search: searchString }, {
+function fetchDashboardSearch(value) {
+    router.get('/dashboard', { search: value }, {
+        preserveState: true,
+        replace: true,  
+        preserveScroll: true,
+    });
+};
+
+const debouncedFetchDashboard = debounce(fetchDashboardSearch, 300);
+
+//ACKNOWLEDGEMENT FETCH
+function fetchAcknowledgmentSearch(value) {
+    router.get('/inventory/acknowledgements', { search: value }, {
         preserveState: true,
         replace: true,
         preserveScroll: true,
     });
 };
 
-const debouncedFetchDashboard = debounce(fetchDashboardSearch, 300);
+const debouncedFetchAcknowledgement = debounce(fetchAcknowledgmentSearch, 300);
+
+//TRANSACTION FETCH
+function fetchTransactionSearch(value) {
+    router.get('/inventory/transactions', value, {
+        preserveState: true,
+        replace: true,
+        preserveScroll: true,
+    });
+};
+
+const debouncedFetchTransaction = debounce(fetchTransactionSearch, 300);
 
 // WATCHERS
 watch(search, (value) => {
@@ -51,25 +73,64 @@ watch(search, (value) => {
         });
     } else if (props.mode === "dashboard") {
         debouncedFetchDashboard(value);
+    } else if (props.mode === "acknowledgements") {
+        debouncedFetchAcknowledgement(value);
+    } else if (props.mode === "transactions") {
+        debouncedFetchTransaction({
+            search: value,
+            cost_range: cost_range.value,
+            status: status.value
+        });
     }
-
     emit("update:search", value);
-}); 
+});
 
 watch(status, (value) => {
-    debouncedFetchInventory({ search: search.value, cost_range: cost_range.value, status: value });
-    emit('update:status', value);
+    if (props.mode === "inventory") {
+        debouncedFetchInventory({
+            search: search.value,
+            cost_range: cost_range.value,
+            status: value
+        });
+    } else if (props.mode === "transactions") {
+        debouncedFetchTransaction({
+            search: search.value,
+            cost_range: cost_range.value,
+            status: value
+        });
+    } else if (props.mode === "acknowledgements") {
+        debouncedFetchAcknowledgement({
+            search: search.value,
+            cost_range: cost_range.value,
+            status: value
+        });
+    }
+
+    emit("update:status", value);
 });
 
 watch(cost_range, (value) => {
-    debouncedFetchInventory({ search: search.value, cost_range: value, status: status.value });
-    emit('update:cost_range', value);
+    if (props.mode === "inventory") {
+        debouncedFetchInventory({
+            search: search.value,
+            cost_range: value,
+            status: status.value
+        });
+    } else if (props.mode === "transactions") {
+        debouncedFetchTransaction({
+            search: search.value,
+            cost_range: value,
+            status: status.value
+        });
+    }
+
+    emit("update:cost_range", value);
 });
 
 </script>
 
 <template>
-    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-4 w-full sm:w-auto">
         <!-- UNIT COST -->
         <div class="flex flex-col w-full sm:w-auto" v-for="(group, gIndex) in unitCostOptions" :key="gIndex">
             <label class="text-xs font-bold mb-1 sm:mb-0">{{ group.label }}</label>

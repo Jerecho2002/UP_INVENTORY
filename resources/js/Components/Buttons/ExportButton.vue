@@ -1,6 +1,4 @@
 <script setup>
-import { router } from '@inertiajs/vue3';
-
 function exportExcel() {
     window.location.href = '/inventory/export'; // triggers download
 }

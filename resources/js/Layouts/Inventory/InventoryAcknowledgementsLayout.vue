@@ -4,18 +4,22 @@ import { usePage } from '@inertiajs/vue3';
 import NavHeader from '@/Components/NavHeader.vue';
 import SideBar from '@/Components/SideBar.vue';
 import PageHeader from '@/Components/PageHeader.vue';
-import InventoryAcknowledgementsTable from '@/Components/InventoryAcknowledgementsTable.vue';
+import InventoryTable from '@/Components/InventoryTable.vue';
+import AcknowledgementFormModal from '@/Components/Modals/AcknowledgementFormModal.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+import InventoryFilters from '@/Components/InventoryFilters.vue';
 
 const columns = [
   { label: "", key: "select_all" },
   { label: "Item Name", key: "item_name"},
-  { label: "Quantity", key: "quantity" },
   { label: "Unit", key: "unit" },
   { label: "Unit Cost", key: "unit_cost", format: (val) => val ? `₱${val}` : 'N/A' },
   { label: "Property Number", key: "property_number" },
   { label: "PAR/ICS Number", key: 'category' },
-  { label: "Suppliers", key: "supplier", format: (val) => val?.supplier_name ?? 'N/A'  },
-  { label: "Date Acquired", key: "date_acquired" },
+  { label: "Serial Number", key: 'serial_number' },
+  { label: "Invoice", key: 'invoice' },
+  { label: "Supplier Name", key: "supplier", format: (val) => val?.supplier_name ?? 'N/A'  },
+  
   { label: "Status", key: 'status',
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
@@ -46,13 +50,11 @@ const accountableField = [
   // { label: "Created By", model: "created_by", name: "users", option: "email", value: "id" }, 
 ];
 
-// const secondDropdown = [
-//   { label: "Status", model: "status", options: 
-//                                             [{label: "Recieved", value: "1"},
-//                                              {label: "Cancelled", value: "0"},
-                                            
-//   ]},
-// ];
+const filterStatus = [
+    {label: "Status", options: [{ label: "Assigned", value: 1},
+                                { label: "Unsign", value: 0 },
+  ]},
+];
 
 const inputFields = [
   { label: "Rooms", model: "item_name", placeholder: "Room 000", type: "text" },
@@ -66,12 +68,31 @@ const page = usePage();
 const items = computed(() => page.props.items);
 const users = computed(() => page.props.users);
 
+//INVENTORY FILTER 
+let search = ref('');
+let status = ref(null);
+let cost_range = ref(null);
+
+// MODAL FUNCTION
+let formMode = ref('create'); // CREATE || EDIT || VIEW
+let showFormModal = ref(false);
+let showDeleteModal = ref(false);
+let currentItem = ref({});
+
+function openAdd(item) {
+  formMode.value = 'create';
+  currentItem.value = item;
+  showFormModal.value = true;
+  console.log("Selected IDs before opening modal:", selectedIds.value);
+};
+
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
 
-const firstDropdown = ref(null);
+const selectedIds = ref([]);
+
 </script>
 
 <template>
@@ -92,18 +113,39 @@ const firstDropdown = ref(null);
        <div class="m-2">
           <PageHeader title="Acknowledgements" />
           <div class="w-full h-full">
+            <div class="flex flex-col md:flex-row justify-between mt-12">
+              <PrimaryButton @click="openAdd">
+                <i class="fa-solid fa-user-plus"></i>
+                <span> Assign </span>
+              </PrimaryButton>
 
-            <InventoryAcknowledgementsTable
-            :accountableField="accountableField"
-            :inputFields="inputFields"
-            :firstDropdown="firstDropdown"
-            :secondDropdown="secondDropdown"
-            :itemSelectedField="itemSelectedField"
-            :items="items"
-            :users="users"
-            :columns="columns"
-            @update:selected="ids => selectedIds = ids"
-            @selection-changed="ids => console.log('selection', ids)" 
+            <InventoryFilters 
+              :search="search"
+              :status="status"
+              :filterStatus="filterStatus"
+              @update:search="search = $event"
+              @update:status="status = $event"
+              :mode="'acknowledgements'"
+            />
+
+            </div>
+            <AcknowledgementFormModal 
+              v-if="showFormModal"
+              :mode="formMode"
+              :accountableField="accountableField"
+              :inputFields="inputFields"
+              :itemSelectedField="itemSelectedField"
+              :selectedIDs="selectedIds.value"
+              :items="items"
+              @close="() => showFormModal = false"
+            />
+
+            <InventoryTable
+              :rows="items"
+              :users="users"
+              :columns="columns"
+              @update:selected="ids => selectedIds.value = ids"
+              @selection-changed="ids => console.log('Item Selected', ids)" 
             />  
         </div>
        </div>
