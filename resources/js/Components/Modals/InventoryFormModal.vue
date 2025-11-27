@@ -287,7 +287,7 @@ function submit() {
 
                         <!-- TOTAL AMOUNT -->
                         <div class="flex md:flex-row sm:items-center md:items-center text-sm font-semibold">
-                            <div v-for="total in totalAmount" :key="total.label" class="flex items-center gap-3 mt-12">
+                            <div v-for="total in totalAmount" :key="total.label" class="flex items-center gap-3 mt-8">
                                 <label class="block text-base font-bold">{{ total.label }}:</label>
                                 <input v-model="form.total_amount" readonly placeholder="0.00"
                                     class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none" />

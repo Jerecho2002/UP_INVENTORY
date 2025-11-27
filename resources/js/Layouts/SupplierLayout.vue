@@ -5,7 +5,7 @@ import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
-import AddButton from "@/Components/Buttons/AddButton.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 
 const columns = [
@@ -47,10 +47,6 @@ const statusDropdown = [
   ]},
 ];
 
-const addButton = [
-  {title: "Add Supplier" , icon: "fa-solid fa-plus" }
-];
-
 const page = usePage();
 const items = computed(() => page.props.items || []);
 const suppliers = computed(() => page.props.suppliers || []);
@@ -88,10 +84,10 @@ const toggleSidebar = () => {
             <PageHeader title="Suppliers" />
               <div class="w-full h-full">
                 <div class="mt-10">
-                  <AddButton 
-                    @click="openAdd"
-                    :addButton="addButton"
-                  />
+                  <PrimaryButton @click="openAdd()">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span>Add Supplier</span>
+                  </PrimaryButton>
                 </div>
 
                 <InventoryTable 

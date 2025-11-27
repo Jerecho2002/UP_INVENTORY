@@ -6,7 +6,7 @@ import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
 import PageHeader from "@/Components/PageHeader.vue";
-import AddButton from "@/Components/Buttons/AddButton.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import InventoryFormModal from "@/Components/Modals/InventoryFormModal.vue";
 import InventoryFilters from "@/Components/InventoryFilters.vue";
 import ImportButton from "@/Components/Buttons/ImportButton.vue";
@@ -15,14 +15,14 @@ import ConvertButton from "@/Components/Buttons/ConvertButton.vue";
 import DeleteModal from "@/Components/Modals/DeleteModal.vue";
 
 
-
 const columns = [
   { label: "Item Name", key: 'item_name' },
-  { label: "Property Records", key: 'category' },
-  { label: "Property Number", key: 'property_number' },
-  { label: "Serial Number", key: 'serial_number' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
+  { label: "PAR/ICS Number", key: 'category' },
+  { label: "Property Number", key: 'property_number' },
+  { label: "Serial Number", key: 'serial_number' },
+  { label: "Invoice", key: 'invoice' },
   { label: "Supplier Name", key: 'supplier', format: (val) => val?.supplier_name ?? 'N/A' },
   { label: "Status", key: 'status', 
     format: (status) => {
@@ -82,12 +82,12 @@ const viewItems = [
   },
 ];
 
-const editItems = [
-  { label: "Property Records", key: "category" },
-  { label: "Property Number", key: "property_number" },
-  { label: "Item Name", key: "item_name" },
-  { label: "Description", key: "description" },
-];
+// const editItems = [
+//   { label: "Property Records", key: "category" },
+//   { label: "Property Number", key: "property_number" },
+//   { label: "Item Name", key: "item_name" },
+//   { label: "Description", key: "description" },
+// ];
 
 const quantityCostFields = [
   { label: "Quantity", model: "quantity", placeholder: "0", type: "number"},
@@ -117,8 +117,8 @@ const invoicesFundFields = [
 ]
 
 const firstDropdown = [
-  { label: "Categories", model: "item_classification_id", name: "itemClass", option: "classification_name", value: "id" },
-  { label: "Suppliers", model: "supplier_id", name: "suppliers", option: "supplier_name", value: "id" },
+  { label: "Category", model: "item_classification_id", name: "itemClass", option: "classification_name", value: "id" },
+  { label: "Supplier", model: "supplier_id", name: "suppliers", option: "supplier_name", value: "id" },
 ];
 
 const secondDropdown = [
@@ -148,10 +148,6 @@ const filterStatus = [
     {label: "Status", options: [{ label: "Received", value: 1},
                                 { label: "Cancelled", value: 0 },
   ]},
-];
-
-const addButton = [
-  {title: "Add Item" , icon: "fa-solid fa-plus" }
 ];
 
 const page = usePage();
@@ -216,7 +212,6 @@ function confirmDelete(item) {
 }
 
 function refreshItems() {
-  // Reload the current Inertia page so items table updates
   router.reload({
     only: ['items'] // optional but faster if you only need items
   });
@@ -256,10 +251,10 @@ const toggleSidebar = () => {
                 </div>
                 
               <div class="flex flex-col md:flex-row justify-between mt-10">
-                <AddButton
-                  @click="openAdd"
-                  :addButton="addButton"
-                />
+                <PrimaryButton @click="openAdd">
+                  <i class="fa-solid fa-plus"></i>
+                  <span> Add Item</span>
+                </PrimaryButton>
 
                 <InventoryFilters
                   :search="search"

@@ -4,16 +4,12 @@ import { usePage } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
-import InventoryTransactionTable from "@/Components/InventoryTransactionTable.vue";
-
-
-const isSidebarOpen = ref(true);
-const toggleSidebar = () => {
-  isSidebarOpen.value = !isSidebarOpen.value;
-};
-
-const page = usePage();
-const items = computed(() => page.props.items);
+import InventoryTable from "@/Components/InventoryTable.vue";
+import ImportButton from "@/Components/Buttons/ImportButton.vue";
+import ExportButton from "@/Components/Buttons/ExportButton.vue";
+import SecondaryButton from "@/Components/Buttons/SecondaryButton.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import InventoryFilters from "@/Components/InventoryFilters.vue";
 
 const tableHeader = [
   { label: 'Item Name', key: 'inventory_item', format: (val) => val?.item_name ?? 'N/A' },
@@ -22,6 +18,8 @@ const tableHeader = [
   { label: 'Property Number', key: 'inventory_item', format: (val) => val?.category ?? 'N/A' },
   { label: 'PR Number', key: 'inventory_item', format: (val) => val?.pr_number ?? 'N/A' },
   { label: 'PO Number', key: 'inventory_item', format: (val) => val?.po_number ?? 'N/A' },
+  { label: 'Accountable Person', key: 'accountable_person', format: (val) => val?.email ?? 'N/A' },
+  { label: 'Date Released', key: 'date_released' },
   {
     label: "Status", key: 'status',
     format: (status) => {
@@ -31,8 +29,8 @@ const tableHeader = [
         cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-circle-check"></i>';
       }
-      else if (status === 0) { 
-        label = 'Pending'; 
+      else if (status === 0) {
+        label = 'Pending';
         cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-clock"></i>';
       }
@@ -42,32 +40,51 @@ const tableHeader = [
   { label: "Action", key: "action" }
 ]
 
-const accountableField = [
-  { label: "New Accountable Person", model: "accountable_persons_id", name: "users", option: "email", value: "id" },
-  { label: "Issued By", model: "issued_by_id", name: "users", option: "email", value: "id" },
-  // { label: "Created By", model: "created_by", name: "users", option: "email", value: "id" }, 
+const unitCostOptions = [
+    { label: "Unit Cost", options: [{label: "₱0-50,000", value: "0-50000"},
+                                    {label: "₱50,000 Above", value: "50000-99999999"},
+  ]},
 ];
 
-const inputFields = [
-  { label: "Rooms", model: "item_name", placeholder: "Room 000", type: "text" },
+const filterStatus = [
+    {label: "Status", options: [{ label: "Received", value: 1},
+                                { label: "Cancelled", value: 0 },
+  ]},
 ];
 
-const itemSelectedField = [
-  { label: "Item Selected", model: "item_name"},
-];
+const page = usePage();
+const items = computed(() => page.props.items);
 
+//INVENTORY FILTER 
+let search = ref('');
+let status = ref(null);
+let cost_range = ref(null);
 
-const processedItems = computed(() =>
-  items.value.data.map((item) => {
-    const newItem = { ...item }
-    tableHeader.forEach(col => {
-      if (col.format) {
-        newItem[col.key] = col.format(item[col.key])
-      }
-    })
-    return newItem
-  })
-)
+// MODAL FUNCTION
+let formMode = ref('create'); // CREATE || EDIT || VIEW
+
+function openAdd(item) {
+  formMode.value = 'create';
+  currentItem.value = item;
+  showFormModal.value = true;
+};
+
+// const processedItems = computed(() =>
+//   items.value.data.map((item) => {
+//     const newItem = { ...item }
+//     tableHeader.forEach(col => {
+//       if (col.format) {
+//         newItem[col.key] = col.format(item[col.key])
+//       }
+//     })
+//     return newItem
+//   })
+// )
+
+const isSidebarOpen = ref(true);
+const toggleSidebar = () => {
+  isSidebarOpen.value = !isSidebarOpen.value;
+};
 
 </script>
 
@@ -85,18 +102,42 @@ const processedItems = computed(() =>
 
       <!-- Main -->
       <main class="flex-1 sm:p-5 md:p-6  mx-2 sm:mx-2 md:mx-0 overflow-y-auto">
-        <!-- HEAD TITLE -->
-        <PageHeader title="Transactions" />
-        <div class="w-full h-full">
-          <!-- Inventory Transaction Table Component -->
-          <InventoryTransactionTable 
-          :tableHeader=tableHeader 
-          :items=items 
-          :accountableField="accountableField"
-          :inputFields="inputFields"
-          :itemSelectedField="itemSelectedField"
-          />
-        </div>
+        <PageHeader title="Assigned" />
+          <div class="w-full h-screen bg-white flex flex-col rounded-lg shadow-md mt-10">
+            <div class="flex flex-col md:flex-row gap-2 justify-end mt-10 mx-2 mb-6">
+              <ImportButton />
+              <ExportButton />
+            </div>
+            <div class="flex justify-between mx-2">
+             <div class="flex flex-col md:flex-row gap-2">
+               <PrimaryButton>
+                <i class="fa-solid fa-exchange-alt"></i>
+                <span> Re-Assign</span>
+               </PrimaryButton>
+
+              <SecondaryButton class="gap-2 text-white text-xs sm:text-sm">
+                <i class="fa-solid fa-rotate"></i>
+                <span>Update</span>
+              </SecondaryButton>  
+             </div>
+
+              <InventoryFilters 
+                :search="search"
+                :status="status"
+                :unitCostOptions="unitCostOptions" 
+                :filterStatus="filterStatus"
+                :cost_range="cost_range"
+                @update:search="search = $event"
+                @update:status="status = $event"
+                @update:cost_range="cost_range = $event"
+                :mode="'transactions'"
+              />
+            </div>
+              <InventoryTable 
+                :columns="tableHeader" 
+                :rows="items"
+              />
+          </div>
       </main>
     </div>
   </div>

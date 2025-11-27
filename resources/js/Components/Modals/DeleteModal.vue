@@ -28,7 +28,7 @@ async function doDelete() {
             <h4 class="font-semibold mb-2 text-xl">Confirm Delete</h4>
             <p class="text-lg font-bold mb-4 text-[#888484]">
                 Are you sure you want to delete
-                <strong>{{ item?.item_name }}</strong>?
+                <strong class="text-black">{{ item?.item_name }}</strong>?
             </p>
             <div class="flex justify-center gap-3 mt-2">
                 <button @click="$emit('close')" class="px-4 py-2 bg-[#D9D9D9] rounded">

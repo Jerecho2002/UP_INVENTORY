@@ -94,15 +94,15 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
                 <BarChartCard />
               </div>
               <div class="my-5">
-                <InventoryFilters class="justify-end"
-                      :search="search"
-                      :cost_range="cost_range"
-                      :status="status"
-                      @update:search="search = $event"
-                      @update:status="status = $event"
-                      @update:cost_range="cost_range = $event"
-                      :mode="'dashboard'"
-                      />
+                <InventoryFilters
+                  :search="search"
+                  :cost_range="cost_range"
+                  :status="status"
+                  @update:search="search = $event"
+                  @update:status="status = $event"
+                  @update:cost_range="cost_range = $event"
+                  :mode="'dashboard'"
+                />
               </div>
               <div class="my-5">
                 <InventoryTable
