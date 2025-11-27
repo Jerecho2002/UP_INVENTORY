@@ -14,19 +14,13 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::post('/items/store', [InventoryController::class, 'store'])->name('items.store');
     Route::put('/items/{id}', [InventoryController::class, 'update'])->name('items.update');
     Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
-
     Route::get('/dashboard', [DashboardController::class, 'searchBar'])->name('dashboard.index');
-
     Route::get('/report', [ReportController::class, 'searchBar'])->name('reports.index');
-
     Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
-
     Route::get('item_archiving', [ItemArchivingController::class, 'index'])->name('item_archiving.index');
-
     Route::post('/convert-excel-to-csv', [InventoryController::class, 'convert']);
     Route::post('/import-csv', [InventoryController::class, 'importCsv']);
     Route::get('/export-csv', [InventoryController::class, 'exportCsv']);
-
 });
 
 Route::get('/dummy-auth', function () {

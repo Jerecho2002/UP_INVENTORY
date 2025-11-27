@@ -1,9 +1,6 @@
 <script setup>
-<<<<<<< HEAD
 import axios from 'axios';
 import { ref } from 'vue';
-=======
->>>>>>> modifier
 
 // Get CSRF token from meta tag in app.blade.php
 const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

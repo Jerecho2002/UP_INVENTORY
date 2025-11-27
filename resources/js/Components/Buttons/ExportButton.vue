@@ -1,12 +1,7 @@
 <script setup>
-<<<<<<< HEAD
 function exportCsv() {
   // Just open the route in a new tab to trigger download
   window.location.href = '/export-csv';
-=======
-function exportExcel() {
-    window.location.href = '/inventory/export'; // triggers download
->>>>>>> modifier
 }
 </script>
 
