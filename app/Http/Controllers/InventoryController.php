@@ -48,11 +48,12 @@ class InventoryController extends Controller
     public function InventoryAcknowledgements(Request $request, AcknowledgementReceiptService $service)
     {
         $search = $request->input('search');
+        $costRange = $request->input('cost_range');
+        $status = $request->input('status');
         $users = User::all();
-        // $costRange = $request->input('cost_range');
 
         return inertia('Inventory/InventoryAcknowledgements', [
-            'items' => $service->filterAndPaginateAcknowledgementReceipt($search),
+            'items' => $service->filterAndPaginateAcknowledgementReceipt($search, $costRange, $status),
             'users' => $users,
         ]);
     }
