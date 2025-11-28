@@ -1,6 +1,5 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import { computed } from "vue";
 
 const props = defineProps({
     mode: { type: String, default: 'create' },
@@ -8,11 +7,7 @@ const props = defineProps({
     inputFields: { type: Array, default: () => [] },
     itemSelectedField: { type: Array, default: () => [] },
     selectedIDs: { type: Array, default: () => [] },
-    items: { type: Object, default: () => ({ data: [] }) },
-    users: { type: Array, default: () => [] },
 });
-
-const emit = defineEmits(['submit', 'close', 'created']);
 
 const form = useForm({
     inventory_item_id: [],
@@ -22,60 +17,18 @@ const form = useForm({
     par_date: "",
     remarks: "",
 });
-
-const itemMap = computed(() => {
-    const map = {};
-    props.items.data?.forEach(item => {
-        map[item.id] = item;
-    });
-    return map;
-});
-
-function submit() {
-    form.inventory_item_id = props.selectedIDs;
-    form.created_by = props.users[0]?.id ?? null;
-
-    if (props.mode === "edit") {
-        if (!form.id) {
-            console.error('Edit mode but form.id is missing', form);
-            return;
-        }
-
-        form.put(route('items.update', form.id), {
-            onSuccess: () => {
-                emit('close');
-                emit('submit', form);
-            },
-            onError: (errors) => {
-                console.error('Update failed', errors);
-            },
-        });
-    } else {
-        form.post(route('inventory.acknowledgements.store'), {
-            onSuccess: () => {
-                emit('close');
-                emit('created');
-                form.reset();   
-            },
-            onError: (errors) => {
-                console.error('Create failed', errors);
-            },
-        });
-    }
-}
-
 </script>
 
 <template>
-    <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
+     <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold text-[#850038] mb-6">
-                    {{ mode === 'edit' ? 'Edit Item' : mode === 'view' ? 'Item Details' : 'Assign' }}
+                    {{ mode === 'edit' ? 'Update Item' : mode === 'view' ? 'Assigned Details' : 'Re-Assign' }}
                 </h3>
             </div>
 
-            <form @submit.prevent="submit" v-if="mode !== 'view'">
+           <form @submit.prevent="submit" v-if="mode !== 'view'">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <!-- LEFT -->
                     <div class="space-y-4 col-span-1 md:col-span-1">
@@ -107,38 +60,20 @@ function submit() {
                                 </div>
                             </div>
 
-                            <!-- STATUS/DATE ACQUIRED FIELDS  -->
-                            <div class="flex flex-col md:flex-row gap-4 mb-8">
-                                <!-- <div v-for="sdf in secondDropdown" :key="sdf.label" class="flex gap-3">
-                                        <div>
-                                            <label class="block text-sm font-bold mb-1">{{ sdf.label }}</label>
-                                            <select
-                                                class="w-full sm:w-[10rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                                                <option value="">Select</option>
-                                                <option v-for="op in sdf.options" :key="op.value" :value="op.value">
-                                                    {{
-                                                        op.label }}</option>
-                                            </select> -->
-                                <!-- <div v-if="form.errors[sdf.model]" class="text-red-500 text-sm">{{
-                                                    form.errors[sdf.model] }}</div> -->
-                                <!-- </div>
-                                    </div> -->
-                            </div>
-
                             <!-- ROOMS -->
-                            <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
-                                <label class="block text-sm font-bold mb-1">{{ ip.label }}</label>
-                                <input :placeholder="ip.placeholder"
-                                    class="w-full sm:w-[33.4rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
-                                <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">{{
-                                    form.errors[ip.model] }}</div>
-                            </div>
+                                <div v-for="ip in inputFields" :key="ip.model" class="flex flex-col">
+                                    <label class="block text-sm font-bold mb-1">{{ ip.label }}</label>
+                                    <input :placeholder="ip.placeholder"
+                                        class="w-full sm:w-[33.4rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                    <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">{{
+                                        form.errors[ip.model] }}</div>
+                                </div>
 
                             <!-- REMARKS -->
                             <div>
                                 <label class="block text-md font-semibold mb-1">Remarks</label>
                                 <textarea v-model="form.remarks" placeholder="Input a remarks"
-                                    class="w-full sm:w-[33.4rem] h-48 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"></textarea>
+                                    class="w-full sm:w-[33.4rem] h-52 rounded-md border border-gray-300 px-3 py-2 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"></textarea>
                                 <div v-if="form.errors.remarks" class="text-red-500 text-sm">{{
                                     form.errors.remarks }}</div>
                             </div>
@@ -175,23 +110,9 @@ function submit() {
                         class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">Cancel</button>
                     <button type="submit"
                         class="bg-[#0E6021] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">
-                        {{ mode === 'edit' ? "Update" : "Assign" }}</button>
+                        {{ mode === 'edit' ? "Update" : "Re-Assign" }}</button>
                 </div>
             </form>
-
-            <!-- VIEW MODAL -->
-            <div v-else>
-                <div class="grid grid-cols-2 gap-3">
-                    <div v-for="(v, k) in local" :key="k" class="p-2 border rounded">
-                        <div class="text-xs text-gray-500">{{ k }}</div>
-                        <div class="font-medium">{{ v }}</div>
-                    </div>
-                </div>
-                <div class="mt-4 flex justify-end">
-                    <button @click="$emit('close')" class="px-3 py-1 border rounded">Close</button>
-                </div>
-            </div>
-
         </div>
     </div>
 </template>

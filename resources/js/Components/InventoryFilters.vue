@@ -48,7 +48,7 @@ function fetchAcknowledgmentSearch(value) {
         replace: true,
         preserveScroll: true,
     });
-};
+}
 
 const debouncedFetchAcknowledgement = debounce(fetchAcknowledgmentSearch, 300);
 

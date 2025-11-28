@@ -289,7 +289,7 @@ const toggleSidebar = () => {
               />
 
               <InventoryTable 
-                :columns="columns" 
+                :columns="columns"
                 :rows="items"
                 @view="handleView"
                 @edit="handleEdit"
