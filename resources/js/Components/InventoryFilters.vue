@@ -19,7 +19,7 @@ const status = ref(props.status || '');
 
 const emit = defineEmits(['update:search', 'update:status', 'update:cost_range']);
 
-// INVENTORY FETCH
+//---------INVENTORY FETCH----------------
 function fetchInventory(params = {}) {
     router.get('/inventory/items', params, {
         preserveState: true,
@@ -30,7 +30,7 @@ function fetchInventory(params = {}) {
 
 const debouncedFetchInventory = debounce(fetchInventory, 300);
 
-//DASHBOARD FETCH
+//----------DASHBOARD FETCH------------
 function fetchDashboardSearch(value) {
     router.get('/dashboard', { search: value }, {
         preserveState: true,
@@ -41,7 +41,7 @@ function fetchDashboardSearch(value) {
 
 const debouncedFetchDashboard = debounce(fetchDashboardSearch, 300);
 
-//ACKNOWLEDGEMENT FETCH
+//-------ACKNOWLEDGEMENT FETCH--------------
 function fetchAcknowledgmentSearch(value) {
     router.get('/inventory/acknowledgements', { search: value }, {
         preserveState: true,
@@ -52,7 +52,7 @@ function fetchAcknowledgmentSearch(value) {
 
 const debouncedFetchAcknowledgement = debounce(fetchAcknowledgmentSearch, 300);
 
-//TRANSACTION FETCH
+//-------TRANSACTION FETCH---------
 function fetchTransactionSearch(value) {
     router.get('/inventory/transactions', value, {
         preserveState: true,
@@ -63,7 +63,7 @@ function fetchTransactionSearch(value) {
 
 const debouncedFetchTransaction = debounce(fetchTransactionSearch, 300);
 
-// WATCHERS
+// -----WATCHERS------
 watch(search, (value) => {
     if (props.mode === "inventory") {
         debouncedFetchInventory({
@@ -71,17 +71,25 @@ watch(search, (value) => {
             cost_range: cost_range.value,
             status: status.value
         });
-    } else if (props.mode === "dashboard") {
+    } 
+    else if (props.mode === "dashboard") {
         debouncedFetchDashboard(value);
-    } else if (props.mode === "acknowledgements") {
-        debouncedFetchAcknowledgement(value);
-    } else if (props.mode === "transactions") {
+    } 
+    else if (props.mode === "acknowledgements") {
+        debouncedFetchAcknowledgement({
+            search: value,
+            cost_range: cost_range.value,
+            status: status.value
+        });
+    } 
+    else if (props.mode === "transactions") {
         debouncedFetchTransaction({
             search: value,
             cost_range: cost_range.value,
             status: status.value
         });
     }
+
     emit("update:search", value);
 });
 
@@ -92,13 +100,15 @@ watch(status, (value) => {
             cost_range: cost_range.value,
             status: value
         });
-    } else if (props.mode === "transactions") {
+    } 
+    else if (props.mode === "transactions") {
         debouncedFetchTransaction({
             search: search.value,
             cost_range: cost_range.value,
             status: value
         });
-    } else if (props.mode === "acknowledgements") {
+    } 
+    else if (props.mode === "acknowledgements") {
         debouncedFetchAcknowledgement({
             search: search.value,
             cost_range: cost_range.value,
@@ -116,8 +126,16 @@ watch(cost_range, (value) => {
             cost_range: value,
             status: status.value
         });
-    } else if (props.mode === "transactions") {
+    } 
+    else if (props.mode === "transactions") {
         debouncedFetchTransaction({
+            search: search.value,
+            cost_range: value,
+            status: status.value
+        });
+    } 
+    else if (props.mode === "acknowledgements") {
+        debouncedFetchAcknowledgement({
             search: search.value,
             cost_range: value,
             status: status.value

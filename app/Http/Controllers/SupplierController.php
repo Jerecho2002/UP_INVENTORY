@@ -17,7 +17,7 @@ class SupplierController extends Controller
         $status = $request->input('status');
 
         return inertia('Suppliers', [
-            'suppliers' => $service->filterAndPaginateSuppliers($search, $costRange, $status),
+            'suppliers' => $service->getPaginatedInventory($search, $costRange, $status),
         ]);
     }
 }

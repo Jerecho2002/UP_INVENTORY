@@ -47,7 +47,7 @@ class InventoryController extends Controller
 
     public function InventoryAcknowledgements(Request $request, AcknowledgementReceiptService $service)
     {
-        $search = $request->input(key: 'search');
+        $search = $request->input('search');
         $users = User::all();
         // $costRange = $request->input('cost_range');
 

@@ -12,7 +12,7 @@ const props = defineProps({
     unitCostOptions: Array, // InventoryFilter
     Status: Array, // -> InventoryFilter
     itemClass: Array, // InventoryForm
-    suppliers: Array, // InventoryForm
+    suppliers: Object, // InventoryForm
     viewItems: Array, // InventoryForm
     inputFields: Array, // InventoryForm
     inputFieldsEdit: Array, // InventoryForm
@@ -21,7 +21,6 @@ const props = defineProps({
     secondDropdown: Array, // InventoryForm
     requestFields: Array, // InventoryForm
     invoicesFundFields: Array, // InventoryForm
-    suppliers: Array,
     search: String, //InventoryFilter
     cost_range: String, //InventoryFilter
     status: String, // InventoryFilter
@@ -86,7 +85,7 @@ function toggleCheck(item) {
 </script>
 
 <template>
-    <!-- <pre>{{ rows }}</pre> -->
+    <pre>{{ suppliers }}</pre>
     <!-- Table (horizontal scroll on small screens) -->
     <div class="overflow-x-auto mt-3">
         <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">

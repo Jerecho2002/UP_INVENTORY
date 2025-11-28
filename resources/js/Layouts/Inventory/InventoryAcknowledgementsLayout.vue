@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { usePage, router } from '@inertiajs/vue3';
 import NavHeader from '@/Components/NavHeader.vue';
 import SideBar from '@/Components/SideBar.vue';
 import PageHeader from '@/Components/PageHeader.vue';
@@ -86,6 +86,30 @@ function openAdd(item) {
   console.log("Selected IDs before opening modal:", selectedIds.value);
 };
 
+function handleView(item) {
+  formMode.value = 'view';
+  currentItem.value = item;
+  showFormModal.value = true;
+}
+
+function handleSubmit (item) {
+  router.post('/inventory/acknowledgements/store', item, {
+    onSuccess: () => {
+      showFormModal.value = false;
+      refreshItems();
+    },
+    onError: (errors) => {
+      console.error('Validation errors:', errors);
+    }
+  });
+}
+
+function refreshItems() {
+  router.reload({
+    only: ['items']
+  });
+}
+
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
@@ -134,16 +158,18 @@ const selectedIds = ref([]);
               :mode="formMode"
               :accountableField="accountableField"
               :inputFields="inputFields"
+              :users="users"
               :itemSelectedField="itemSelectedField"
               :selectedIDs="selectedIds.value"
               :items="items"
+              @submit="handleSubmit"
               @close="() => showFormModal = false"
             />
 
             <InventoryTable
               :rows="items"
-              :users="users"
               :columns="columns"
+              @view="handleView"
               @update:selected="ids => selectedIds.value = ids"
               @selection-changed="ids => console.log('Item Selected', ids)" 
             />  

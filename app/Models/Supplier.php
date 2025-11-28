@@ -16,4 +16,17 @@ class Supplier extends Model
     {
         return $this->hasMany(InventoryItem::class);
     }
+
+    public function scopeSearch($query, $term)
+    {
+        if (!$term) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($term) {
+            $q->where('supplier_name', 'like', "%{$term}%")
+                ->orWhere('contact_no', 'like', "%{$term}%")
+                ->orWhere('address', 'like', "%{$term}%");
+        });
+    }
 }

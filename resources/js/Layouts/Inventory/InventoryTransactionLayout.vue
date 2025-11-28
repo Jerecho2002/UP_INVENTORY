@@ -136,6 +136,8 @@ const toggleSidebar = () => {
               <InventoryTable 
                 :columns="tableHeader" 
                 :rows="items"
+                @update:selected="ids => selectedIds.value = ids"
+                @selection-changed="ids => console.log('Item Selected', ids)"
               />
           </div>
       </main>

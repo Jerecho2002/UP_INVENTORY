@@ -9,10 +9,10 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 
 const columns = [
-  { label: "Supplier Name", key: 'supplier', format: (val) => val?.supplier_name ?? 'N/A' },
-  { label: "Contact"},
-  { label: "Email"},
-  { label: "Address"},
+  { label: "Supplier Name", key: 'supplier_name' },
+  { label: "Contact", key: 'contact_no' },
+  { label: "Email", key: 'email' },
+  { label: "Address" , key: 'address' },
   { label: "Status", key: 'status', 
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
@@ -48,7 +48,7 @@ const statusDropdown = [
 ];
 
 const page = usePage();
-const items = computed(() => page.props.items || []);
+const items = computed(() => page.props.items || []); 
 const suppliers = computed(() => page.props.suppliers || []);
 
 let formMode = ref('create'); // CREATE || EDIT || VIEW
@@ -92,12 +92,9 @@ const toggleSidebar = () => {
 
                 <InventoryTable 
                   :columns="columns" 
-                  :rows="items"
-                  :suppliers="suppliers"
+                  :rows="suppliers"
                 />
-
-
-                </div>
+              </div>
        </main>
        
     </div>

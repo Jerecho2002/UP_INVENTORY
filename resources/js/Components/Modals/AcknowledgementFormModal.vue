@@ -9,7 +9,10 @@ const props = defineProps({
     itemSelectedField: { type: Array, default: () => [] },
     selectedIDs: { type: Array, default: () => [] },
     items: { type: Object, default: () => ({ data: [] }) },
+    users: { type: Array, default: () => [] },
 });
+
+const emit = defineEmits(['submit', 'close', 'created']);
 
 const form = useForm({
     inventory_item_id: [],
@@ -28,6 +31,39 @@ const itemMap = computed(() => {
     return map;
 });
 
+function submit() {
+    form.inventory_item_id = props.selectedIDs;
+    form.created_by = props.users[0]?.id ?? null;
+
+    if (props.mode === "edit") {
+        if (!form.id) {
+            console.error('Edit mode but form.id is missing', form);
+            return;
+        }
+
+        form.put(route('items.update', form.id), {
+            onSuccess: () => {
+                emit('close');
+                emit('submit', form);
+            },
+            onError: (errors) => {
+                console.error('Update failed', errors);
+            },
+        });
+    } else {
+        form.post(route('inventory.acknowledgements.store'), {
+            onSuccess: () => {
+                emit('close');
+                emit('created');
+                form.reset();   
+            },
+            onError: (errors) => {
+                console.error('Create failed', errors);
+            },
+        });
+    }
+}
+
 </script>
 
 <template>
@@ -35,7 +71,7 @@ const itemMap = computed(() => {
         <div class="bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold text-[#850038] mb-6">
-                    {{ mode === 'edit' ? 'Edit Item' : mode === 'view' ? 'Item Details' : 'Assign' }}
+                    {{ mode === 'edit' ? 'Edit Item' : mode === 'view' ? 'Assign Details' : 'Assign' }}
                 </h3>
             </div>
 
@@ -139,9 +175,22 @@ const itemMap = computed(() => {
                         class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">Cancel</button>
                     <button type="submit"
                         class="bg-[#0E6021] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">
-                        {{ mode === 'edit' ? "Update" : "Add" }}</button>
+                        {{ mode === 'edit' ? "Update" : "Assign" }}</button>
                 </div>
             </form>
+
+            <!-- VIEW MODAL -->
+            <div v-else>
+                <div class="grid grid-cols-2 gap-3">
+                    <div v-for="(v, k) in local" :key="k" class="p-2 border rounded">
+                        <div class="text-xs text-gray-500">{{ k }}</div>
+                        <div class="font-medium">{{ v }}</div>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button @click="$emit('close')" class="px-3 py-1 border rounded">Close</button>
+                </div>
+            </div>
 
         </div>
     </div>

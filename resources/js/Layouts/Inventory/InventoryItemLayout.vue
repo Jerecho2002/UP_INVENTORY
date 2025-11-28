@@ -192,7 +192,7 @@ function handleDelete(item) {
 }
 
 function handleSubmit (item) {
-  Inertia.post('/items', item, {
+  router.post('/items/store', item, {
     onSuccess: () => {
       showFormModal.value = false;
       refreshItems();
@@ -282,8 +282,8 @@ const toggleSidebar = () => {
                 :inputFieldsEdit="inputFieldsEdit"
                 :totalAmount="totalAmount"
                 :itemClass="itemClassifications"
-                :suppliers="suppliers"
                 :initialValues="currentItem"
+                :suppliers="suppliers"
                 @submit="handleSubmit"
                 @close="() => showFormModal = false"
               />

@@ -18,7 +18,7 @@ const props = defineProps({
     
 });
 
-const page = usePage();
+// const page = usePage();
 
 const emit = defineEmits(['submit', 'close', 'created']);
 
@@ -147,7 +147,7 @@ function submit() {
             onSuccess: () => {
                 emit('close');
                 emit('created');
-                form.reset();
+                form.reset();   
             },
             onError: (errors) => {
                 console.error('Create failed', errors);
