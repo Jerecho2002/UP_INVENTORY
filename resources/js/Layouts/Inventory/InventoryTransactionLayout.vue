@@ -10,8 +10,10 @@ import ExportButton from "@/Components/Buttons/ExportButton.vue";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import InventoryFilters from "@/Components/InventoryFilters.vue";
+import AssignedFormModal from "@/Components/Modals/AssignedFormModal.vue";
 
-const tableHeader = [
+const columns = [
+  { label: "", key: "select_all" },
   { label: 'Item Name', key: 'inventory_item', format: (val) => val?.item_name ?? 'N/A' },
   { label: 'Quantity', key: 'quantity' },
   { label: 'Unit Cost', key: 'inventory_item', format: (val) => val?.unit_cost ? `₱${(val.unit_cost)}` : 'N/A' },
@@ -40,6 +42,20 @@ const tableHeader = [
   { label: "Action", key: "action" }
 ]
 
+const accountableField = [
+  { label: "New Accountable Person", model: "accountable_persons_id", name: "users", option: "email", value: "id" },
+  { label: "Issued By", model: "issued_by_id", name: "users", option: "email", value: "id" },
+  // { label: "Created By", model: "created_by", name: "users", option: "email", value: "id" }, 
+];
+
+const inputFields = [
+  { label: "Rooms", model: "item_name", placeholder: "Room 000", type: "text" },
+];
+
+const itemSelectedField = [
+  { label: "Item Selected", model: "item_name"},
+];
+
 const unitCostOptions = [
     { label: "Unit Cost", options: [{label: "₱0-50,000", value: "0-50000"},
                                     {label: "₱50,000 Above", value: "50000-99999999"},
@@ -62,12 +78,20 @@ let cost_range = ref(null);
 
 // MODAL FUNCTION
 let formMode = ref('create'); // CREATE || EDIT || VIEW
+let showFormModal = ref(false);
+let currentItem = ref({});
 
 function openAdd(item) {
   formMode.value = 'create';
   currentItem.value = item;
   showFormModal.value = true;
 };
+
+function handleEdit(item) {
+  formMode.value = 'edit';
+  currentItem.value = item ;
+  showFormModal.value = true;
+}
 
 // const processedItems = computed(() =>
 //   items.value.data.map((item) => {
@@ -85,6 +109,8 @@ const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
+
+const selectedIds = ref([]);
 
 </script>
 
@@ -110,16 +136,17 @@ const toggleSidebar = () => {
             </div>
             <div class="flex justify-between mx-2">
              <div class="flex flex-col md:flex-row gap-2">
-               <PrimaryButton>
+               <PrimaryButton @click="openAdd">
                 <i class="fa-solid fa-exchange-alt"></i>
                 <span> Re-Assign</span>
                </PrimaryButton>
 
-              <SecondaryButton class="gap-2 text-white text-xs sm:text-sm">
+              <SecondaryButton @click="handleEdit" class="gap-2 text-white text-xs sm:text-sm">
                 <i class="fa-solid fa-rotate"></i>
                 <span>Update</span>
               </SecondaryButton>  
              </div>
+
 
               <InventoryFilters 
                 :search="search"
@@ -133,8 +160,18 @@ const toggleSidebar = () => {
                 :mode="'transactions'"
               />
             </div>
+
+             <AssignedFormModal 
+                v-if="showFormModal"
+                :mode="formMode" 
+                :accountableField="accountableField"
+                :inputFields="inputFields"
+                :itemSelectedField="itemSelectedField"
+                @close="showFormModal = false"
+             />
+             
               <InventoryTable 
-                :columns="tableHeader" 
+                :columns="columns" 
                 :rows="items"
                 @update:selected="ids => selectedIds.value = ids"
                 @selection-changed="ids => console.log('Item Selected', ids)"
