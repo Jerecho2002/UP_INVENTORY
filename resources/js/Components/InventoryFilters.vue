@@ -38,24 +38,6 @@ function fetchDashboardSearch(searchValue) {
 }
 const debouncedFetchDashboard = debounce(fetchDashboardSearch, 300);
 
-<<<<<<< HEAD
-// ACKNOWLEDGEMENTS (FIXED — NOW ACCEPTS THREE PARAMETERS)
-function fetchAcknowledgmentSearch(searchValue, cost, stat) {
-    router.get(
-        '/inventory/acknowledgements',
-        {
-            search: searchValue,
-            cost_range: cost,
-            status: stat,
-        },
-        {
-            preserveState: true,
-            replace: true,
-            preserveScroll: true,
-        }
-    );
-}
-=======
 //-------ACKNOWLEDGEMENT FETCH--------------
 function fetchAcknowledgmentSearch(value) {
     router.get('/inventory/acknowledgements', { search: value }, {
@@ -64,8 +46,6 @@ function fetchAcknowledgmentSearch(value) {
         preserveScroll: true,
     });
 }
-
->>>>>>> modifier
 const debouncedFetchAcknowledgement = debounce(fetchAcknowledgmentSearch, 300);
 
 // TRANSACTIONS
