@@ -9,7 +9,7 @@ import ImportButton from "@/Components/Buttons/ImportButton.vue";
 import ExportButton from "@/Components/Buttons/ExportButton.vue";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import ItemFilterControls from "@/Components/ItemFilterControls.vue";
+import ItemFilterControls from "@/Components/Filters/ItemFilterControls.vue";
 import AssignedFormModal from "@/Components/Modals/AssignedFormModal.vue";
 
 const columns = [
@@ -71,7 +71,7 @@ const filterStatus = [
 const page = usePage();
 const items = computed(() => page.props.items);
 
-//INVENTORY FILTER 
+//ITEMS FILTER CONTROL
 let search = ref('');
 let status = ref(null);
 let cost_range = ref(null);

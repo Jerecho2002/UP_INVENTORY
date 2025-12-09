@@ -5,6 +5,9 @@ import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
+import ItemFilterControls from "@/Components/Filters/ItemFilterControls.vue";
+import DateCategoryFilter from "@/Components/Filters/DateCategoryFilter.vue";
+import ExportButton from "@/Components/Buttons/ExportButton.vue";
 
 const columns = [
   { label: "Item Name", key: 'item_name' },
@@ -42,6 +45,11 @@ const columns = [
 const page = usePage();
 const items = computed(() => page.props.items);
 
+//INVENTORY FILTER 
+let search = ref('');
+let status = ref(null);
+let cost_range = ref(null);
+
 
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
@@ -65,8 +73,23 @@ const toggleSidebar = () => {
         <div class="m-2">
           <PageHeader title="Reports" />
           <div class="mt-[2rem]">
-            <div class="bg-white border-b px-4 py-3 flex items-center rounded-t-lg shadow-md">
-
+            <div class="bg-white border-b px-4 py-3 flex items-center rounded-lg shadow-md">
+              <div class="flex items-start justify-between w-full">
+                <div>
+                  <DateCategoryFilter />
+                </div>
+                  <div class="flex items-start gap-4 mt-6">
+                      <ExportButton />
+                      <ItemFilterControls class="-mt-2"
+                          :search="search"
+                          :status="status"
+                          :mode="'reports'"
+                          @update:search="search = $event"
+                          @update:status="status = $event"
+                          @update:cost_range="cost_range = $event"
+                      />
+                  </div>
+                </div>
             </div>
 
             <InventoryTable 

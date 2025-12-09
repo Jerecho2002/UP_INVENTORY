@@ -6,7 +6,7 @@ import SideBar from "@/Components/SideBar.vue";
 import ItemOverview from "@/Components/ItemOverview.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 import BarChartCard from "@/Components/BarChartCard.vue";
-import ItemFilterControls from "@/Components/ItemFilterControls.vue";
+import ItemFilterControls from "@/Components/Filters/ItemFilterControls.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
 import SupplierChartCard from "@/Components/SupplierChartCard.vue";
 import UserActivity from "@/Components/UserActivity.vue";

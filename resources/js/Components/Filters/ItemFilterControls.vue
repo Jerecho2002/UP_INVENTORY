@@ -18,7 +18,7 @@ const status = ref(props.status || '');
 
 const emit = defineEmits(['update:search', 'update:status', 'update:cost_range']);
 
-// INVENTORY
+//-----------------INVENTORY---------------------------
 function fetchInventory(params = {}) {
     router.get('/inventory/items', params, {
         preserveState: true,
@@ -28,7 +28,7 @@ function fetchInventory(params = {}) {
 }
 const debouncedFetchInventory = debounce(fetchInventory, 300);
 
-// DASHBOARD
+//-----------------DASHBOARD----------------------------
 function fetchDashboardSearch(searchValue) {
     router.get('/dashboard', { search: searchValue }, {
         preserveState: true,
@@ -38,7 +38,7 @@ function fetchDashboardSearch(searchValue) {
 }
 const debouncedFetchDashboard = debounce(fetchDashboardSearch, 300);
 
-//-------ACKNOWLEDGEMENT FETCH--------------
+//----------------ACKNOWLEDGEMENT FETCH-----------------
 function fetchAcknowledgmentSearch(value) {
     router.get('/inventory/acknowledgements', { search: value }, {
         preserveState: true,
@@ -48,7 +48,7 @@ function fetchAcknowledgmentSearch(value) {
 }
 const debouncedFetchAcknowledgement = debounce(fetchAcknowledgmentSearch, 300);
 
-// TRANSACTIONS
+//------------------TRANSACTIONS----------------------
 function fetchTransactionSearch(params = {}) {
     router.get('/inventory/transactions', params, {
         preserveState: true,
@@ -58,7 +58,19 @@ function fetchTransactionSearch(params = {}) {
 }
 const debouncedFetchTransaction = debounce(fetchTransactionSearch, 300);
 
-// SEARCH WATCHER
+//------------------REPORTS----------------------
+function fetchReportSearch(params = {}) {
+    router.get('/report', params, {
+        preserveState: true,
+        replace: true,
+        preserveScroll: true,
+    });
+}
+
+const debouncedFetchReport = debounce(fetchReportSearch, 300);
+
+
+//------------------SEARCH WATCHER---------------------
 watch(search, (value) => {
 
     if (props.mode === "inventory") {
@@ -74,7 +86,11 @@ watch(search, (value) => {
     }
 
     else if (props.mode === "acknowledgements") {
-        debouncedFetchAcknowledgement(value, cost_range.value, status.value);
+        debouncedFetchAcknowledgement({
+            search: value,
+            cost_range: cost_range.value, 
+            status: status.value
+        });
     }
 
     else if (props.mode === "transactions") {
@@ -85,14 +101,22 @@ watch(search, (value) => {
         });
     }
 
+    else if (props.mode === "reports") {
+        debouncedFetchReport({
+            search: value,
+            cost_range: cost_range.value,
+            status: status.value
+        });
+    }
+
     emit("update:search", value);
 });
 
-// STATUS WATCHER
+//--------------------STATUS WATCHER----------------------
 watch(status, (value) => {
 
     if (props.mode === "inventory") {
-        debouncedFetchInventory({
+        debouncedFetchInventory({   
             search: search.value,
             cost_range: cost_range.value,
             status: value
@@ -114,7 +138,7 @@ watch(status, (value) => {
     emit("update:status", value);
 });
 
-// COST RANGE WATCHER
+//-----------------COST RANGE WATCHER-------------------------
 watch(cost_range, (value) => {
 
     if (props.mode === "inventory") {

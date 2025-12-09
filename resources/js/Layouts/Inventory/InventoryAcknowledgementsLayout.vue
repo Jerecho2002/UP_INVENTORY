@@ -7,7 +7,7 @@ import PageHeader from '@/Components/PageHeader.vue';
 import InventoryTable from '@/Components/InventoryTable.vue';
 import AcknowledgementFormModal from '@/Components/Modals/AcknowledgementFormModal.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import ItemFilterControls from '@/Components/ItemFilterControls.vue';
+import ItemFilterControls from '@/Components/Filters/ItemFilterControls.vue';
 
 const columns = [
   { label: "", key: "select_all" },
