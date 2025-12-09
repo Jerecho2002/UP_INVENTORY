@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->decimal('unit_cost', 12, 2)->nullable();
             $table->tinyInteger('status')->nullable();
 
-            $table->foreign('acknowledgement_id')->references('id')->on('acknowledgement_receipts');
+            $table->foreign('acknowledgement_id')->references('id')->on('acknowledgement_receipts')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

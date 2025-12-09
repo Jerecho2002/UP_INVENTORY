@@ -49,11 +49,10 @@ class InventoryController extends Controller
     {
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
-        $status = $request->input('status');
         $users = User::all();
 
         return inertia('Inventory/InventoryAcknowledgements', [
-            'items' => $service->filterAndPaginateAcknowledgementReceipt($search, $costRange, $status),
+            'items' => $service->filterAndPaginateAcknowledgementReceipt($search, $costRange),
             'users' => $users,
         ]);
     }

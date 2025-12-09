@@ -23,20 +23,10 @@ const columns = [
   { label: "Status", key: 'status',
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
-      if (status === 0) {
-        label = 'Cancelled';
+      if (status === 1) {
+        label = 'Unassigned';
         cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-ban"></i>';
-      }
-      else if (status === 1) {
-        label = 'Recieved';
-        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
-        icon = '<i class="fa-solid fa-circle-check"></i>';
-      }
-      else if (status === 2) { 
-        label = 'Pending'; 
-        cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
-        icon = '<i class="fa-solid fa-clock"></i>';
       }
       return `<span class="${cls}">${icon} ${label}</span>`;
     }
@@ -48,12 +38,6 @@ const accountableField = [
   { label: "Accountable Person", model: "accountable_persons_id", name: "users", option: "email", value: "id" },
   { label: "Issued By", model: "issued_by_id", name: "users", option: "email", value: "id" },
   // { label: "Created By", model: "created_by", name: "users", option: "email", value: "id" }, 
-];
-
-const filterStatus = [
-    {label: "Status", options: [{ label: "Assigned", value: 1},
-                                { label: "Unsign", value: 0 },
-  ]},
 ];
 
 const inputFields = [
@@ -146,7 +130,6 @@ const selectedIds = ref([]);
             <ItemFilterControls 
               :search="search"
               :status="status"
-              :filterStatus="filterStatus"
               @update:search="search = $event"
               @update:status="status = $event"
               :mode="'acknowledgements'"
