@@ -19,7 +19,7 @@ const columns = [
   { label: "Item Name", key: 'item_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
-  { label: "PAR/ICS Number", key: 'category' },
+  // { label: "PAR/ICS Number", key: 'category' }, -> TO BE REMOVE
   { label: "Property Number", key: 'property_number' },
   { label: "Serial Number", key: 'serial_number' },
   { label: "Invoice", key: 'invoice' },
@@ -82,13 +82,6 @@ const viewItems = [
   },
 ];
 
-// const editItems = [
-//   { label: "Property Records", key: "category" },
-//   { label: "Property Number", key: "property_number" },
-//   { label: "Item Name", key: "item_name" },
-//   { label: "Description", key: "description" },
-// ];
-
 const quantityCostFields = [
   { label: "Quantity", model: "quantity", placeholder: "0", type: "number"},
   { label: "Unit Cost", model: "unit_cost", placeholder: "0", type: "number"},
@@ -103,11 +96,14 @@ const inputFieldsEdit = [
   { label: "Item Name", model: "item_name", placeholder: "Laptops, Ceiling Fan...", type: "text", readonly: false },
 ];
 
+const supplierOptions = [
+  { label: "Supplier", model: "supplier_id", name: "suppliers", option: "supplier_name", value: "id" },
+];
+
 const requestFields = [
-  { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text" },
-  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
+  // { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text" }, -> TO REMOVE
   { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
-  { label: "Purchase Orders", model: "po_number", placeholder: "PO-###", type: "text" },
+  { label: "Purchase Order", model: "po_number", placeholder: "PO-###", type: "text" },
   { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
 ]
 
@@ -118,7 +114,10 @@ const invoicesFundFields = [
 
 const firstDropdown = [
   { label: "Category", model: "item_classification_id", name: "itemClass", option: "classification_name", value: "id" },
-  { label: "Supplier", model: "supplier_id", name: "suppliers", option: "supplier_name", value: "id" },
+];
+
+const firstInputField = [
+  { label: "Property Number", model: "property_number", placeholder: "PROP-####.", type: "text" },
 ];
 
 const secondDropdown = [
@@ -133,8 +132,8 @@ const secondDropdown = [
   ]},
 ];
 
-const totalAmount = [
-  { label: "Total Amount"}
+const totalCost = [
+  { label: "Total Cost"}
 ];
 
 
@@ -274,13 +273,15 @@ const toggleSidebar = () => {
                 @created="refreshItems"
                 :mode="formMode"
                 :firstDropdown="firstDropdown"
+                :firstInputField="firstInputField"
                 :secondDropdown="secondDropdown"
                 :quantityCostFields="quantityCostFields"
                 :input-fields="inputFields"
                 :invoicesFundFields="invoicesFundFields"
+                :supplierOptions="supplierOptions"
                 :requestFields="requestFields"
                 :inputFieldsEdit="inputFieldsEdit"
-                :totalAmount="totalAmount"
+                :totalCost="totalCost"
                 :itemClass="itemClassifications"
                 :initialValues="currentItem"
                 :suppliers="suppliers"

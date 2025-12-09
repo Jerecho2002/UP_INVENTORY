@@ -7,15 +7,17 @@ const props = defineProps({
     initialValues: { type: Object, default: () => ({}) },
     inputFields: { type: Array, default: () => [] },
     firstDropdown: { type: Array, default: () => [] },
+    firstInputField: { type: Array, default: () => [] },
     secondDropdown: { type: Array, default: () => [] },
     invoicesFundFields: { type: Array, default: () => [] },
     quantityCostFields: { type: Array, default: () => [] },
+    supplierOptions: { type: Array, default: () => [] },
     requestFields: { type: Array, default: () => [] },
-    totalAmount: { type: Array, default: () => [] },
+    totalCost: { type: Array, default: () => [] },
     itemClass: { type: Array, default: () => [] },
     suppliers: { type: Array, default: () => [] },
     inputFieldsEdit: { type: Array, default: () => [] },
-    
+
 });
 
 const emit = defineEmits(['submit', 'close', 'created']);
@@ -85,7 +87,7 @@ watch(() => form.item_classification_id, (newVal) => {
 // --- EDIT MODE ---
 watch(() => props.initialValues, (item) => {
     if (props.mode !== 'edit' || !item) return;
-    
+
     isEditing.value = true;
 
     form.id = item.id ?? null;
@@ -124,7 +126,7 @@ watch(() => form.quantity, (newVal) => {
 });
 
 function submit() {
-     form.total_amount = parseFloat(form.total_amount);
+    form.total_amount = parseFloat(form.total_amount);
     if (props.mode === "edit") {
         if (!form.id) {
             console.error('Edit mode but form.id is missing', form);
@@ -145,7 +147,7 @@ function submit() {
             onSuccess: () => {
                 emit('close');
                 emit('created');
-                form.reset();   
+                form.reset();
             },
             onError: (errors) => {
                 console.error('Create failed', errors);
@@ -174,18 +176,30 @@ function submit() {
 
                                 <!-- FIRST DOWN -->
                                 <div class="flex flex-col md:flex-row gap-4 mb-4">
-                                    <div v-for="fdp in firstDropdown" :key="fdp.name">
+                                    <div v-for="fdp in firstDropdown" :key="fdp.model" class="flex flex-col">
                                         <label class="block text-sm font-bold mb-1">{{ fdp.label }}</label>
-                                        <select v-model="form[fdp.model]" :key="fdp.model"
-                                            class="w-full sm:w-[15.5rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                        <select v-model="form[fdp.model]" class="w-full sm:w-[10rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm 
+                   focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
                                             <option value="">Select</option>
                                             <option v-for="item in props[fdp.name]" :key="item.id"
                                                 :value="item[fdp.value]">
                                                 {{ item[fdp.option] || 'N/A' }}
                                             </option>
                                         </select>
-                                        <div v-if="form.errors[fdp.model]" class="text-red-500 text-sm">{{
-                                            form.errors[fdp.model] }}</div>
+                                        <div v-if="form.errors[fdp.model]" class="text-red-500 text-sm">
+                                            {{ form.errors[fdp.model] }}
+                                        </div>
+                                    </div>
+
+                                    <!-- FIRST INPUT FIELD SECTION -->
+                                    <div v-for="fif in firstInputField" :key="fif.model" class="flex flex-col">
+                                        <label class="block text-sm font-bold mb-1">{{ fif.label }}</label>
+                                        <input :type="fif.type || 'text'" v-model="form[fif.model]"
+                                            :placeholder="fif.placeholder" class="w-full sm:w-[21rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm
+                   focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
+                                        <div v-if="form.errors[fif.model]" class="text-red-500 text-sm">
+                                            {{ form.errors[fif.model] }}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -239,7 +253,7 @@ function submit() {
                                 <div v-for="ip in (mode === 'edit' ? inputFieldsEdit : inputFields)" :key="ip.model"
                                     class="flex flex-col">
                                     <label class="block text-sm font-bold mb-1">{{ ip.label }}</label>
-                                    <input v-model="form[ip.model]" :key="ip.model"  :readonly="ip.readonly" type="text"
+                                    <input v-model="form[ip.model]" :key="ip.model" :readonly="ip.readonly" type="text"
                                         :placeholder="ip.placeholder"
                                         class="w-full sm:w-[32rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]" />
                                     <div v-if="form.errors[ip.model]" class="text-red-500 text-sm">{{
@@ -257,8 +271,26 @@ function submit() {
                             </div>
                         </div>
                     </div>
+
                     <!-- RIGHT -->
                     <div class="space-y-4">
+                        <!-- SUPPLIER OPTIONS -->
+                        <div class="space-y-4">
+                            <div v-for="sup in supplierOptions" :key="sup.label" class="flex flex-col">
+                                <label class="block text-sm font-bold mb-1"> {{ sup.label }} </label>
+                                <select v-model="form[sup.model]" class="w-full sm:w-[34rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm 
+                   focus:ring-1 focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
+                                    <option value="">Select</option>
+                                    <option v-for="item in props[sup.name]" :key="item.id" :value="item[sup.value]">
+                                        {{ item[sup.option] || 'N/A' }}
+                                    </option>
+                                </select>
+                                <div v-if="form.errors[sup.model]" class="text-red-500 text-sm">
+                                    {{ form.errors[sup.model] }}
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- REQUEST FIELDS -->
                         <div class="space-y-4">
                             <div v-for="rf in requestFields" :key="rf.model" class="flex flex-col">
@@ -282,25 +314,37 @@ function submit() {
                                     form.errors[inv.model] }}</div>
                             </div>
                         </div>
-
-                        <!-- TOTAL AMOUNT -->
-                        <div class="flex md:flex-row sm:items-center md:items-center text-sm font-semibold">
-                            <div v-for="total in totalAmount" :key="total.label" class="flex items-center gap-3 mt-8">
-                                <label class="block text-base font-bold">{{ total.label }}:</label>
-                                <input v-model="form.total_amount" readonly placeholder="0.00"
-                                    class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none" />
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <!-- BUTTON -->
-                <div class="mt-4 flex justify-end gap-4">
-                    <button type="button" @click="$emit('close')"
-                        class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">Cancel</button>
-                    <button type="submit"
-                        class="bg-[#0E6021] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">  {{ mode === 'edit' ? "Update" : "Add" }}</button>
+                <div class="flex justify-between items-center gap-4">
+                    <!-- TOTAL COST -->
+                    <div class="flex items-center gap-4">
+                        <div v-for="total in totalCost" :key="total.label" class="flex items-center gap-3">
+                            <label class="text-base font-bold">
+                                {{ total.label }}:
+                            </label>
+
+                            <input v-model="form.total_amount" readonly placeholder="0.00"
+                                class="block text-lg font-semibold text-gray-700 border border-none pointer-events-none" />
+                        </div>
+                    </div>
+
+                    <!-- BUTTONS -->
+                    <div class="flex items-center gap-3">
+                        <button type="button" @click="$emit('close')"
+                            class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">
+                            Cancel
+                        </button>
+
+                        <button type="submit"
+                            class="bg-[#0E6021] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-green-800">
+                            {{ mode === 'edit' ? "Update" : "Add" }}
+                        </button>
+                    </div>
                 </div>
+
             </form>
 
             <!-- VIEW MODAL -->
