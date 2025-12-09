@@ -6,7 +6,7 @@ import SideBar from "@/Components/SideBar.vue";
 import ItemOverview from "@/Components/ItemOverview.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 import BarChartCard from "@/Components/BarChartCard.vue";
-import InventoryFilters from "@/Components/InventoryFilters.vue";
+import ItemFilterControls from "@/Components/ItemFilterControls.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
 import SupplierChartCard from "@/Components/SupplierChartCard.vue";
 import UserActivity from "@/Components/UserActivity.vue";
@@ -94,7 +94,7 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
                 <BarChartCard />
               </div>
               <div class="my-5">
-                <InventoryFilters
+                <ItemFilterControls
                   :search="search"
                   :cost_range="cost_range"
                   :status="status"

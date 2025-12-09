@@ -7,7 +7,7 @@ import PageHeader from '@/Components/PageHeader.vue';
 import InventoryTable from '@/Components/InventoryTable.vue';
 import AcknowledgementFormModal from '@/Components/Modals/AcknowledgementFormModal.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import InventoryFilters from '@/Components/InventoryFilters.vue';
+import ItemFilterControls from '@/Components/ItemFilterControls.vue';
 
 const columns = [
   { label: "", key: "select_all" },
@@ -143,7 +143,7 @@ const selectedIds = ref([]);
                 <span> Assign </span>
               </PrimaryButton>
 
-            <InventoryFilters 
+            <ItemFilterControls 
               :search="search"
               :status="status"
               :filterStatus="filterStatus"

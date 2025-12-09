@@ -27,6 +27,7 @@ Route::get('/dummy-auth', function () {
     // Temporary Authentication
     $user_id = 11;
     Auth::loginUsingId($user_id);
+    
 
     return "User logged in {$user_id}";
 });

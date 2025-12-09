@@ -13,7 +13,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['submit', 'close', 'created']);
-
+``
 const form = useForm({
     inventory_item_id: [],
     accountable_persons_id: "",

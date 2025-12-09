@@ -13,5 +13,5 @@ function exportCsv() {
                 d="M19 13v6H5v-6H3v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6h-2zM12 3l-4.29 4.29 1.42 1.42L11 7.41V15h2V7.41l1.87 1.3 1.42-1.42L12 3z" />
         </svg>
         <span>Export</span>
-    </button>
+    </button>   
 </template>

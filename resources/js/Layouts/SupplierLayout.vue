@@ -5,6 +5,7 @@ import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
+import ItemFilterControls from "@/Components/ItemFilterControls.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 
@@ -17,12 +18,12 @@ const columns = [
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
       if (status === 0) {
-        label = 'Cancelled';
+        label = 'Inactive';
         cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-ban"></i>';
       }
       else if (status === 1) {
-        label = 'Received';
+        label = 'Active';
         cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-circle-check"></i>';
       }
@@ -83,11 +84,13 @@ const toggleSidebar = () => {
        <main class="flex-1 sm:p-5 md:p-6 overflow-hidden m-2">
             <PageHeader title="Suppliers" />
               <div class="w-full h-full">
-                <div class="mt-10">
+                <div class="mt-10 flex flex-col md:flex-row gap-4 justify-between">
                   <PrimaryButton @click="openAdd()">
                     <i class="fa-solid fa-user-group"></i>
                     <span>Add Supplier</span>
                   </PrimaryButton>
+
+                  <ItemFilterControls />
                 </div>
 
                 <InventoryTable 

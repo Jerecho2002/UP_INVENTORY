@@ -1,6 +1,6 @@
 <script setup>
 import { usePage, router } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { defineProps, computed, ref } from 'vue';
 import TableCell from './TableCell.vue';
 
 
@@ -85,7 +85,7 @@ function toggleCheck(item) {
 </script>
 
 <template>
-    <pre>{{ suppliers }}</pre>
+    <!-- <pre>{{ rows }}</pre> -->
     <!-- Table (horizontal scroll on small screens) -->
     <div class="overflow-x-auto mt-3">
         <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">

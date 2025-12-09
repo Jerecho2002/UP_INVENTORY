@@ -65,6 +65,10 @@ const toggleSidebar = () => {
         <div class="m-2">
           <PageHeader title="Reports" />
           <div class="mt-[2rem]">
+            <div class="bg-white border-b px-4 py-3 flex items-center rounded-t-lg shadow-md">
+
+            </div>
+
             <InventoryTable 
               :columns="columns" 
               :rows="items"

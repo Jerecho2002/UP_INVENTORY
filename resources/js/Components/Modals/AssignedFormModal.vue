@@ -24,7 +24,7 @@ const form = useForm({
         <div class="bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold text-[#850038] mb-6">
-                    {{ mode === 'edit' ? 'Update Item' : mode === 'view' ? 'Assigned Details' : 'Re-Assign' }}
+                    {{ mode === 'edit' ? 'Update' : mode === 'view' ? 'Assigned Details' : 'Re-Assign' }}
                 </h3>
             </div>
 

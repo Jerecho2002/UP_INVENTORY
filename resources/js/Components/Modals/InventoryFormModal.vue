@@ -18,8 +18,6 @@ const props = defineProps({
     
 });
 
-// const page = usePage();
-
 const emit = defineEmits(['submit', 'close', 'created']);
 
 

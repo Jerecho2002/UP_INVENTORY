@@ -8,7 +8,7 @@ import InventoryTable from "@/Components/InventoryTable.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import InventoryFormModal from "@/Components/Modals/InventoryFormModal.vue";
-import InventoryFilters from "@/Components/InventoryFilters.vue";
+import ItemFilterControls from "@/Components/ItemFilterControls.vue";
 import ImportButton from "@/Components/Buttons/ImportButton.vue";
 import ExportButton from "@/Components/Buttons/ExportButton.vue";
 import ConvertButton from "@/Components/Buttons/ConvertButton.vue";
@@ -256,7 +256,7 @@ const toggleSidebar = () => {
                   <span> Add Item</span>
                 </PrimaryButton>
 
-                <InventoryFilters
+                <ItemFilterControls
                   :search="search"
                   :cost_range="cost_range"
                   :status="status"

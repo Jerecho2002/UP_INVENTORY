@@ -9,7 +9,7 @@ import ImportButton from "@/Components/Buttons/ImportButton.vue";
 import ExportButton from "@/Components/Buttons/ExportButton.vue";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-import InventoryFilters from "@/Components/InventoryFilters.vue";
+import ItemFilterControls from "@/Components/ItemFilterControls.vue";
 import AssignedFormModal from "@/Components/Modals/AssignedFormModal.vue";
 
 const columns = [
@@ -128,7 +128,7 @@ const selectedIds = ref([]);
 
       <!-- Main -->
       <main class="flex-1 sm:p-5 md:p-6  mx-2 sm:mx-2 md:mx-0 overflow-y-auto">
-        <PageHeader title="Assigned" />
+        <PageHeader title="Transactions" />
           <div class="w-full h-screen bg-white flex flex-col rounded-lg shadow-md mt-10">
             <div class="flex flex-col md:flex-row gap-2 justify-end mt-10 mx-2 mb-6">
               <ImportButton />
@@ -148,7 +148,7 @@ const selectedIds = ref([]);
              </div>
 
 
-              <InventoryFilters 
+              <ItemFilterControls 
                 :search="search"
                 :status="status"
                 :unitCostOptions="unitCostOptions" 
