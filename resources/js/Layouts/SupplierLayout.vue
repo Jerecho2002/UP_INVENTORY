@@ -5,7 +5,7 @@ import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
-import ItemFilterControls from "@/Components/ItemFilterControls.vue";
+import ItemFilterControls from "@/Components/Filters/ItemFilterControls.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 
 

@@ -1,7 +1,7 @@
 <script setup>
 import TableCell from './TableCell.vue';
 import { usePage, Link, router } from '@inertiajs/vue3';
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { debounce } from 'lodash';
 
 const props = defineProps({
@@ -73,8 +73,7 @@ function getValue(obj, path) {
 <template>
 
     <!-- FILTER FORM -->
-    <div
-        class="w-full bg-white p-4 rounded-lg shadow-md flex flex-col lg:flex-row flex-wrap items-start lg:items-end gap-4">
+    <div class="w-full bg-white p-4 rounded-lg shadow-md flex flex-col lg:flex-row flex-wrap items-start lg:items-end gap-4">
         <!-- FROM -->
         <div class="flex flex-col w-full sm:w-1/2 md:w-auto">
             <label class="text-sm font-bold mb-1">From</label>
