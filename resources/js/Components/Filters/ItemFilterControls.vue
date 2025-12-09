@@ -39,12 +39,20 @@ function fetchDashboardSearch(searchValue) {
 const debouncedFetchDashboard = debounce(fetchDashboardSearch, 300);
 
 //----------------ACKNOWLEDGEMENT FETCH-----------------
-function fetchAcknowledgmentSearch(value) {
-    router.get('/inventory/acknowledgements', { search: value }, {
-        preserveState: true,
-        replace: true,
-        preserveScroll: true,
-    });
+function fetchAcknowledgmentSearch(searchValue, cost, stat) {
+    router.get(
+        '/inventory/acknowledgements',
+        {
+            search: searchValue,
+            cost_range: cost,
+            status: stat,
+        },
+        {
+            preserveState: true,
+            replace: true,
+            preserveScroll: true,
+        }
+    );
 }
 const debouncedFetchAcknowledgement = debounce(fetchAcknowledgmentSearch, 300);
 
@@ -86,11 +94,7 @@ watch(search, (value) => {
     }
 
     else if (props.mode === "acknowledgements") {
-        debouncedFetchAcknowledgement({
-            search: value,
-            cost_range: cost_range.value, 
-            status: status.value
-        });
+        debouncedFetchAcknowledgement(value, cost_range.value, status.value);
     }
 
     else if (props.mode === "transactions") {
