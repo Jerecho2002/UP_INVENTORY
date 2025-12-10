@@ -1,6 +1,6 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
-import { computed } from "vue";
+import { useForm, router } from '@inertiajs/vue3';
+import { computed, ref, watch } from "vue"; // <-- watch imported
 
 const props = defineProps({
     mode: { type: String, default: 'create' },
@@ -12,8 +12,9 @@ const props = defineProps({
     users: { type: Array, default: () => [] },
 });
 
-const emit = defineEmits(['submit', 'close', 'created']);
-``
+const selectedCategory = ref('');
+const emit = defineEmits(['submit', 'close', 'created']); // <-- remove stray backticks
+
 const form = useForm({
     inventory_item_id: [],
     accountable_persons_id: "",
@@ -35,36 +36,80 @@ function submit() {
     form.inventory_item_id = props.selectedIDs;
     form.created_by = props.users[0]?.id ?? null;
 
-    if (props.mode === "edit") {
-        if (!form.id) {
-            console.error('Edit mode but form.id is missing', form);
-            return;
-        }
+    let updateCategoryPromise;
 
-        form.put(route('items.update', form.id), {
-            onSuccess: () => {
-                emit('close');
-                emit('submit', form);
-            },
-            onError: (errors) => {
-                console.error('Update failed', errors);
-            },
+    if (selectedCategory.value && props.selectedIDs.length) {
+        updateCategoryPromise = new Promise(resolve => {
+            router.put(route('inventory.items.update-category'), {
+                inventory_item_ids: props.selectedIDs,
+                category: selectedCategory.value,
+            }, {
+                onSuccess: () => resolve(),
+                onError: () => resolve(), // still resolve so PAR continues
+            });
         });
     } else {
-        form.post(route('inventory.acknowledgements.store'), {
-            onSuccess: () => {
-                emit('close');
-                emit('created');
-                form.reset();   
-            },
-            onError: (errors) => {
-                console.error('Create failed', errors);
-            },
-        });
+        updateCategoryPromise = Promise.resolve();
     }
+
+    updateCategoryPromise.then(() => {
+        // Continue with PAR / Acknowledgement creation
+        if (props.mode === "edit") {
+            if (!form.id) {
+                console.error('Edit mode but form.id is missing', form);
+                return;
+            }
+
+            form.put(route('items.update', form.id), {
+                onSuccess: () => {
+                    emit('close');
+                    emit('submit', form);
+                },
+                onError: (errors) => {
+                    console.error('Update failed', errors);
+                },
+            });
+        } else {
+            form.post(route('inventory.acknowledgements.store'), {
+                onSuccess: () => {
+                    emit('close');
+                    emit('created');
+                    form.reset();
+                },
+                onError: (errors) => {
+                    console.error('Create failed', errors);
+                },
+            });
+        }
+    });
 }
 
+// Watch selectedIDs prop and initialize selectedCategory from first selected item
+watch(
+    () => props.selectedIDs,
+    (newVal) => {
+        console.log('selectedIDs changed', newVal); // debug
+        if (newVal && newVal.length > 0) {
+            selectedCategory.value = itemMap.value[newVal[0]]?.category || "";
+        } else {
+            selectedCategory.value = "";
+        }
+    },
+    { immediate: true }
+);
+
+// Also watch items in case they load/refresh after selectedIDs
+watch(
+    () => props.items,
+    (newItems) => {
+        if (props.selectedIDs.length > 0) {
+            selectedCategory.value =
+                itemMap.value[props.selectedIDs[0]]?.category || "";
+        }
+    }
+);
 </script>
+
 
 <template>
     <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
@@ -80,6 +125,9 @@ function submit() {
                     <!-- LEFT -->
                     <div class="space-y-4 col-span-1 md:col-span-1">
                         <div class="space-y-4">
+                            <label class="block text-sm font-bold mb-1">PAR/ICS</label>
+                            <input type="text" v-model="selectedCategory" placeholder="Enter new category"
+                                class="rounded-md w-full border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm">
                             <!-- ACCOUNTABLE/ISSUED/CREATED DROPDOWN -->
                             <div class="flex flex-col md:flex-row gap-4">
                                 <div v-for="accf in accountableField" :key="accf.name" class="flex flex-col">
@@ -149,23 +197,30 @@ function submit() {
                     <div class="space-y-4">
                         <!-- ITEM SELECTED -->
                         <div v-for="select in itemSelectedField" :key="select.model">
-                            <label class="block text-sm font-bold mb-1">{{ select.label }}</label>
-                            <div class="bg-[#F8F8F8] border border-gray-300 rounded-md h-[24.1rem] p-3 overflow-y-auto">
-                                <!-- If nothing selected -->
-                                <p v-if="selectedIDs.length === 0" class="text-gray-500 text-sm">
-                                    No items selected
-                                </p>
-                                <!-- Show list of selected IDs -->
-                                <ul v-else class="space-y-2">
-                                    <li v-for="id in selectedIDs" :key="id"
-                                        class="bg-white border p-2 rounded-md shadow-sm text-sm">
-                                        <p><strong class="text-[#850038]">Item Name:</strong> {{ itemMap[id]?.item_name }}</p>
-                                        <p><strong class="text-[#850038]">Property Number:</strong> {{ itemMap[id]?.property_number }}</p>
-                                        <p><strong class="text-[#850038]">Quantity:</strong> {{ itemMap[id]?.quantity }}</p>
-                                    </li>
-                                </ul>
+                            <div v-if="selectedIDs.length === 0">
+                                <p class="text-gray-500 text-sm">No items selected</p>
+                            </div>
+
+                            <div v-else>
+                                <label class="block text-sm font-bold mb-1">{{ select.label }}</label>
+
+                                <div
+                                    class="bg-[#F8F8F8] border border-gray-300 rounded-md h-[24.1rem] p-3 overflow-y-auto">
+                                    <ul class="space-y-2">
+                                        <li v-for="id in selectedIDs" :key="id"
+                                            class="bg-white border p-2 rounded-md shadow-sm text-sm">
+                                            <p><strong class="text-[#850038]">Item Name:</strong> {{
+                                                itemMap[id]?.item_name }}</p>
+                                            <p><strong class="text-[#850038]">Property Number:</strong> {{
+                                                itemMap[id]?.property_number }}</p>
+                                            <p><strong class="text-[#850038]">Quantity:</strong> {{
+                                                itemMap[id]?.quantity }}</p>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 

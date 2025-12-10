@@ -12,6 +12,7 @@ use App\Services\InventoryService;
 use App\Http\Requests\InventoryStoreRequest;
 use App\Http\Requests\InventoryUpdateRequest;
 use App\Services\AcknowledgementReceiptService;
+use App\Http\Requests\UpdateInventoryCategoryRequest;
 use App\Http\Requests\InventoryAcknowledgementStoreRequest;
 
 class InventoryController extends Controller
@@ -62,6 +63,14 @@ class InventoryController extends Controller
         $service->createAcknowledgements($request->validated());
 
         return redirect()->route('inventory.acknowledgements')->with('success', 'Items assigned successfully!');
+    }
+
+    public function updateCategoryForItems(UpdateInventoryCategoryRequest $request, InventoryService $service)
+    {
+        $service->updateCategory($request->input('inventory_item_ids'),
+        $request->input('category'));
+
+        return back()->with('success', 'Category updated for selected items.');
     }
 
 

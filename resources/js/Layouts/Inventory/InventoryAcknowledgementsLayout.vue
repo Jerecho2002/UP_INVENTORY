@@ -15,7 +15,6 @@ const columns = [
   { label: "Unit", key: "unit" },
   { label: "Unit Cost", key: "unit_cost", format: (val) => val ? `₱${val}` : 'N/A' },
   { label: "Property Number", key: "property_number" },
-  { label: "PAR/ICS Number", key: 'category' },
   { label: "Serial Number", key: 'serial_number' },
   { label: "Invoice", key: 'invoice' },
   { label: "Supplier Name", key: "supplier", format: (val) => val?.supplier_name ?? 'N/A'  },

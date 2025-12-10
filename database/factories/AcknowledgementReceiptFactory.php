@@ -14,8 +14,8 @@ class AcknowledgementReceiptFactory extends Factory
     {
         return [
             'par_date' => $this->faker->date(),
-            'accountable_persons_id' => AccountablePerson::factory(),
-            'issued_by_id' => AccountablePerson::factory(),
+            'accountable_persons_id' => User::factory(),
+            'issued_by_id' => User::factory(),
             'inventory_item_id' => InventoryItem::factory(),
             'remarks' => $this->faker->sentence(),
             'created_by' => User::factory(),

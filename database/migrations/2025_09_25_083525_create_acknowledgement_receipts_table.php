@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->unsignedInteger('created_by');
             $table->timestamps();
 
-            $table->foreign('accountable_persons_id')->references('id')->on('accountable_persons')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('issued_by_id')->references('id')->on('accountable_persons')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('accountable_persons_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('issued_by_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('inventory_item_id')->references('id')->on('inventory_items')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
         });

@@ -49,8 +49,8 @@ class DatabaseSeeder extends Seeder
 
         // ✅ Acknowledgement Receipts
         $ackReceipts = AcknowledgementReceipt::factory(30)->create([
-            'accountable_persons_id' => fn() => $accountablePersons->random()->id,
-            'issued_by_id'           => fn() => $accountablePersons->random()->id,
+            'accountable_persons_id' => fn() => $users->random()->id,
+            'issued_by_id'           => fn() => $users->random()->id,
             'inventory_item_id'      => fn() => $inventoryItems->random()->id,
             'created_by'             => fn() => $users->random()->id,
         ]);

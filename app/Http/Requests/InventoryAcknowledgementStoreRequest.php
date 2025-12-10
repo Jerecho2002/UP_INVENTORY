@@ -24,7 +24,7 @@ class InventoryAcknowledgementStoreRequest extends FormRequest
         return [
             'inventory_item_id' => 'required|array',
             'inventory_item_id.*' => 'required|exists:inventory_items,id',
-            'accountable_persons_id' => 'required|exists:accountable_persons,id',
+            'accountable_persons_id' => 'required|exists:users,id',
             'issued_by_id' => 'required|exists:users,id',
             'created_by' => 'required|exists:users,id',
             'par_date' => 'required|date',
