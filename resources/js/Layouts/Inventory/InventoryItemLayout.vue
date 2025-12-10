@@ -13,6 +13,8 @@ import ImportButton from "@/Components/Buttons/ImportButton.vue";
 import ExportButton from "@/Components/Buttons/ExportButton.vue";
 import ConvertButton from "@/Components/Buttons/ConvertButton.vue";
 import DeleteModal from "@/Components/Modals/DeleteModal.vue";
+import SuccessModal from '@/Components/Modals/SuccessModal.vue';
+
 
 
 const columns = [
@@ -167,6 +169,9 @@ let showFormModal = ref(false);
 let showDeleteModal = ref(false);
 let currentItem = ref({});
 
+const showSuccessModal = ref(false);
+const successMessage = ref("");
+
 function openAdd(item) {
   formMode.value = 'create';
   currentItem.value = item;
@@ -193,6 +198,10 @@ function handleDelete(item) {
 function handleSubmit (item) {
   router.post('/items/store', item, {
     onSuccess: () => {
+      showSuccessModal.value = true;
+       successMessage.value = formMode.value === "edit" 
+          ? "Item updated successfully!" 
+          : "Item added successfully!";
       showFormModal.value = false;
       refreshItems();
     },
@@ -287,6 +296,13 @@ const toggleSidebar = () => {
                 :suppliers="suppliers"
                 @submit="handleSubmit"
                 @close="() => showFormModal = false"
+              />
+
+              <SuccessModal
+                v-if="showSuccessModal"
+                :title="'Success'"
+                :message="successMessage"
+                @close="showSuccessModal = false"
               />
 
               <InventoryTable 
