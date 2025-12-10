@@ -19,7 +19,17 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function acknowledgementReceipts()
+    public function accountableReceipts()
+    {
+        return $this->hasMany(AcknowledgementReceipt::class, 'accountable_persons_id');
+    }
+
+    public function issuedReceipts()
+    {
+        return $this->hasMany(AcknowledgementReceipt::class, 'issued_by_id');
+    }
+
+    public function createdReceipts()
     {
         return $this->hasMany(AcknowledgementReceipt::class, 'created_by');
     }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AcknowledgementReceipt;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use App\Models\InventoryItem;
@@ -54,12 +55,12 @@ class InventoryService
 
     public function filterAndPaginateTransaction($search = null, $costRange = null, $status)
     {
-        return InventoryTransaction::with('inventoryItem')
+        return AcknowledgementReceipt::with('inventoryItems')
             ->when($search, fn($query, $search) => $query->search($search))
             ->when($costRange, function ($query, $costRange) {
                 [$min, $max] = explode('-', $costRange);
 
-                $query->whereHas('inventoryItem', function ($q) use ($min, $max) {
+                $query->whereHas('inventoryItems', function ($q) use ($min, $max) {
                     if ($min !== '' && $max !== '') {
                         $q->whereBetween('unit_cost', [(float) $min, (float) $max]);
                     } elseif ($min !== '' && $max === '') {
@@ -69,7 +70,7 @@ class InventoryService
                     }
                 });
             })
-            ->when(!is_null($status), function ($query) use ($status) {
+            ->when(!is_null(value: $status), function ($query) use ($status) {
                 $query->where('status', $status);
             })
             ->paginate(10)
@@ -130,6 +131,12 @@ class InventoryService
             'date_acquired' => $data['date_acquired'],
             'status' => $data['status'] ?? 1,
         ]);
+    }
+
+    public function updateCategory(array $itemIds, string $category): void
+    {
+        InventoryItem::whereIn('id', $itemIds)
+            ->update(['category' => $category]);
     }
 
     public function convertToCsv(Request $request)

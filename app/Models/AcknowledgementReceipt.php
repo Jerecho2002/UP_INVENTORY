@@ -24,12 +24,12 @@ class AcknowledgementReceipt extends Model
 
     public function accountablePerson()
     {
-        return $this->belongsTo(AccountablePerson::class, 'accountable_persons_id');
+        return $this->belongsTo(User::class, 'accountable_persons_id');
     }
 
     public function issuedBy()
     {
-        return $this->belongsTo(AccountablePerson::class, 'issued_by_id');
+        return $this->belongsTo(User::class, 'issued_by_id');
     }
 
     public function creator()
