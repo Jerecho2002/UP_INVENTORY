@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('accountable_persons', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('full_name', 80);
+            $table->string('department', 80);
+            $table->string('position', 80);
             $table->tinyInteger('status')->default(0);
-            $table->unsignedInteger('user_id');
-
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

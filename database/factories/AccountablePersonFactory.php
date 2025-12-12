@@ -11,8 +11,18 @@ class AccountablePersonFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => $this->faker->boolean ? 1 : 0,
-            'user_id' => User::factory(),
+            'full_name' => $this->faker->name(),
+            'department' => $this->faker->randomElement([
+                'Finance',
+                'HR',
+                'IT',
+                'Procurement',
+                'Operations',
+                'Admin Office',
+                'Supply Office',
+            ]),
+            'position' => $this->faker->jobTitle(),
+            'status' => $this->faker->numberBetween(0, 1), // or always 0 (your choice)
         ];
     }
 }

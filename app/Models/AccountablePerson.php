@@ -9,14 +9,9 @@ class AccountablePerson extends Model
 {
     use HasFactory;
     protected $table = 'accountable_persons';
-    protected $fillable = ['status', 'user_id'];
+    protected $fillable = ['full_name', 'department', 'position', 'status'];
 
     public $timestamps = false;
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function acknowledgementReceipts()
     {

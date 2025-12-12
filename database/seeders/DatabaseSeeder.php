@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
 
         // ✅ Base data
         $users = User::factory(10)->create();
+        $accPersons = AccountablePerson::factory(10)->create();
         $suppliers = Supplier::factory(5)->create();
         $itemClassifications = ItemClassification::factory(13)->create();
 
@@ -42,14 +43,9 @@ class DatabaseSeeder extends Seeder
             'inventory_item_id' => fn() => $inventoryItems->random()->id,
         ]);
 
-        // ✅ Accountable Persons
-        $accountablePersons = AccountablePerson::factory(5)->create([
-            'user_id'   => fn() => $users->random()->id,
-        ]);
-
         // ✅ Acknowledgement Receipts
         $ackReceipts = AcknowledgementReceipt::factory(30)->create([
-            'accountable_persons_id' => fn() => $users->random()->id,
+            'accountable_persons_id' => fn() => $accPersons->random()->id,
             'issued_by_id'           => fn() => $users->random()->id,
             'created_by'             => fn() => $users->random()->id,
         ]);

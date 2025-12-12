@@ -22,7 +22,7 @@ const columns = [
   { label: 'PAR/ICS', key: 'acknowledgement_receipts', format: (val) => val?.category ?? 'N/A' },
   // { label: 'PR Number', key: 'inventory_items', format: (val) => val?.pr_number ?? 'N/A' },
   // { label: 'PO Number', key: 'inventory_items', format: (val) => val?.po_number ?? 'N/A' },
-  { label: 'Accountable Person', key: 'acknowledgement_receipts.accountable_person', format: (val) => val?.email ?? 'N/A' },
+  { label: 'Accountable Person', key: 'acknowledgement_receipts.accountable_person', format: (val) => val?.full_name ?? 'N/A' },
   { label: 'Issued By', key: 'acknowledgement_receipts.issued_by', format: (val) => val?.email ?? 'N/A' },
   { label: 'Date Released', key: 'acknowledgement_receipts', format: (val) => val ? dayjs(val.created_at).format('MMM D, YYYY') : 'N/A' },
   // {
