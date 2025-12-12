@@ -45,10 +45,6 @@ const columns = [
 ]
 
 const viewItems = [
-<<<<<<< HEAD
-=======
-  { label: "PAR/ICS Number:", key: "category" },
->>>>>>> 5cbfb53a72e30a22273805e4cb619972613096ef
   { label: "Property Number", key: "property_number" },
   { label: "Serial Number", key: "serial_number" },
   { label: "Supplier", key: "supplier.supplier_name" },
