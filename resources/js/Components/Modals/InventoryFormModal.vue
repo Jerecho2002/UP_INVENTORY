@@ -17,6 +17,9 @@ const props = defineProps({
     itemClass: { type: Array, default: () => [] },
     suppliers: { type: Array, default: () => [] },
     inputFieldsEdit: { type: Array, default: () => [] },
+    viewItem: { type: Array, default: () => [] },
+    item: { type: Object, default: () => ({})
+  },
 
 });
 
@@ -144,7 +147,7 @@ function submit() {
         form.post(route('items.store'), {
             onSuccess: () => {
                 emit('close');
-                emit('submit', form);    
+                emit('submit', form);
                 form.reset();
             },
             onError: (errors) => {
@@ -158,20 +161,33 @@ const isClosing = ref(false);
 
 function closeWithAnimation() {
     isClosing.value = true;
-
-    // Match your animation duration: popOut = 0.5s
     setTimeout(() => {
         emit('close');
-        isClosing.value = false; // reset for next open
+        isClosing.value = false;
     }, 200);
 }
+
+function getNestedValue(obj, path) {
+  if (!obj || !path) return null;
+  return path.split('.').reduce((o, k) => (o ? o[k] : null), obj);
+}
+
+function getViewValue(view) {
+    const rawValue = getNestedValue(props.item, view.key);
+
+    if (view.format) {
+        return view.format(rawValue);
+    }
+    return rawValue ?? 'N/A';
+}
+
 
 </script>
 
 <template>
     <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
-        <div  :class="[ 'bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]',
-        isClosing ? 'animate-pop-out' : 'animate-pop-in'
+        <div :class="['bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]',
+            isClosing ? 'animate-pop-out' : 'animate-pop-in'
         ]">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold text-[#850038] mb-6">
@@ -361,17 +377,28 @@ function closeWithAnimation() {
 
             <!-- VIEW MODAL -->
             <div v-else>
-                <div class="grid grid-cols-2 gap-3">
-                    <div v-for="(v, k) in local" :key="k" class="p-2 border rounded">
-                        <div class="text-xs text-gray-500">{{ k }}</div>
-                        <div class="font-medium">{{ v }}</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                    <div v-for="view in viewItem" :key="view.key"
+                        class="flex items-start justify-between gap-4 border-b pb-2">
+                        <!-- LABEL -->
+                        <div class="text-sm font-semibold text-[#000000] w-1/2">
+                            {{ view.label }}:
+                        </div>
+
+                        <!-- VALUE -->
+                        <div class="text-sm font-medium text-gray-600 w-1/2 text-right" v-html="getViewValue(view)" />
                     </div>
                 </div>
+
                 <!-- BUTTON -->
-                <div class="mt-4 flex justify-end">
-                    <button @click="$emit('close')" class="px-3 py-1 border rounded">Close</button>
+                <div class="mt-6 flex justify-end">
+                    <button @click="closeWithAnimation"
+                        class="px-6 py-3 border border-[#8d8a8a] rounded-md hover:bg-gray-100 text-sm font-medium">
+                        Back
+                    </button>
                 </div>
             </div>
+
         </div>
     </div>
 </template>

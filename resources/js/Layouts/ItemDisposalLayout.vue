@@ -3,7 +3,6 @@ import { ref } from "vue";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
-import ItemDisposalTable from "@/Components/ItemDisposalTable.vue";
 
 
 const isSidebarOpen = ref(true);
