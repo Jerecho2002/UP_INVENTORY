@@ -144,7 +144,7 @@ function submit() {
         form.post(route('items.store'), {
             onSuccess: () => {
                 emit('close');
-                emit('created');
+                emit('submit', form);    
                 form.reset();
             },
             onError: (errors) => {
@@ -154,11 +154,25 @@ function submit() {
     }
 }
 
+const isClosing = ref(false);
+
+function closeWithAnimation() {
+    isClosing.value = true;
+
+    // Match your animation duration: popOut = 0.5s
+    setTimeout(() => {
+        emit('close');
+        isClosing.value = false; // reset for next open
+    }, 200);
+}
+
 </script>
 
 <template>
     <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]">
+        <div  :class="[ 'bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]',
+        isClosing ? 'animate-pop-out' : 'animate-pop-in'
+        ]">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold text-[#850038] mb-6">
                     {{ mode === 'edit' ? 'Edit Item' : mode === 'view' ? 'Item Details' : 'Add Item' }}
@@ -331,7 +345,7 @@ function submit() {
 
                     <!-- BUTTONS -->
                     <div class="flex items-center gap-3">
-                        <button type="button" @click="$emit('close')"
+                        <button type="button" @click="closeWithAnimation"
                             class="border border-gray-400 px-6 py-4 rounded-full text-sm font-semibold hover:bg-gray-100">
                             Cancel
                         </button>
@@ -353,6 +367,7 @@ function submit() {
                         <div class="font-medium">{{ v }}</div>
                     </div>
                 </div>
+                <!-- BUTTON -->
                 <div class="mt-4 flex justify-end">
                     <button @click="$emit('close')" class="px-3 py-1 border rounded">Close</button>
                 </div>

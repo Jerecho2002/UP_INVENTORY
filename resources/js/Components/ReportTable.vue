@@ -37,7 +37,6 @@ watch(
 // Category (In Stock / Out of Stock)
 watch(selectedStatus, (status) => {
     const quantityFilter = status === '1' ? 'greater_than_zero' : status === '0' ? 'less_than_or_equal_zero' : '';
-
     router.get(route('reports.index'), {
         search: search.value,
         quantity: quantityFilter,
@@ -102,7 +101,7 @@ function getValue(obj, path) {
 
         <!-- SEARCH AND ACTION BUTTONS -->
         <div class="flex flex-col sm:flex-row flex-wrap w-full lg:w-auto gap-3 lg:ml-auto">
-            <!-- PRINT -->
+            <!-- PRINT -->`
             <button
                 class="flex items-center justify-center gap-2 bg-[#20C6D2] text-white font-semibold rounded-md h-[2.8rem] px-5 hover:bg-[#49dce6] transition duration-150 w-full sm:w-auto">
                 <i class="fa-solid fa-print"></i>
