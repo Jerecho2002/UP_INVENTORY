@@ -10,11 +10,12 @@ return new class extends Migration {
         Schema::create('acknowledgement_items', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('acknowledgement_id')->nullable();
-            $table->integer('quantity')->nullable();
-            $table->decimal('unit_cost', 12, 2)->nullable();
+            $table->unsignedBigInteger('inventory_item_id')->nullable();
             $table->tinyInteger('status')->nullable();
+            $table->timestamps();
 
             $table->foreign('acknowledgement_id')->references('id')->on('acknowledgement_receipts')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('inventory_item_id')->references('id')->on('inventory_items')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

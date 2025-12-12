@@ -10,6 +10,7 @@ use App\Services\RoomApiService;
 use App\Models\ItemClassification;
 use App\Services\InventoryService;
 use App\Http\Requests\InventoryStoreRequest;
+use App\Services\AcknowledgementItemService;
 use App\Http\Requests\InventoryUpdateRequest;
 use App\Services\AcknowledgementReceiptService;
 use App\Http\Requests\UpdateInventoryCategoryRequest;

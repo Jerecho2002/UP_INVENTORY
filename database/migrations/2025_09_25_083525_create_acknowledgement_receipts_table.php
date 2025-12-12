@@ -12,14 +12,13 @@ return new class extends Migration {
             $table->date('par_date');
             $table->unsignedInteger('accountable_persons_id');
             $table->unsignedInteger('issued_by_id');
-            $table->unsignedBigInteger('inventory_item_id')->nullable();
+            $table->string('category', 20)->nullable();
             $table->string('remarks', 255)->nullable();
             $table->unsignedInteger('created_by');
             $table->timestamps();
 
             $table->foreign('accountable_persons_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('issued_by_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('inventory_item_id')->references('id')->on('inventory_items')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }

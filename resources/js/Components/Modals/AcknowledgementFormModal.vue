@@ -19,6 +19,7 @@ const form = useForm({
     inventory_item_id: [],
     accountable_persons_id: "",
     issued_by_id: "",
+    category: "",
     created_by: "",
     par_date: "",
     remarks: "",
@@ -74,6 +75,8 @@ function submit() {
                 onSuccess: () => {
                     emit('close');
                     emit('created');
+                    props.selectedIDs.splice(0);
+                    selectedCategory.value = '';
                     form.reset();
                 },
                 onError: (errors) => {
@@ -126,7 +129,7 @@ watch(
                     <div class="space-y-4 col-span-1 md:col-span-1">
                         <div class="space-y-4">
                             <label class="block text-sm font-bold mb-1">PAR/ICS</label>
-                            <input type="text" v-model="selectedCategory" placeholder="Enter new category"
+                            <input type="text" v-model="form.category" placeholder="Enter new category"
                                 class="rounded-md w-full border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-sm">
                             <!-- ACCOUNTABLE/ISSUED/CREATED DROPDOWN -->
                             <div class="flex flex-col md:flex-row gap-4">

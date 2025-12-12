@@ -11,34 +11,37 @@ import SecondaryButton from "@/Components/Buttons/SecondaryButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import ItemFilterControls from "@/Components/Filters/ItemFilterControls.vue";
 import AssignedFormModal from "@/Components/Modals/AssignedFormModal.vue";
+import dayjs from 'dayjs';
 
 const columns = [
   { label: "", key: "select_all" },
-  { label: 'Item Name', key: 'inventory_item', format: (val) => val?.item_name ?? 'N/A' },
-  { label: 'Quantity', key: 'quantity' },
-  { label: 'Unit Cost', key: 'inventory_item', format: (val) => val?.unit_cost ? `₱${(val.unit_cost)}` : 'N/A' },
-  { label: 'Property Number', key: 'inventory_item', format: (val) => val?.category ?? 'N/A' },
-  { label: 'PR Number', key: 'inventory_item', format: (val) => val?.pr_number ?? 'N/A' },
-  { label: 'PO Number', key: 'inventory_item', format: (val) => val?.po_number ?? 'N/A' },
-  { label: 'Accountable Person', key: 'accountable_person', format: (val) => val?.email ?? 'N/A' },
-  { label: 'Date Released', key: 'date_released' },
-  {
-    label: "Status", key: 'status',
-    format: (status) => {
-      let label = 'Unknown', cls = 'text-gray-500', icon = '';
-      if (status === 1) {
-        label = 'Completed';
-        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
-        icon = '<i class="fa-solid fa-circle-check"></i>';
-      }
-      else if (status === 0) {
-        label = 'Pending';
-        cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
-        icon = '<i class="fa-solid fa-clock"></i>';
-      }
-      return `<span class="${cls}">${icon} ${label}</span>`;
-    }
-  },
+  { label: 'Item Name', key: 'inventory_items', format: (val) => val?.item_name ?? 'N/A' },
+  { label: 'Quantity', key: 'inventory_items', format: (val) => val?.quantity ?? 'N/A' },
+  { label: 'Unit Cost', key: 'inventory_items', format: (val) => val?.unit_cost ? `₱${(val.unit_cost)}` : 'N/A' },
+  { label: 'Property Number', key: 'inventory_items', format: (val) => val?.property_number ?? 'N/A' },
+  { label: 'PAR/ICS', key: 'acknowledgement_receipts', format: (val) => val?.category ?? 'N/A' },
+  // { label: 'PR Number', key: 'inventory_items', format: (val) => val?.pr_number ?? 'N/A' },
+  // { label: 'PO Number', key: 'inventory_items', format: (val) => val?.po_number ?? 'N/A' },
+  { label: 'Accountable Person', key: 'acknowledgement_receipts.accountable_person', format: (val) => val?.email ?? 'N/A' },
+  { label: 'Issued By', key: 'acknowledgement_receipts.issued_by', format: (val) => val?.email ?? 'N/A' },
+  { label: 'Date Released', key: 'acknowledgement_receipts', format: (val) => val ? dayjs(val.created_at).format('MMM D, YYYY') : 'N/A' },
+  // {
+  //   label: "Status", key: 'status',
+  //   format: (status) => {
+  //     let label = 'Unknown', cls = 'text-gray-500', icon = '';
+  //     if (status === 1) {
+  //       label = 'Completed';
+  //       cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
+  //       icon = '<i class="fa-solid fa-circle-check"></i>';
+  //     }
+  //     else if (status === 0) {
+  //       label = 'Pending';
+  //       cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
+  //       icon = '<i class="fa-solid fa-clock"></i>';
+  //     }
+  //     return `<span class="${cls}">${icon} ${label}</span>`;
+  //   }
+  // },
   { label: "Action", key: "action" }
 ]
 
@@ -53,19 +56,23 @@ const inputFields = [
 ];
 
 const itemSelectedField = [
-  { label: "Item Selected", model: "item_name"},
+  { label: "Item Selected", model: "item_name" },
 ];
 
 const unitCostOptions = [
-    { label: "Unit Cost", options: [{label: "₱0-50,000", value: "0-50000"},
-                                    {label: "₱50,000 Above", value: "50000-99999999"},
-  ]},
+  {
+    label: "Unit Cost", options: [{ label: "₱0-50,000", value: "0-50000" },
+    { label: "₱50,000 Above", value: "50000-99999999" },
+    ]
+  },
 ];
 
 const filterStatus = [
-    {label: "Status", options: [{ label: "Received", value: 1},
-                                { label: "Cancelled", value: 0 },
-  ]},
+  {
+    label: "Status", options: [{ label: "Received", value: 1 },
+    { label: "Cancelled", value: 0 },
+    ]
+  },
 ];
 
 const page = usePage();
@@ -89,7 +96,7 @@ function openAdd(item) {
 
 function handleEdit(item) {
   formMode.value = 'edit';
-  currentItem.value = item ;
+  currentItem.value = item;
   showFormModal.value = true;
 }
 
@@ -116,6 +123,7 @@ const selectedIds = ref([]);
 
 <template>
   <div class="h-screen flex flex-col bg-gray-100 overflow-hidden">
+   
     <!-- Pass toggle event -->
     <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />
 
@@ -129,54 +137,36 @@ const selectedIds = ref([]);
       <!-- Main -->
       <main class="flex-1 sm:p-5 md:p-6  mx-2 sm:mx-2 md:mx-0 overflow-y-auto">
         <PageHeader title="Transactions" />
-          <div class="w-full h-screen bg-white flex flex-col rounded-lg shadow-md mt-10">
-            <div class="flex flex-col md:flex-row gap-2 justify-end mt-10 mx-2 mb-6">
-              <ImportButton />
-              <ExportButton />
-            </div>
-            <div class="flex justify-between mx-2">
-             <div class="flex flex-col md:flex-row gap-2">
-               <PrimaryButton @click="openAdd">
+        <div class="w-full h-screen bg-white flex flex-col rounded-lg shadow-md mt-10">
+          <div class="flex flex-col md:flex-row gap-2 justify-end mt-10 mx-2 mb-6">
+            <ImportButton />
+            <ExportButton />
+          </div>
+          <div class="flex justify-between mx-2">
+            <div class="flex flex-col md:flex-row gap-2">
+              <PrimaryButton @click="openAdd">
                 <i class="fa-solid fa-exchange-alt"></i>
                 <span> Re-Assign</span>
-               </PrimaryButton>
+              </PrimaryButton>
 
               <SecondaryButton @click="handleEdit" class="gap-2 text-white text-xs sm:text-sm">
                 <i class="fa-solid fa-rotate"></i>
                 <span>Update</span>
-              </SecondaryButton>  
-             </div>
-
-
-              <ItemFilterControls 
-                :search="search"
-                :status="status"
-                :unitCostOptions="unitCostOptions" 
-                :filterStatus="filterStatus"
-                :cost_range="cost_range"
-                @update:search="search = $event"
-                @update:status="status = $event"
-                @update:cost_range="cost_range = $event"
-                :mode="'transactions'"
-              />
+              </SecondaryButton>
             </div>
 
-             <AssignedFormModal 
-                v-if="showFormModal"
-                :mode="formMode" 
-                :accountableField="accountableField"
-                :inputFields="inputFields"
-                :itemSelectedField="itemSelectedField"
-                @close="showFormModal = false"
-             />
-             
-              <InventoryTable 
-                :columns="columns" 
-                :rows="items"
-                @update:selected="ids => selectedIds.value = ids"
-                @selection-changed="ids => console.log('Item Selected', ids)"
-              />
+
+            <ItemFilterControls :search="search" :status="status" :unitCostOptions="unitCostOptions"
+              :filterStatus="filterStatus" :cost_range="cost_range" @update:search="search = $event"
+              @update:status="status = $event" @update:cost_range="cost_range = $event" :mode="'transactions'" />
           </div>
+
+          <AssignedFormModal v-if="showFormModal" :mode="formMode" :accountableField="accountableField"
+            :inputFields="inputFields" :itemSelectedField="itemSelectedField" @close="showFormModal = false" />
+
+          <InventoryTable :columns="columns" :rows="items" @update:selected="ids => selectedIds.value = ids"
+            @selection-changed="ids => console.log('Item Selected', ids)" />
+        </div>
       </main>
     </div>
   </div>

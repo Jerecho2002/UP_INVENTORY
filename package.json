@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "chart.js": "^4.5.1",
+        "dayjs": "^1.11.19",
         "lodash": "^4.17.21",
         "primevue": "^4.4.1"
     }

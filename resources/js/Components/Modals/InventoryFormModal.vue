@@ -31,7 +31,6 @@ const form = useForm({
     fund_source: "",
     item_name: "",
     description: "",
-    category: "",
     quantity: "",
     unit: "",
     unit_cost: "",
@@ -97,7 +96,6 @@ watch(() => props.initialValues, (item) => {
     form.fund_source = item.fund_source ?? "";
     form.item_name = item.item_name ?? "";
     form.description = item.description ?? "";
-    form.category = item.category ?? "";
     form.quantity = item.quantity ?? 1;
     form.unit = item.unit ?? "";
     form.unit_cost = item.unit_cost ?? 0;

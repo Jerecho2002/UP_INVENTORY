@@ -16,7 +16,13 @@ class AcknowledgementReceiptFactory extends Factory
             'par_date' => $this->faker->date(),
             'accountable_persons_id' => User::factory(),
             'issued_by_id' => User::factory(),
-            'inventory_item_id' => InventoryItem::factory(),
+            'category' => function () {
+                $code = $this->faker->randomElement(['250', '451', '320', '150']);
+                $year = date('Y');
+                $month = str_pad(date('n'), 2, '0', STR_PAD_LEFT);
+                $number = $this->faker->numberBetween(1, 20);
+                return "{$code}-{$year}-{$month}-{$number}";
+            },
             'remarks' => $this->faker->sentence(),
             'created_by' => User::factory(),
         ];

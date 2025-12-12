@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('item_classifications', function (Blueprint $table) {
             $table->id();
-            $table->string('classification_code', 50)->unique();
+            $table->string('classification_code', 50);
             $table->string('classification_name', 50);
             $table->tinyInteger('status')->default(0);
             $table->timestamps();

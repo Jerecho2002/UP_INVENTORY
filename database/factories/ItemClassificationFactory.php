@@ -9,13 +9,9 @@ class ItemClassificationFactory extends Factory
 {
     protected $model = ItemClassification::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
+        // Optional: you can keep some example names
         $classificationNames = [
             'Office Equipment',
             'Furnitures',
@@ -32,30 +28,14 @@ class ItemClassificationFactory extends Factory
             'Other PPE',
         ];
 
-        // Define classification codes directly without the risk of repetition
-        $classificationCode = [
-            '221',
-            '222',
-            '223',
-            '229',
-            '236',
-            '231',
-            '232',
-            '233',
-            '235',
-            '240',
-            '224',
-            '241',
-            '250',
+        $classificationCodes = [
+            '221', '222', '223', '229', '236', '231', '232', '233', '235', '240', '224', '241', '250',
         ];
 
-        // Ensure each classification code is unique
-        $index = $this->faker->unique()->numberBetween(0, count($classificationNames) - 1);
-
         return [
-            'classification_code' => $classificationCode[$index],
-            'classification_name' => $classificationNames[$index], // Pick sequentially from array
-            'status' => $this->faker->boolean(80), // Random boolean (80% chance of being true)
+            'classification_code' => $this->faker->randomElement($classificationCodes),
+            'classification_name' => $this->faker->randomElement($classificationNames),
+            'status' => $this->faker->boolean(80),
         ];
     }
 }

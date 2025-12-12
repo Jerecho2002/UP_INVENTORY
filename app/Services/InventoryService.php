@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\AcknowledgementReceipt;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use App\Models\InventoryItem;
+use App\Models\AcknowledgementItem;
 use App\Models\InventoryTransaction;
+use App\Models\AcknowledgementReceipt;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,7 @@ class InventoryService
         int|string|null $status = null,
         int $perPage = 10
     ) {
-        return InventoryItem::with('acknowledgementReceipts', 'itemClassification', 'supplier')
+        return InventoryItem::with('itemClassification', 'supplier')
             ->when(
                 $search,
                 fn($query, $search) =>
@@ -49,13 +50,14 @@ class InventoryService
                 fn($query) =>
                 $query->where('status', $status)
             )
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->withQueryString();
     }
 
     public function filterAndPaginateTransaction($search = null, $costRange = null, $status)
     {
-        return AcknowledgementReceipt::with('inventoryItems')
+        return AcknowledgementItem::with('inventoryItems', 'acknowledgementReceipts.accountablePerson', 'acknowledgementReceipts.issuedBy')
             ->when($search, fn($query, $search) => $query->search($search))
             ->when($costRange, function ($query, $costRange) {
                 [$min, $max] = explode('-', $costRange);
@@ -73,6 +75,7 @@ class InventoryService
             ->when(!is_null(value: $status), function ($query) use ($status) {
                 $query->where('status', $status);
             })
+            ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
     }
@@ -82,14 +85,13 @@ class InventoryService
         foreach ($data['serial_numbers'] as $index => $serialNumber) {
             $propertyNumber = $data['property_number'] . '-' . str_pad($index + 1, 2, '0', STR_PAD_LEFT);
 
-            InventoryItem::create([
+            $inventoryItem = InventoryItem::create([
                 'item_classification_id' => $data['item_classification_id'],
                 'supplier_id' => $data['supplier_id'],
                 'invoice' => $data['invoice'],
                 'fund_source' => $data['fund_source'],
                 'item_name' => $data['item_name'],
                 'description' => $data['description'],
-                'category' => $data['category'],
                 'quantity' => 1,
                 'unit' => $data['unit'],
                 'unit_cost' => $data['unit_cost'],
@@ -118,7 +120,6 @@ class InventoryService
             'fund_source' => $data['fund_source'],
             'item_name' => $data['item_name'],
             'description' => $data['description'] ?? null,
-            'category' => $data['category'] ?? null,
             'quantity' => $data['quantity'],
             'unit' => $data['unit'],
             'unit_cost' => $data['unit_cost'],
@@ -223,7 +224,8 @@ class InventoryService
         return back()->with('success', count($imported) . ' items imported successfully.');
     }
 
-    public function exportCsv(){
+    public function exportCsv()
+    {
         $items = InventoryItem::all();
 
         $spreadsheet = new Spreadsheet();

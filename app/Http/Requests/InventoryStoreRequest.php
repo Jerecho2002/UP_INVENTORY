@@ -28,7 +28,6 @@ class InventoryStoreRequest extends FormRequest
             'fund_source' => 'required|string|max:50',
             'item_name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'category' => 'nullable|string|max:255',
             'quantity' => 'required|integer|min:1',
             'unit' => 'required|string|max:50',
             'unit_cost' => 'required|numeric',

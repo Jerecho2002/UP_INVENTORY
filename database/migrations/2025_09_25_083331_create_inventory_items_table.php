@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->string('fund_source', 50)->nullable();
             $table->string('item_name', 255)->nullable();
             $table->string('description', 255)->nullable();
-            $table->string('category', 20)->nullable();
             $table->integer('quantity')->nullable();
             $table->string('unit', 40)->nullable();
             $table->decimal('unit_cost', 12, 2)->nullable();

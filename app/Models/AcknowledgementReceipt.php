@@ -12,7 +12,7 @@ class AcknowledgementReceipt extends Model
         'par_date',
         'accountable_persons_id',
         'issued_by_id',
-        'inventory_item_id',
+        'category',
         'remarks',
         'created_by'
     ];
@@ -51,8 +51,7 @@ class AcknowledgementReceipt extends Model
         return $query->whereHas('inventoryItems', function ($q) use ($term) {
             $q->where('item_name', 'like', "%{$term}%")
                 ->orWhere('unit', 'like', "%{$term}%")
-                ->orWhere('property_number', 'like', "%{$term}%")
-                ->orWhere('category', 'like', "%{$term}%");
+                ->orWhere('property_number', 'like', "%{$term}%");
         });
     }
 }

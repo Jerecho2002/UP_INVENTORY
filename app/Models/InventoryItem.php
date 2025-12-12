@@ -15,7 +15,6 @@ class InventoryItem extends Model
         'supplier_id',
         'item_name',
         'description',
-        'category',
         'quantity',
         'unit',
         'unit_cost',
@@ -39,6 +38,11 @@ class InventoryItem extends Model
         return $this->hasMany(AcknowledgementReceipt::class);
     }
 
+    public function acknowledgementItems()
+    {
+        return $this->hasMany(AcknowledgementItem::class);
+    }
+
     public function itemClassification()
     {
         return $this->belongsTo(ItemClassification::class, 'item_classification_id');
@@ -58,8 +62,7 @@ class InventoryItem extends Model
         return $query->where(function ($q) use ($term) {
             $q->where('item_name', 'like', "%{$term}%")
                 ->orWhere('unit', 'like', "%{$term}%")
-                ->orWhere('property_number', 'like', "%{$term}%")
-                ->orWhere('category', 'like', "%{$term}%");
+                ->orWhere('property_number', 'like', "%{$term}%");
         });
     }
 

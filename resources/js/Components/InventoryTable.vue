@@ -86,6 +86,10 @@ function toggleCheck(item) {
 
 <template>
     <!-- <pre>{{ rows }}</pre> -->
+      <!-- <div v-for="item in rows.data" :key="item.id">
+      <pre>{{ item.inventory_items }}</pre>
+    </div> -->
+
     <!-- Table (horizontal scroll on small screens) -->
     <div class="overflow-x-auto mt-3">
         <table class="w-full table-auto border-collapse text-left bg-white text-xs sm:text-sm">

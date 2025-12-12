@@ -10,15 +10,35 @@ class AcknowledgementItem extends Model
     use HasFactory;
     protected $fillable = [
         'acknowledgement_id',
-        'quantity',
-        'unit_cost',
+        'inventory_item_id',
         'status'
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
-    public function receipt()
+    public function acknowledgementReceipts()
     {
         return $this->belongsTo(AcknowledgementReceipt::class, 'acknowledgement_id');
     }
+
+    public function inventoryItems()
+    {
+        return $this->belongsTo(InventoryItem::class, 'inventory_item_id');
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        if (!$term) {
+            return $query;
+        }
+
+        return $query->whereHas('inventoryItems', function ($q) use ($term) {
+            $q->where('item_name', 'like', "%{$term}%")
+                ->orWhere('property_number', 'like', "%{$term}%");
+        })
+            ->orWhereHas('acknowledgementReceipts', function ($q) use ($term) {
+                $q->where('category', 'like', "%{$term}%");
+            });
+    }
+
 }

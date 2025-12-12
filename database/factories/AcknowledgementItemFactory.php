@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\AcknowledgementReceipt;
+use App\Models\InventoryItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AcknowledgementItemFactory extends Factory
@@ -11,8 +12,7 @@ class AcknowledgementItemFactory extends Factory
     {
         return [
             'acknowledgement_id' => AcknowledgementReceipt::factory(),
-            'quantity' => $this->faker->numberBetween(1, 10),
-            'unit_cost' => $this->faker->randomFloat(2, 100, 5000),
+            'inventory_item_id' => InventoryItem::factory(),
             'status' => $this->faker->boolean ? 1 : 0,
         ];
     }

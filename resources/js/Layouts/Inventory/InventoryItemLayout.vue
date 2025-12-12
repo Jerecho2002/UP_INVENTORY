@@ -19,7 +19,6 @@ const columns = [
   { label: "Item Name", key: 'item_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
-  // { label: "PAR/ICS Number", key: 'category' }, -> TO BE REMOVE
   { label: "Property Number", key: 'property_number' },
   { label: "Serial Number", key: 'serial_number' },
   { label: "Invoice", key: 'invoice' },
@@ -44,7 +43,6 @@ const columns = [
 ]
 
 const viewItems = [
-  { label: "Property Records", key: "category" },
   { label: "Property Number", key: "property_number" },
   { label: "Serial Number", key: "serial_number" },
   { label: "Supplier", key: "supplier.supplier_name" },
@@ -101,7 +99,6 @@ const supplierOptions = [
 ];
 
 const requestFields = [
-  // { label: "PAR/ICS Number", model: "category", placeholder: "000-0000-00-000", type: "text" }, -> TO REMOVE
   { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
   { label: "Purchase Order", model: "po_number", placeholder: "PO-###", type: "text" },
   { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
