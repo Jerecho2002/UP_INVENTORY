@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountablePerson;
 use App\Models\User;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -52,9 +53,11 @@ class InventoryController extends Controller
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $users = User::all();
+        $accPerson = AccountablePerson::all();
 
         return inertia('Inventory/InventoryAcknowledgements', [
             'items' => $service->filterAndPaginateAcknowledgementReceipt($search, $costRange),
+            'accPerson' => $accPerson,
             'users' => $users,
         ]);
     }
