@@ -156,16 +156,32 @@ const selectedIds = ref([]);
             </div>
 
 
-            <ItemFilterControls :search="search" :status="status" :unitCostOptions="unitCostOptions"
-              :filterStatus="filterStatus" :cost_range="cost_range" @update:search="search = $event"
-              @update:status="status = $event" @update:cost_range="cost_range = $event" :mode="'transactions'" />
+          <ItemFilterControls 
+            :search="search" 
+            :status="status" 
+            :unitCostOptions="unitCostOptions"
+            :filterStatus="filterStatus" 
+            :cost_range="cost_range" 
+            @update:search="search = $event"
+            @update:status="status = $event" 
+            @update:cost_range="cost_range = $event" 
+            :mode="'transactions'" />
           </div>
 
-          <AssignedFormModal v-if="showFormModal" :mode="formMode" :accountableField="accountableField"
-            :inputFields="inputFields" :itemSelectedField="itemSelectedField" @close="showFormModal = false" />
+          <AssignedFormModal 
+            v-if="showFormModal" 
+            :mode="formMode" 
+            :accountableField="accountableField"
+            :inputFields="inputFields" 
+            :itemSelectedField="itemSelectedField" 
+            @close="showFormModal = false" />
 
-          <InventoryTable :columns="columns" :rows="items" @update:selected="ids => selectedIds.value = ids"
-            @selection-changed="ids => console.log('Item Selected', ids)" />
+          <InventoryTable 
+            :columns="columns" 
+            :rows="items" 
+            @update:selected="ids => selectedIds.value = ids"
+            @selection-changed="ids => console.log('Item Selected', ids)" 
+          />
         </div>
       </main>
     </div>

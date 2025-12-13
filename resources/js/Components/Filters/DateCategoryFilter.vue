@@ -35,7 +35,7 @@ watch(selectedStatus, (status) => {
         from: fromDate.value,
         to: toDate.value,
     }, {
-        preserveState: true,
+        preserveState: true,    
         replace: true,
         preserveScroll: true,
     });

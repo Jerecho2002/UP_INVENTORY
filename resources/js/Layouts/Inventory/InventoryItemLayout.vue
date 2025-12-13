@@ -44,7 +44,7 @@ const columns = [
   { label: "Action", key: "action" }
 ]
 
-const viewItems = [
+const viewItem = [
   { label: "Property Number", key: "property_number" },
   { label: "Serial Number", key: "serial_number" },
   { label: "Supplier", key: "supplier.supplier_name" },
@@ -54,7 +54,7 @@ const viewItems = [
   { label: "PO Number", key: "po_number" },
   { label: "Remarks", key: "remarks" },
   { label: "Item Name", key: "item_name" },
-  { label: "Unit Cost", key: "unit_cost", format: (val) => (val ? `₱${val}` : "N/A") },
+  { label: "Unit Cost", key: "unit_cost",  format: (val) => val !== null && val !== undefined  ? `₱${Number(val).toLocaleString()}` : "N/A"},
   { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
   { label: "Description", key: "description" },
   { label: "Date Acquired", key: "date_acquired" },
@@ -311,6 +311,8 @@ const toggleSidebar = () => {
                 :itemClass="itemClassifications"
                 :initialValues="currentItem"
                 :suppliers="suppliers"
+                :item="currentItem"
+                :viewItem="viewItem"
                 @submit="handleSubmit"
                 @close="() => showFormModal = false"
               />
@@ -340,7 +342,7 @@ const toggleSidebar = () => {
                 @view="handleView"
                 @edit="handleEdit"
                 @delete="handleDelete"
-                />
+              />
 
                <DeleteModal
                 v-if="showDeleteModal"
