@@ -9,11 +9,13 @@ const props = defineProps({
     itemSelectedField: { type: Array, default: () => [] },
     selectedIDs: { type: Array, default: () => [] },
     items: { type: Object, default: () => ({ data: [] }) },
+    accPerson: { type: Object, default: () => ({ data: [] }) },
     users: { type: Array, default: () => [] },
 });
 
 const selectedCategory = ref('');
-const emit = defineEmits(['submit', 'close', 'created']);
+const firstNumberError = ref('');
+const emit = defineEmits(['submit', 'close', 'created']); // <-- remove stray backticks
 
 const form = useForm({
     inventory_item_id: [],
@@ -34,6 +36,22 @@ const itemMap = computed(() => {
 });
 
 function submit() {
+    // Check if all selected items have the same first number in property_number
+    if (props.selectedIDs.length > 0) {
+        const firstNumbers = props.selectedIDs.map(id => {
+            const item = itemMap.value[id];
+            if (!item?.property_number) return null;
+            return item.property_number.split('-')[0];
+        });
+
+        const uniqueFirstNumbers = [...new Set(firstNumbers)];
+
+        if (uniqueFirstNumbers.length > 1) {
+            firstNumberError.value = "All selected items must have the same Category in Property Number.";
+            return; // stop submission
+        }
+    }
+
     form.inventory_item_id = props.selectedIDs;
     form.created_by = props.users[0]?.id ?? null;
 
@@ -86,6 +104,27 @@ function submit() {
     });
 }
 
+
+// Generates a category like "233-2025-12" from the first selected item's property_number
+function generateCategoryFromFirstSelected() {
+    if (!props.selectedIDs.length) return "";
+
+    const firstID = props.selectedIDs[0];
+    const item = itemMap.value[firstID];
+    if (!item) return "";
+
+    // Extract the first number before the dash
+    const propertyNumber = item.property_number || "";
+    const firstNumber = propertyNumber.split('-')[0] || "";
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+
+    return `${firstNumber}-${year}-${month}-`;
+}
+
+
 // Watch selectedIDs prop and initialize selectedCategory from first selected item
 watch(
     () => props.selectedIDs,
@@ -93,8 +132,10 @@ watch(
         console.log('selectedIDs changed', newVal); // debug
         if (newVal && newVal.length > 0) {
             selectedCategory.value = itemMap.value[newVal[0]]?.category || "";
+            form.category = generateCategoryFromFirstSelected();
         } else {
             selectedCategory.value = "";
+            form.category = "";
         }
     },
     { immediate: true }
@@ -193,6 +234,10 @@ function closeWithAnimation() {
                     </div>
 
                     <div class="space-y-4">
+                        <!-- ITEM SELECTED -->
+                         <div v-if="firstNumberError" class="text-red-500 text-sm mb-2">
+                            {{ firstNumberError }}
+                        </div>
                         <div v-for="select in itemSelectedField" :key="select.model">
                             <div>
                                 <label class="block text-sm font-bold mb-1">{{ select.label }}</label>

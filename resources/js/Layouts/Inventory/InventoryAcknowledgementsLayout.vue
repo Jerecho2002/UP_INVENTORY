@@ -34,7 +34,7 @@ const columns = [
 ];
 
 const accountableField = [
-  { label: "Accountable Person", model: "accountable_persons_id", name: "users", option: "email", value: "id" },
+  { label: "Accountable Person", model: "accountable_persons_id", name: "accPerson", option: "full_name", value: "id" },
   { label: "Issued By", model: "issued_by_id", name: "users", option: "email", value: "id" },
   // { label: "Created By", model: "created_by", name: "users", option: "email", value: "id" }, 
 ];
@@ -49,6 +49,7 @@ const itemSelectedField = [
 
 const page = usePage();
 const items = computed(() => page.props.items);
+const accPerson = computed(() => page.props.accPerson);
 const users = computed(() => page.props.users);
 
 //INVENTORY FILTER 
@@ -140,6 +141,7 @@ const selectedIds = ref([]);
               :mode="formMode"
               :accountableField="accountableField"
               :inputFields="inputFields"
+              :accPerson="accPerson"
               :users="users"
               :itemSelectedField="itemSelectedField"
               :selectedIDs="selectedIds.value"
