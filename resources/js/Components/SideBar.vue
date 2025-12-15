@@ -13,7 +13,16 @@ const menuItems = [
             { name: "Transactions", route: "inventory.transactions" },
         ],
     },
-    { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
+    {
+        name: "Core Records",
+        icon: "fa-solid fa-layer-group",
+        children: [
+            { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
+            // { name: "Accountable Persons", route:"accountable.index"},
+            // { name: "Categories", route:"categories.index"},
+            // { name: "Units", route:"units.index"},
+        ],
+    },
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
     { name: "Item Archiving", icon: "fa-solid fa-recycle", route: "item_archiving.index" },
 ];

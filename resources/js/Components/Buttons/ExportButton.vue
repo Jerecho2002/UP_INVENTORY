@@ -1,6 +1,5 @@
 <script setup>
 function exportCsv() {
-  // Just open the route in a new tab to trigger download
   window.location.href = '/export-csv';
 }
 </script>

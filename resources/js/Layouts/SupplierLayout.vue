@@ -33,7 +33,7 @@ const columns = [
   { label: "Action", key: "action" }
 ]
 
-const supplierOption = [
+const supplierFields = [
   { label: "Supplier Name", model: "supplier_name", placeholder: "Supplier Name", type: "text" },
   { label: "Contact Number", model: "contact_no", placeholder: "Contact Number", type: "text" },
   { label: "Email", model: "email", placeholder: "Email", type: "text" },
