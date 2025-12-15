@@ -130,6 +130,10 @@ function toggleCheck(item) {
                         <!-- ACTION BUTTONS -->
                         <template v-else>
                             <div class="flex items-center gap-2">
+                                <button class="text-[#0E6021] hover:text-[#0a7523]">
+                                    <i class="fa-solid fa-print"></i>
+                                </button>
+
                                 <button @click="$emit('view', item)" class="text-[#3F3F3F] hover:text-[#191818]">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>

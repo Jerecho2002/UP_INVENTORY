@@ -13,8 +13,8 @@ const menuItems = [
             { name: "Transactions", route: "inventory.transactions" },
         ],
     },
-    { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
     { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
+    { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
     { name: "Item Archiving", icon: "fa-solid fa-recycle", route: "item_archiving.index" },
 ];
 
