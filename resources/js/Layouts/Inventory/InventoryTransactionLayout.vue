@@ -10,7 +10,6 @@ import ExportButton from "@/Components/Buttons/ExportButton.vue";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import ItemFilterControls from "@/Components/Filters/ItemFilterControls.vue";
-import AssignedFormModal from "@/Components/Modals/AssignedFormModal.vue";
 import dayjs from 'dayjs';
 
 const columns = [

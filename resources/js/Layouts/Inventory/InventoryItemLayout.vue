@@ -336,6 +336,13 @@ const toggleSidebar = () => {
                 @close="showDeleteSuccessModal = false"
               />
 
+              <DeleteModal
+                v-if="showDeleteModal"
+                :item="currentItem"
+                @confirm="confirmDelete"
+                @close="() => showDeleteModal = false"
+              />
+
               <InventoryTable 
                 :columns="columns"
                 :rows="items"
@@ -343,13 +350,6 @@ const toggleSidebar = () => {
                 @edit="handleEdit"
                 @delete="handleDelete"
               />
-
-               <DeleteModal
-                v-if="showDeleteModal"
-                :item="currentItem"
-                @confirm="confirmDelete"
-                @close="() => showDeleteModal = false"
-                />
             </div>
         </div>
       </main>

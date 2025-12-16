@@ -5,6 +5,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemArchivingController;
+use App\Http\Controllers\TransactionPrintController;
 
 Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::get('/inventory/items', [InventoryController::class, 'InventoryItems'])->name('inventory.items');
@@ -23,6 +24,7 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::post('/convert-excel-to-csv', [InventoryController::class, 'convert']);
     Route::post('/import-csv', [InventoryController::class, 'importCsv']);
     Route::get('/export-csv', [InventoryController::class, 'exportCsv']);
+
 });
 
 Route::get('/dummy-auth', function () {

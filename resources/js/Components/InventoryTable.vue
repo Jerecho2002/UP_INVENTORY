@@ -2,6 +2,7 @@
 import { usePage, router } from '@inertiajs/vue3';
 import { defineProps, computed, ref } from 'vue';
 import TableCell from './TableCell.vue';
+import PrintButton from "@/Components/Buttons/PrintButton.vue";
 
 
 const props = defineProps({
@@ -86,7 +87,7 @@ function toggleCheck(item) {
 
 <template>
     <!-- <pre>{{ rows }}</pre> -->
-      <!-- <div v-for="item in rows.data" :key="item.id">
+    <!-- <div v-for="item in rows.data" :key="item.id">
       <pre>{{ item.acknowledgement_receipts }}</pre>
     </div> -->
 
@@ -130,19 +131,20 @@ function toggleCheck(item) {
                         <!-- ACTION BUTTONS -->
                         <template v-else>
                             <div class="flex items-center gap-2">
-                                <button class="text-[#0E6021] hover:text-[#0a7523]" title="Print">
-                                    <i class="fa-solid fa-print"></i>
-                                </button>
+                                <PrintButton :item="item" @print="$emit('print', $event)" />
 
-                                <button @click="$emit('view', item)" class="text-[#3F3F3F] hover:text-[#191818]" title="View">
+                                <button @click="$emit('view', item)" class="text-[#3F3F3F] hover:text-[#191818]"
+                                    title="View">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
 
-                                <button @click="$emit('edit', item)" class="text-[#54B3AB] hover:text-[#38a69d]" title="Edit">
+                                <button @click="$emit('edit', item)" class="text-[#54B3AB] hover:text-[#38a69d]"
+                                    title="Edit">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
 
-                                <button @click="$emit('delete', item)" class="text-[#D71D1D] hover:text-[#c50e0e]" title="Delete">
+                                <button @click="$emit('delete', item)" class="text-[#D71D1D] hover:text-[#c50e0e]"
+                                    title="Delete">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>

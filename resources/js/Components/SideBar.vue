@@ -26,7 +26,7 @@ const menuItems = [
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
     { name: "Item Archiving", icon: "fa-solid fa-recycle", route: "item_archiving.index" },
 ];
-
+    
 const openDropdown = ref(null);
 
 

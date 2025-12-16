@@ -159,6 +159,7 @@ function submit() {
 
 const isClosing = ref(false);
 
+// ANIMATION FOR CLOSE
 function closeWithAnimation() {
     isClosing.value = true;
     setTimeout(() => {

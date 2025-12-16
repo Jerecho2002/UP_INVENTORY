@@ -25,9 +25,9 @@ const toDate = ref(page.props.toDate || '');
 watch(selectedStatus, (status) => {
     let quantityFilter = '';
 
-    if (status === '1') quantityFilter = 'in_stock';         // quantity > 5
-    else if (status === '0') quantityFilter = 'out_of_stock'; // quantity <= 0
-    else if (status === '2') quantityFilter = 'low_stock';    // quantity 1–5
+    if (status === '1') quantityFilter = 'in_stock';         
+    else if (status === '0') quantityFilter = 'out_of_stock';
+    else if (status === '2') quantityFilter = 'low_stock';  
 
     router.get(route('reports.index'), {
         search: search.value,

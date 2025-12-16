@@ -7,6 +7,7 @@ import PageHeader from "@/Components/PageHeader.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
 import ItemFilterControls from "@/Components/Filters/ItemFilterControls.vue";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
+import SupplierFormModal from "@/Components/Modals/SupplierFormModal.vue";
 
 
 const columns = [
@@ -81,7 +82,7 @@ const toggleSidebar = () => {
       </aside>
     
       <!-- MAIN -->
-       <main class="flex-1 sm:p-5 md:p-6 overflow-hidden m-2">
+       <main class="flex-1 sm:p-5 md:p-6 overflow-y-auto m-2">
             <PageHeader title="Suppliers" />
               <div class="w-full h-full">
                 <div class="mt-10 flex flex-col md:flex-row gap-4 justify-between">
@@ -92,6 +93,12 @@ const toggleSidebar = () => {
 
                   <ItemFilterControls />
                 </div>
+
+                <SupplierFormModal 
+                  v-if="showFormModal"
+                  :mode="formMode"
+                  :supplierFields="supplierFields"
+                />
 
                 <InventoryTable 
                   :columns="columns" 
