@@ -186,10 +186,10 @@ function getViewValue(view) {
 </script>
 
 <template>
-    <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4" @click="$emit('close')">
         <div :class="['bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]',
             isClosing ? 'animate-pop-out' : 'animate-pop-in'
-        ]">
+        ]" @click.stop>
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold text-[#850038] mb-6">
                     {{ mode === 'edit' ? 'Edit Item' : mode === 'view' ? 'Item Details' : 'Add Item' }}
@@ -346,7 +346,6 @@ function getViewValue(view) {
                     </div>
                 </div>
 
-                <!-- BUTTON -->
                 <div class="flex justify-between items-center gap-4">
                     <!-- TOTAL COST -->
                     <div class="flex items-center gap-4">

@@ -193,7 +193,7 @@ function handleDelete(item) {
   showDeleteModal.value = true;
 }
 
-function handleSubmit(item) {
+function handleSubmit() {
   showSuccessModal.value = true;
   successMessage.value =
     formMode.value === "edit"

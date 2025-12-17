@@ -20,7 +20,7 @@ const form = useForm({
 </script>
 
 <template>
-     <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
+     <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4" >
         <div class="bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold text-[#850038] mb-6">
