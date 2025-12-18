@@ -21,4 +21,16 @@ class ItemClassification extends Model
     {
         return $this->hasMany(InventoryItem::class);
     }
+
+    public function scopeSearch($query, $term)
+    {
+        if (!$term) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($term) {
+            $q->where('classification_code', 'like', "%{$term}%")
+                ->orWhere('classification_name', 'like', "%{$term}%");
+        });
+    }
 }

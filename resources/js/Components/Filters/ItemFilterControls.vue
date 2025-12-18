@@ -77,6 +77,23 @@ function fetchReportSearch(params = {}) {
 
 const debouncedFetchReport = debounce(fetchReportSearch, 300);
 
+//------------------SUPPLIERS----------------------
+function fetchSuppliersSearch(searchValue) {
+    router.get('/suppliers', { search: searchValue }, { preserveState: true, replace: true, preserveScroll: true });
+}
+const debouncedFetchSuppliers = debounce(fetchSuppliersSearch, 300);
+
+//------------------CATEGORIES----------------------
+function fetchCategoriesSearch(searchValue) {
+    router.get('/categories', { search: searchValue }, { preserveState: true, replace: true, preserveScroll: true });
+}
+const debouncedFetchCategories = debounce(fetchCategoriesSearch, 300);
+
+//------------------ACCOUNTABLE PERSON----------------------
+function fetchAccountablePersonSearch(searchValue) {
+    router.get('/accountable-person', { search: searchValue }, { preserveState: true, replace: true, preserveScroll: true });
+}
+const debouncedFetchAccountablePerson = debounce(fetchAccountablePersonSearch, 300);
 
 //------------------SEARCH WATCHER---------------------
 watch(search, (value) => {
@@ -111,6 +128,18 @@ watch(search, (value) => {
             cost_range: cost_range.value,
             status: status.value
         });
+    }
+
+    else if (props.mode === "suppliers") {
+        debouncedFetchSuppliers(value);
+    }
+
+    else if (props.mode === "accountable-person") {
+        debouncedFetchAccountablePerson(value);
+    }
+
+    else if (props.mode === "categories") {
+        debouncedFetchCategories(value);
     }
 
     emit("update:search", value);

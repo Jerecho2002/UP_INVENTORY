@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->increments('id');
             $table->string('supplier_name', 180)->unique();
             $table->string('contact_no', 60)->nullable();
+            $table->string('email', 60)->nullable();
             $table->string('address', 255)->nullable();
             $table->tinyInteger('status')->default(0);
         });

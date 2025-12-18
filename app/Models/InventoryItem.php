@@ -62,7 +62,12 @@ class InventoryItem extends Model
         return $query->where(function ($q) use ($term) {
             $q->where('item_name', 'like', "%{$term}%")
                 ->orWhere('unit', 'like', "%{$term}%")
-                ->orWhere('property_number', 'like', "%{$term}%");
+                ->orWhere('property_number', 'like', "%{$term}%")
+                ->orWhere('serial_number', 'like', "%{$term}%")
+                ->orWhere('invoice', 'like', "%{$term}%")
+                ->orWhereHas('supplier', function ($supplier) use ($term) {
+                    $supplier->where('supplier_name', 'like', "%{$term}%");
+                });
         });
     }
 

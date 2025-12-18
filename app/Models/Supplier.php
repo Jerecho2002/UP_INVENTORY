@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Supplier extends Model
 {
     use HasFactory;
-    protected $fillable = ['supplier_name', 'contact_no', 'address', 'status'];
+    protected $fillable = ['supplier_name', 'contact_no', 'email', 'address', 'status'];
 
     public $timestamps = false;
 
@@ -26,6 +26,7 @@ class Supplier extends Model
         return $query->where(function ($q) use ($term) {
             $q->where('supplier_name', 'like', "%{$term}%")
                 ->orWhere('contact_no', 'like', "%{$term}%")
+                ->orWhere('email', 'like', "%{$term}%")
                 ->orWhere('address', 'like', "%{$term}%");
         });
     }

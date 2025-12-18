@@ -42,26 +42,6 @@ class AcknowledgementReceiptService
             ->withQueryString();
     }
 
-
-
-    // public function createAcknowledgements(array $data)
-    // {
-    //     foreach ($data['inventory_item_id'] as $itemId) {
-    //         $ack = AcknowledgementReceipt::create([
-    //             'accountable_persons_id' => $data['accountable_persons_id'],
-    //             'issued_by_id' => $data['issued_by_id'],
-    //             'category' => $data['issued_by_id'],
-    //             'created_by' => $data['created_by'],
-    //             'par_date' => $data['par_date'],
-    //             'remarks' => $data['remarks'] ?? null,
-    //         ]);
-
-    //         AcknowledgementItem::create([
-    //             'acknowledgement_id' => $ack,
-    //             'inventory_item_id' => $itemId
-    //         ]);
-    //     }
-    // }
     public function createAcknowledgements(array $data)
     {
         foreach ($data['inventory_item_id'] as $itemId) {

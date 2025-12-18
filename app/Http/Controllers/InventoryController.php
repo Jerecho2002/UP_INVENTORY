@@ -11,7 +11,6 @@ use App\Services\RoomApiService;
 use App\Models\ItemClassification;
 use App\Services\InventoryService;
 use App\Http\Requests\InventoryStoreRequest;
-use App\Services\AcknowledgementItemService;
 use App\Http\Requests\InventoryUpdateRequest;
 use App\Services\AcknowledgementReceiptService;
 use App\Http\Requests\UpdateInventoryCategoryRequest;
@@ -19,7 +18,11 @@ use App\Http\Requests\InventoryAcknowledgementStoreRequest;
 
 class InventoryController extends Controller
 {
-    public function InventoryItems(Request $request, InventoryService $service, RoomApiService $roomsApi)
+    public function __construct(
+        protected InventoryService $inventoryService,
+        protected AcknowledgementReceiptService $acknowledgementReceiptService,
+    ){}
+    public function InventoryItems(Request $request, RoomApiService $roomsApi)
     {
         // $rooms = $roomsApi->fetchRooms();
 
@@ -31,24 +34,24 @@ class InventoryController extends Controller
 
         return inertia('Inventory/InventoryItem', [
             // 'rooms' => $rooms,
-            'items' => $service->filterAndPaginateInventory($search, $costRange, $status),
+            'items' => $this->inventoryService->filterAndPaginateInventory($search, $costRange, $status),
             'itemClassifications' => $itemClassifications,
             'suppliers' => $suppliers,
         ]);
     }
 
-    public function InventoryTransactions(Request $request, InventoryService $service)
+    public function InventoryTransactions(Request $request)
     {
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $status = $request->input('status');
 
         return inertia('Inventory/InventoryTransaction', [
-            'items' => $service->filterAndPaginateTransaction($search, $costRange, $status),
+            'items' => $this->inventoryService->filterAndPaginateTransaction($search, $costRange, $status),
         ]);
     }
 
-    public function InventoryAcknowledgements(Request $request, AcknowledgementReceiptService $service)
+    public function InventoryAcknowledgements(Request $request)
     {
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
@@ -56,39 +59,39 @@ class InventoryController extends Controller
         $accPerson = AccountablePerson::all();
 
         return inertia('Inventory/InventoryAcknowledgements', [
-            'items' => $service->filterAndPaginateAcknowledgementReceipt($search, $costRange),
+            'items' => $this->acknowledgementReceiptService->filterAndPaginateAcknowledgementReceipt($search, $costRange),
             'accPerson' => $accPerson,
             'users' => $users,
         ]);
     }
 
-    public function InventoryAcknowledgementsStore(InventoryAcknowledgementStoreRequest $request, AcknowledgementReceiptService $service)
+    public function InventoryAcknowledgementsStore(InventoryAcknowledgementStoreRequest $request)
     {
-        $service->createAcknowledgements($request->validated());
+        $this->acknowledgementReceiptService->createAcknowledgements($request->validated());
 
         return redirect()->route('inventory.acknowledgements')->with('success', 'Items assigned successfully!');
     }
 
-    public function updateCategoryForItems(UpdateInventoryCategoryRequest $request, InventoryService $service)
+    public function updateCategoryForItems(UpdateInventoryCategoryRequest $request)
     {
-        $service->updateCategory($request->input('inventory_item_ids'),
+        $this->inventoryService->updateCategory($request->input('inventory_item_ids'),
         $request->input('category'));
 
         return back()->with('success', 'Category updated for selected items.');
     }
 
 
-    public function store(InventoryStoreRequest $request, InventoryService $service)
+    public function store(InventoryStoreRequest $request)
     {
-        $service->createinventoryItems($request->validated());
+        $this->inventoryService->createinventoryItems($request->validated());
 
         return redirect()->route('inventory.items');
     }
 
 
-    public function update(InventoryUpdateRequest $request, $id, InventoryService $service)
+    public function update(InventoryUpdateRequest $request, $id)
     {
-        $service->updateInventoryItem($id, $request->validated());
+        $this->inventoryService->updateInventoryItem($id, $request->validated());
 
         return redirect()->route('inventory.items');
     }
@@ -101,18 +104,18 @@ class InventoryController extends Controller
         return redirect()->back()->with('success', 'Item deleted successfully.');
     }
 
-    public function convert(Request $request, InventoryService $service)
+    public function convert(Request $request)
     {
-        return $service->convertToCsv($request);
+        return $this->inventoryService->convertToCsv($request);
     }
 
-    public function importCsv(Request $request, InventoryService $service)
+    public function importCsv(Request $request)
     {
-        return $service->importCsv($request);
+        return $this->inventoryService->importCsv($request);
     }
 
-    public function exportCsv(InventoryService $service)
+    public function exportCsv()
     {
-        return $service->exportCsv();
+        return $this->inventoryService->exportCsv();
     }
 }

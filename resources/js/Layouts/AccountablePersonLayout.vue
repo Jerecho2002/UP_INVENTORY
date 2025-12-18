@@ -7,14 +7,13 @@
   import InventoryTable from "@/Components/InventoryTable.vue";
   import ItemFilterControls from "@/Components/Filters/ItemFilterControls.vue";
   import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-  import SupplierFormModal from "@/Components/Modals/SupplierFormModal.vue";
+  import AccountablePersonFormModal from "@/Components/Modals/AccountablePersonFormModal.vue";
 
 
   const columns = [
-    { label: "Supplier Name", key: 'supplier_name' },
-    { label: "Contact", key: 'contact_no' },
-    { label: "Email", key: 'email' },
-    { label: "Address" , key: 'address' },
+    { label: "Accountable Person Name", key: 'full_name' },
+    { label: "Department", key: 'department' },
+    { label: "Position", key: 'position' },
     { label: "Status", key: 'status', 
       format: (status) => {
         let label = 'Unknown', cls = 'text-gray-500', icon = '';
@@ -34,42 +33,33 @@
     { label: "Action", key: "action" }
   ]
 
-  const supplierFields = [
-    { label: "Supplier Name", model: "supplier_name", placeholder: "Supplier Name", type: "text" },
-    { label: "Contact Number", model: "contact_no", placeholder: "Contact Number", type: "text" },
-    { label: "Email", model: "email", placeholder: "Email", type: "text" },
-    { label: "Address", model: "address", placeholder: "Address", type: "text" },
-  ];
-
-  const statusDropdown = [
-    { label: "Status", model: "status", options: 
-                                              [{label: "Active", value: "1"},
-                                              {label: "Inactive", value: "0"},
-                                              
-    ]},
+  const accountablePersonFields = [
+    { label: "Accountable Person Name", model: "full_name", placeholder: "Accountable Person Name", type: "text" },
+    { label: "Department", model: "department", placeholder: "Department", type: "text" },
+    { label: "Position", model: "position", placeholder: "Position", type: "text" },
   ];
 
   const page = usePage();
-  const suppliers = computed(() => page.props.suppliers || []);
+  const accountablePerson = computed(() => page.props.accountablePerson || []);
 
   //ITEMS FILTER CONTROL
   let search = ref('');
 
   let formMode = ref('create'); // CREATE || EDIT || VIEW
   let showFormModal = ref(false);
-  let currentSupplier = ref({})
+  let currentAccountablePerson = ref({})
 
   const showSuccessModal = ref(false);
 
   function openAdd() {
     formMode.value = 'create';
-    currentSupplier.value = {};
+    currentAccountablePerson.value = {};
     showFormModal.value = true;
   }
 
 function handleSubmit(form) {
   if (formMode.value === 'create') {
-    form.post(route('suppliers.store'), {
+    form.post(route('accountable.store'), {
       preserveScroll: true,
       onSuccess: () => {
         showFormModal.value = false
@@ -77,7 +67,7 @@ function handleSubmit(form) {
       },
     })
   } else {
-    form.put(route('suppliers.update', form.id), {
+    form.put(route('accountable.update', form.id), {
       preserveScroll: true,
       onSuccess: () => {
         showFormModal.value = false
@@ -87,9 +77,9 @@ function handleSubmit(form) {
   }
 }
 
-function handleEdit(supplier) {
+function handleEdit(accountablePerson) {
   formMode.value = 'edit'
-  currentSupplier.value = supplier
+  currentAccountablePerson.value = accountablePerson
   showFormModal.value = true
 }
 
@@ -114,33 +104,33 @@ function handleEdit(supplier) {
       
         <!-- MAIN -->
         <main class="flex-1 sm:p-5 md:p-6 overflow-y-auto m-2">
-              <PageHeader title="Suppliers" />
+              <PageHeader title="AccountablePerson" />
                 <div class="w-full h-full">
                   <div class="mt-10 flex flex-col md:flex-row gap-4 justify-between">
                     <PrimaryButton @click="openAdd()">
                       <i class="fa-solid fa-user-group"></i>
-                      <span>Add Supplier</span>
+                      <span>Add Accountable Person</span>
                     </PrimaryButton>
 
                     <ItemFilterControls 
                     :search="search"
                     @update:search="search = $event"
-                    :mode="'suppliers'"
+                    :mode="'accountable-person'"
                     />
                   </div>
 
-                  <SupplierFormModal 
+                  <AccountablePersonFormModal 
                     v-if="showFormModal"
                     :mode="formMode"
-                    :supplier="currentSupplier"
-                    :supplierFields="supplierFields"
+                    :accountablePerson="currentAccountablePerson"
+                    :accountablePersonFields="accountablePersonFields"
                     @submit="handleSubmit"
                     @close="showFormModal = false"
                   />
 
                   <InventoryTable 
                     :columns="columns" 
-                    :rows="suppliers"
+                    :rows="accountablePerson"
                   />
                 </div>
         </main>

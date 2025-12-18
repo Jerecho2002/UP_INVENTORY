@@ -12,11 +12,12 @@ import SupplierChartCard from "@/Components/SupplierChartCard.vue";
 import UserActivity from "@/Components/UserActivity.vue";
 
 const columns = [
-  { label: "Property Records", key: 'category' },
-  { label: "Property Number", key: 'property_number' },
   { label: "Item Name", key: 'item_name' },
   { label: "Unit", key: 'unit', format: (val) => val ?? 'N/A' },
   { label: "Unit Cost", key: 'unit_cost', format: (val) => val ? `₱${val}` : 'N/A' },
+  { label: "Property Number", key: 'property_number' },
+  { label: "Invoice", key: 'invoice' },
+  { label: "Supplier", key: "supplier.supplier_name" }, 
   {
     label: "Status", key: 'status',
     format: (status) => {

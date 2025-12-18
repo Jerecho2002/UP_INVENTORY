@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\Supplier;
+use App\Models\AccountablePerson;
 
-class SupplierService
+class AccountablePersonService
 {
-    public function filterAndPaginateSuppliers(
+    public function filterAndPaginateAccountablePerson(
         ?string $search = null,
         ?string $costRange = null,
         int|string|null $status = null,
         int $perPage = 10
     ) {
-        return Supplier::with('inventoryItems')
+        return AccountablePerson::query()
             ->when(
                 $search,
                 fn($query, $search) =>
@@ -42,13 +42,12 @@ class SupplierService
             ->withQueryString();
     }
 
-    public function createSupplier(array $data): Supplier
+    public function createAccountablePerson(array $data): AccountablePerson
     {
-        return Supplier::create([
-            'supplier_name' => $data['supplier_name'],
-            'contact_no' => $data['contact_no'] ?? null,
-            'email' => $data['email'] ?? null,
-            'address' => $data['address'] ?? null,
+        return AccountablePerson::create([
+            'full_name' => $data['full_name'],
+            'department' => $data['department'] ?? null,
+            'position' => $data['position'] ?? null,
             'status' => 1,
         ]);
     }

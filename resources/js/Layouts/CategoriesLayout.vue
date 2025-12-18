@@ -7,14 +7,11 @@
   import InventoryTable from "@/Components/InventoryTable.vue";
   import ItemFilterControls from "@/Components/Filters/ItemFilterControls.vue";
   import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
-  import SupplierFormModal from "@/Components/Modals/SupplierFormModal.vue";
-
+  import CategoriesFormModal from "@/Components/Modals/CategoriesFormModal.vue";
 
   const columns = [
-    { label: "Supplier Name", key: 'supplier_name' },
-    { label: "Contact", key: 'contact_no' },
-    { label: "Email", key: 'email' },
-    { label: "Address" , key: 'address' },
+    { label: "Classification Name", key: 'classification_name' },
+    { label: "Classification Code", key: 'classification_code' },
     { label: "Status", key: 'status', 
       format: (status) => {
         let label = 'Unknown', cls = 'text-gray-500', icon = '';
@@ -34,42 +31,32 @@
     { label: "Action", key: "action" }
   ]
 
-  const supplierFields = [
-    { label: "Supplier Name", model: "supplier_name", placeholder: "Supplier Name", type: "text" },
-    { label: "Contact Number", model: "contact_no", placeholder: "Contact Number", type: "text" },
-    { label: "Email", model: "email", placeholder: "Email", type: "text" },
-    { label: "Address", model: "address", placeholder: "Address", type: "text" },
-  ];
-
-  const statusDropdown = [
-    { label: "Status", model: "status", options: 
-                                              [{label: "Active", value: "1"},
-                                              {label: "Inactive", value: "0"},
-                                              
-    ]},
+  const categoriesFields = [
+    { label: "Classification Name", model: "classification_name", placeholder: "Classification Name", type: "text" },
+    { label: "Classification Code", model: "classification_code", placeholder: "Classification Code", type: "text" },
   ];
 
   const page = usePage();
-  const suppliers = computed(() => page.props.suppliers || []);
+  const categories = computed(() => page.props.categories || []);
 
   //ITEMS FILTER CONTROL
   let search = ref('');
 
   let formMode = ref('create'); // CREATE || EDIT || VIEW
   let showFormModal = ref(false);
-  let currentSupplier = ref({})
+  let currentCategories = ref({})
 
   const showSuccessModal = ref(false);
 
   function openAdd() {
     formMode.value = 'create';
-    currentSupplier.value = {};
+    currentCategories.value = {};
     showFormModal.value = true;
   }
 
 function handleSubmit(form) {
   if (formMode.value === 'create') {
-    form.post(route('suppliers.store'), {
+    form.post(route('categories.store'), {
       preserveScroll: true,
       onSuccess: () => {
         showFormModal.value = false
@@ -77,7 +64,7 @@ function handleSubmit(form) {
       },
     })
   } else {
-    form.put(route('suppliers.update', form.id), {
+    form.put(route('categories.update', form.id), {
       preserveScroll: true,
       onSuccess: () => {
         showFormModal.value = false
@@ -87,9 +74,9 @@ function handleSubmit(form) {
   }
 }
 
-function handleEdit(supplier) {
+function handleEdit(categories) {
   formMode.value = 'edit'
-  currentSupplier.value = supplier
+  currentCategories.value = categories
   showFormModal.value = true
 }
 
@@ -114,33 +101,34 @@ function handleEdit(supplier) {
       
         <!-- MAIN -->
         <main class="flex-1 sm:p-5 md:p-6 overflow-y-auto m-2">
-              <PageHeader title="Suppliers" />
+              <PageHeader title="Categories" />
                 <div class="w-full h-full">
                   <div class="mt-10 flex flex-col md:flex-row gap-4 justify-between">
                     <PrimaryButton @click="openAdd()">
                       <i class="fa-solid fa-user-group"></i>
-                      <span>Add Supplier</span>
+                      <span>Add Categories</span>
                     </PrimaryButton>
 
-                    <ItemFilterControls 
+                    <ItemFilterControls
                     :search="search"
                     @update:search="search = $event"
-                    :mode="'suppliers'"
+                    :mode="'categories'"
                     />
+                    
                   </div>
 
-                  <SupplierFormModal 
+                  <CategoriesFormModal 
                     v-if="showFormModal"
                     :mode="formMode"
-                    :supplier="currentSupplier"
-                    :supplierFields="supplierFields"
+                    :categories="currentCategories"
+                    :categoriesFields="categoriesFields"
                     @submit="handleSubmit"
                     @close="showFormModal = false"
                   />
 
                   <InventoryTable 
                     :columns="columns" 
-                    :rows="suppliers"
+                    :rows="categories"
                   />
                 </div>
         </main>

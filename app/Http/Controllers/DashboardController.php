@@ -8,10 +8,14 @@ use App\Services\DashboardService;
 
 class DashboardController extends Controller
 {
-    public function searchBar(Request $request, DashboardService $service){
+    public function __construct(
+        protected DashboardService $dashboardService,
+    ){}
+
+    public function searchBar(Request $request){
         $search = $request->input('search');
         return Inertia::render('Dashboard', [
-        'items' => $service->getPaginatedInventory($search),
+        'items' => $this->dashboardService->filterAndPaginateInventory($search),
         'searchItem' => $search,
     ]);
     }

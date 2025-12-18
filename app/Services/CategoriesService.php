@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\Supplier;
+use App\Models\ItemClassification;
 
-class SupplierService
+class CategoriesService
 {
-    public function filterAndPaginateSuppliers(
+    public function filterAndPaginateCategories(
         ?string $search = null,
         ?string $costRange = null,
         int|string|null $status = null,
         int $perPage = 10
     ) {
-        return Supplier::with('inventoryItems')
+        return ItemClassification::query()
             ->when(
                 $search,
                 fn($query, $search) =>
@@ -42,13 +42,11 @@ class SupplierService
             ->withQueryString();
     }
 
-    public function createSupplier(array $data): Supplier
+    public function createCategories(array $data): ItemClassification
     {
-        return Supplier::create([
-            'supplier_name' => $data['supplier_name'],
-            'contact_no' => $data['contact_no'] ?? null,
-            'email' => $data['email'] ?? null,
-            'address' => $data['address'] ?? null,
+        return ItemClassification::create([
+            'classification_name' => $data['classification_name'],
+            'classification_code' => $data['classification_code'] ?? null,
             'status' => 1,
         ]);
     }

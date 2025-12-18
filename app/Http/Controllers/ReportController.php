@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    public function searchBar(Request $request, ReportService $service)
+    public function __construct(
+        protected ReportService $reportService,
+    ){}
+    public function searchBar(Request $request)
     {
         $search = $request->input('search');
         $quantity = $request->input('quantity');
@@ -16,7 +19,7 @@ class ReportController extends Controller
         $to = $request->input('to');
 
         return Inertia::render('Reports', [
-            'items' => $service->getPaginatedInventory($search, $quantity, $from, $to),
+            'items' => $this->reportService->getPaginatedInventory($search, $quantity, $from, $to),
             'searchItem' => $search,
             'selectedStatus' => $quantity,
             'fromDate' => $from,

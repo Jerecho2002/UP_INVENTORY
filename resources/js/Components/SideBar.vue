@@ -18,8 +18,8 @@ const menuItems = [
         icon: "fa-solid fa-layer-group",
         children: [
             { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
-            // { name: "Accountable Persons", route:"accountable.index"},
-            // { name: "Categories", route:"categories.index"},
+            { name: "Accountable Persons", route:"accountable.index"},
+            { name: "Categories", route:"categories.index"},
             // { name: "Units", route:"units.index"},
         ],
     },
