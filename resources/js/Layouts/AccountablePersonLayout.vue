@@ -77,11 +77,11 @@ function handleSubmit(form) {
   }
 }
 
-function handleEdit(accountablePerson) {
-  formMode.value = 'edit'
-  currentAccountablePerson.value = accountablePerson
-  showFormModal.value = true
-}
+// function handleEdit(accountablePerson) {
+//   formMode.value = 'edit'
+//   currentAccountablePerson.value = accountablePerson
+//   showFormModal.value = true
+// }
 
 
   const isSidebarOpen = ref(true);
@@ -104,7 +104,7 @@ function handleEdit(accountablePerson) {
       
         <!-- MAIN -->
         <main class="flex-1 sm:p-5 md:p-6 overflow-y-auto m-2">
-              <PageHeader title="AccountablePerson" />
+              <PageHeader title="Accountable Person" />
                 <div class="w-full h-full">
                   <div class="mt-10 flex flex-col md:flex-row gap-4 justify-between">
                     <PrimaryButton @click="openAdd()">

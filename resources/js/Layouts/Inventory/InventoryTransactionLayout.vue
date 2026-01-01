@@ -19,7 +19,7 @@ const columns = [
   { label: 'Quantity', key: 'inventory_items', format: (val) => val?.quantity ?? 'N/A' },
   { label: 'Unit Cost', key: 'inventory_items', format: (val) => val?.unit_cost ? `₱${(val.unit_cost)}` : 'N/A' },
   { label: 'Property Number', key: 'inventory_items', format: (val) => val?.property_number ?? 'N/A' },
-  { label: 'PAR/ICS', key: 'acknowledgement_receipts', format: (val) => val?.category ?? 'N/A' },
+  { label: 'PAR/ICS Number', key: 'acknowledgement_receipts', format: (val) => val?.category ?? 'N/A' },
   // { label: 'PR Number', key: 'inventory_items', format: (val) => val?.pr_number ?? 'N/A' },
   // { label: 'PO Number', key: 'inventory_items', format: (val) => val?.po_number ?? 'N/A' },
   { label: 'Accountable Person', key: 'acknowledgement_receipts.accountable_person', format: (val) => val?.full_name ?? 'N/A' },
@@ -67,13 +67,13 @@ const unitCostOptions = [
   },
 ];
 
-const filterStatus = [
-  {
-    label: "Status", options: [{ label: "Received", value: 1 },
-    { label: "Cancelled", value: 0 },
-    ]
-  },
-];
+// const filterStatus = [
+//   {
+//     label: "Status", options: [{ label: "Received", value: 1 },
+//     { label: "Cancelled", value: 0 },
+//     ]
+//   },
+// ];
 
 const page = usePage();
 const items = computed(() => page.props.items);
@@ -160,7 +160,6 @@ const selectedIds = ref([]);
             :search="search" 
             :status="status" 
             :unitCostOptions="unitCostOptions"
-            :filterStatus="filterStatus" 
             :cost_range="cost_range" 
             @update:search="search = $event"
             @update:status="status = $event" 
