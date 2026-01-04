@@ -92,6 +92,7 @@ function submit() {
                 onSuccess: () => {
                     emit('close');
                     emit('created');
+                    emit('submit', form);
                     props.selectedIDs.splice(0);
                     selectedCategory.value = '';
                     form.reset();
@@ -144,7 +145,7 @@ watch(
 // Also watch items in case they load/refresh after selectedIDs
 watch(
     () => props.items,
-    (newItems) => {
+    () => {
         if (props.selectedIDs.length > 0) {
             selectedCategory.value =
                 itemMap.value[props.selectedIDs[0]]?.category || "";
