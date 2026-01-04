@@ -2,39 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\AcknowledgementItem;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class PrintController extends Controller
 {
     public function printReceipt(Request $request)
     {
-        // 1. Fetch data (example)
-        $data = [
-            'title' => 'Sample Receipt',
-            'date'  => now()->format('Y-m-d'),
-        ];
+        // 1. Get selected IDs from Vue
+        $ids = $request->input('ids', []);
 
-        // 2. Generate PDF from Blade view
-        $pdf = Pdf::loadView('prints.receipt', $data);
+        // Safety check
+        if (empty($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No items selected'
+            ], 422);
+        }
 
-        // 3. Create filename
+        // 2. Fetch ONLY selected records
+        $acknowledgementItems = AcknowledgementItem::with([
+            'inventoryItems',
+            'acknowledgementReceipts.accountablePerson',
+            'acknowledgementReceipts.issuedBy'
+        ])
+        ->whereIn('id', $ids)
+        ->get();
+
+        // 3. Generate PDF
+        $pdf = Pdf::loadView('prints.receipt', [
+            'acknowledgementItems' => $acknowledgementItems,
+        ]);
+
+        // 4. Store PDF
         $fileName = 'receipt_' . time() . '.pdf';
-
-        // 4. Store PDF in public storage
         Storage::disk('public')->put(
             'prints/' . $fileName,
             $pdf->output()
         );
 
-        // 5. Generate public URL
-        $fileUrl = asset('storage/prints/' . $fileName);
-
-        // 6. Return URL for Inertia / frontend
+        // 5. Return public URL
         return response()->json([
             'success' => true,
-            'url'     => $fileUrl,
+            'url' => asset('storage/prints/' . $fileName),
         ]);
     }
 }

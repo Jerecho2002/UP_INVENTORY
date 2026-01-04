@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { ref, computed, nextTick } from "vue";
+import axios from 'axios';
+import { usePage, router } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import PageHeader from "@/Components/PageHeader.vue";
@@ -20,28 +21,9 @@ const columns = [
   { label: 'Unit Cost', key: 'inventory_items', format: (val) => val?.unit_cost ? `₱${(val.unit_cost)}` : 'N/A' },
   { label: 'Property Number', key: 'inventory_items', format: (val) => val?.property_number ?? 'N/A' },
   { label: 'PAR/ICS', key: 'acknowledgement_receipts', format: (val) => val?.category ?? 'N/A' },
-  // { label: 'PR Number', key: 'inventory_items', format: (val) => val?.pr_number ?? 'N/A' },
-  // { label: 'PO Number', key: 'inventory_items', format: (val) => val?.po_number ?? 'N/A' },
   { label: 'Accountable Person', key: 'acknowledgement_receipts.accountable_person', format: (val) => val?.full_name ?? 'N/A' },
   { label: 'Issued By', key: 'acknowledgement_receipts.issued_by', format: (val) => val?.email ?? 'N/A' },
   { label: 'Date Released', key: 'acknowledgement_receipts', format: (val) => val ? dayjs(val.created_at).format('MMM D, YYYY') : 'N/A' },
-  // {
-  //   label: "Status", key: 'status',
-  //   format: (status) => {
-  //     let label = 'Unknown', cls = 'text-gray-500', icon = '';
-  //     if (status === 1) {
-  //       label = 'Completed';
-  //       cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
-  //       icon = '<i class="fa-solid fa-circle-check"></i>';
-  //     }
-  //     else if (status === 0) {
-  //       label = 'Pending';
-  //       cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
-  //       icon = '<i class="fa-solid fa-clock"></i>';
-  //     }
-  //     return `<span class="${cls}">${icon} ${label}</span>`;
-  //   }
-  // },
   { label: "Action", key: "action" }
 ]
 
@@ -67,14 +49,6 @@ const unitCostOptions = [
   },
 ];
 
-const filterStatus = [
-  {
-    label: "Status", options: [{ label: "Received", value: 1 },
-    { label: "Cancelled", value: 0 },
-    ]
-  },
-];
-
 const page = usePage();
 const items = computed(() => page.props.items);
 
@@ -94,12 +68,6 @@ function openAdd(item) {
   showFormModal.value = true;
 };
 
-function handleEdit(item) {
-  formMode.value = 'edit';
-  currentItem.value = item;
-  showFormModal.value = true;
-}
-
 // const processedItems = computed(() =>
 //   items.value.data.map((item) => {
 //     const newItem = { ...item }
@@ -117,13 +85,45 @@ const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
 
-const selectedIds = ref([]);
+const tempSelectedIds = ref([])
+const isPrinting = ref(false)
 
+const handleSelectionChanged = (ids) => {
+  tempSelectedIds.value = ids
+  console.log('IDs updated from table:', [...tempSelectedIds.value])
+}
+
+const printSelected = async () => {
+  if (isPrinting.value) return; // ignore if already printing
+
+  if (!tempSelectedIds.value.length) {
+    alert('Please select at least one item to print.')
+    return
+  }
+
+  console.log('Selected IDs before print:', [...tempSelectedIds.value])
+
+  isPrinting.value = true
+  try {
+    const response = await axios.post('/print/receipt', {
+      ids: tempSelectedIds.value
+    })
+
+    if (response.data?.url) {
+      window.open(response.data.url, '_blank')
+    }
+  } catch (error) {
+    console.error(error)
+    alert('Failed to generate PDF')
+  } finally {
+    isPrinting.value = false // release lock
+  }
+}
 </script>
 
 <template>
   <div class="h-screen flex flex-col bg-gray-100 overflow-hidden">
-   
+
     <!-- Pass toggle event -->
     <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />
 
@@ -149,39 +149,23 @@ const selectedIds = ref([]);
                 <span> Re-Assign</span>
               </PrimaryButton>
 
-              <SecondaryButton @click="handleEdit" class="gap-2 text-white text-xs sm:text-sm">
-                <i class="fa-solid fa-rotate"></i>
-                <span>Update</span>
+              <SecondaryButton @click="printSelected" class="gap-2 text-white text-xs sm:text-sm">
+                <i class="fa-solid fa-print"></i>
+                <span>Print</span>
               </SecondaryButton>
             </div>
 
 
-          <ItemFilterControls 
-            :search="search" 
-            :status="status" 
-            :unitCostOptions="unitCostOptions"
-            :filterStatus="filterStatus" 
-            :cost_range="cost_range" 
-            @update:search="search = $event"
-            @update:status="status = $event" 
-            @update:cost_range="cost_range = $event" 
-            :mode="'transactions'" />
+            <ItemFilterControls :search="search" :status="status" :unitCostOptions="unitCostOptions"
+              :filterStatus="filterStatus" :cost_range="cost_range" @update:search="search = $event"
+              @update:status="status = $event" @update:cost_range="cost_range = $event" :mode="'transactions'" />
           </div>
 
-          <AssignedFormModal 
-            v-if="showFormModal" 
-            :mode="formMode" 
-            :accountableField="accountableField"
-            :inputFields="inputFields" 
-            :itemSelectedField="itemSelectedField" 
-            @close="showFormModal = false" />
+          <AssignedFormModal v-if="showFormModal" :mode="formMode" :accountableField="accountableField"
+            :inputFields="inputFields" :itemSelectedField="itemSelectedField" @close="showFormModal = false" />
 
-          <InventoryTable 
-            :columns="columns" 
-            :rows="items" 
-            @update:selected="ids => selectedIds.value = ids"
-            @selection-changed="ids => console.log('Item Selected', ids)" 
-          />
+          <InventoryTable :columns="columns" :rows="items" :actions="['view', 'delete', 'print']"
+            @selection-changed="handleSelectionChanged" />
         </div>
       </main>
     </div>

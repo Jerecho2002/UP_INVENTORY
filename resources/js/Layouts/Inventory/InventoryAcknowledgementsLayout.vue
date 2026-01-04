@@ -153,6 +153,7 @@ const selectedIds = ref([]);
             <InventoryTable
               :rows="items"
               :columns="columns"
+              :actions="['view', 'edit']"
               @view="handleView"
               @update:selected="ids => selectedIds.value = ids"
               @selection-changed="ids => console.log('Item Selected', ids)" 

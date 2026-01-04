@@ -97,6 +97,7 @@ const toggleSidebar = () => {
             <InventoryTable 
               :columns="columns" 
               :rows="items"
+              :actions="['delete']"
             />
           </div>
         </div>

@@ -109,6 +109,7 @@ const toggleSidebar = () => { isSidebarOpen.value = !isSidebarOpen.value; };
                 <InventoryTable
                   :columns="columns"
                   :rows="items"
+                  :actions="['view']"
                 />
               </div>
             </div>

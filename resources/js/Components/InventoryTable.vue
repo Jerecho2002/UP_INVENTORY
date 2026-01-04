@@ -25,6 +25,10 @@ const props = defineProps({
     search: String, //InventoryFilter
     cost_range: String, //InventoryFilter
     status: String, // InventoryFilter
+    actions: {
+        type: Array,
+        default: () => ['view', 'edit', 'delete', 'print']
+    }
 });
 
 const emit = defineEmits(['view', 'edit', 'delete', 'update:selected', 'selection-changed']);
@@ -131,22 +135,25 @@ function toggleCheck(item) {
                         <!-- ACTION BUTTONS -->
                         <template v-else>
                             <div class="flex items-center gap-2">
-                                <PrintButton :item="item" @print="$emit('print', $event)" />
 
-                                <button @click="$emit('view', item)" class="text-[#3F3F3F] hover:text-[#191818]"
-                                    title="View">
+                                <PrintButton v-if="props.actions.includes('print')" :item="item"
+                                    @print="$emit('print', $event)" />
+
+                                <button v-if="props.actions.includes('view')" @click="$emit('view', item)" title="View"
+                                    class="text-[#3F3F3F]">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
 
-                                <button @click="$emit('edit', item)" class="text-[#54B3AB] hover:text-[#38a69d]"
-                                    title="Edit">
+                                <button v-if="props.actions.includes('edit')" @click="$emit('edit', item)" title="Edit"
+                                    class="text-[#54B3AB]">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
 
-                                <button @click="$emit('delete', item)" class="text-[#D71D1D] hover:text-[#c50e0e]"
-                                    title="Delete">
+                                <button v-if="props.actions.includes('delete')" @click="$emit('delete', item)"
+                                    title="Delete" class="text-[#D71D1D]">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
+
                             </div>
                         </template>
                     </TableCell>

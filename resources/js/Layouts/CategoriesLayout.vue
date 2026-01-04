@@ -129,6 +129,7 @@ function handleEdit(categories) {
                   <InventoryTable 
                     :columns="columns" 
                     :rows="categories"
+                    :actions="['edit', 'delete']"
                   />
                 </div>
         </main>

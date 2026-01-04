@@ -131,6 +131,7 @@ function handleEdit(accountablePerson) {
                   <InventoryTable 
                     :columns="columns" 
                     :rows="accountablePerson"
+                    :actions="['edit', 'delete']"
                   />
                 </div>
         </main>
