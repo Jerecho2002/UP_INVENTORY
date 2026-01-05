@@ -36,7 +36,6 @@ const itemMap = computed(() => {
 });
 
 function submit() {
-    // Check if all selected items have the same first number in property_number
     if (props.selectedIDs.length > 0) {
         const firstNumbers = props.selectedIDs.map(id => {
             const item = itemMap.value[id];
@@ -48,7 +47,7 @@ function submit() {
 
         if (uniqueFirstNumbers.length > 1) {
             firstNumberError.value = "All selected items must have the same Category in Property Number.";
-            return; // stop submission
+            return;
         }
     }
 
