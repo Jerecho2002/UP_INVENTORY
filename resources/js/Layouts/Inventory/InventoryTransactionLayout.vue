@@ -119,6 +119,25 @@ const printSelected = async () => {
     isPrinting.value = false // release lock
   }
 }
+
+const handlePrint = async (id) => {
+  if (isPrinting.value) return;
+
+  isPrinting.value = true;
+  try {
+    const response = await axios.post('/print/receipt', { ids: [id] });
+
+    if (response.data?.url) {
+      window.open(response.data.url, '_blank'); // open the PDF
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Failed to print.');
+  } finally {
+    isPrinting.value = false;
+  }
+};
+
 </script>
 
 <template>
@@ -155,7 +174,6 @@ const printSelected = async () => {
               </SecondaryButton>
             </div>
 
-
             <ItemFilterControls :search="search" :status="status" :unitCostOptions="unitCostOptions"
               :filterStatus="filterStatus" :cost_range="cost_range" @update:search="search = $event"
               @update:status="status = $event" @update:cost_range="cost_range = $event" :mode="'transactions'" />
@@ -165,7 +183,7 @@ const printSelected = async () => {
             :inputFields="inputFields" :itemSelectedField="itemSelectedField" @close="showFormModal = false" />
 
           <InventoryTable :columns="columns" :rows="items" :actions="['view', 'delete', 'print']"
-            @selection-changed="handleSelectionChanged" />
+            @selection-changed="handleSelectionChanged" @print="handlePrint" />
         </div>
       </main>
     </div>
