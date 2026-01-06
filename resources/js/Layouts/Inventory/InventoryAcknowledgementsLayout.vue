@@ -34,6 +34,44 @@ const columns = [
   { label: "Action", key: "action" }
 ];
 
+const viewItem = [
+  { label: "Item Name", key: "item_name" },
+  { label: "Property Number", key: "property_number" },
+  { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
+  { label: "Serial Number", key: "serial_number" },
+  { label: "Unit Cost", key: "unit_cost",  format: (val) => val !== null && val !== undefined  ? `₱${Number(val).toLocaleString()}` : "N/A"},
+  { label: "PO Number", key: "po_number" },
+  { label: "Supplier", key: "supplier.supplier_name" },
+  { label: "PR Number", key: "pr_number" },
+  { label: "Description", key: "description" },
+  { label: "Invoice", key: "invoice" },
+  { label: "Remarks", key: "remarks" },
+  { label: "Fund Source", key: "fund_source" },
+  { label: "Date Acquired", key: "date_acquired" },
+  {
+    label: "Status", key: 'status',
+    format: (status) => {
+      let label = 'Unknown', cls = 'text-gray-500', icon = '';
+      if (status === 0) {
+        label = 'Inactive';
+        cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-ban"></i>';
+      }
+      else if (status === 1) {
+        label = 'Active';
+        cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-circle-check"></i>';
+      }
+      else if (status === 2) { 
+        label = 'Pending'; 
+        cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
+        icon = '<i class="fa-solid fa-clock"></i>';
+      }
+      return `<span class="${cls}">${icon} ${label}</span>`;
+    }
+  },
+];
+
 const accountableField = [
   { label: "Accountable Person", model: "accountable_persons_id", name: "accPerson", option: "full_name", value: "id" },
   { label: "Issued By", model: "issued_by_id", name: "users", option: "email", value: "id" },
@@ -165,6 +203,7 @@ const selectedIds = ref([]);
               :itemSelectedField="itemSelectedField"
               :selectedIDs="selectedIds.value"
               :items="items"
+              :viewItem="viewItem"
               @submit="handleSubmit"
               @close="() => showFormModal = false"
             />

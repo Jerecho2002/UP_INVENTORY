@@ -1,5 +1,6 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const props = defineProps({
     mode: { type: String, default: 'create' },
@@ -9,6 +10,8 @@ const props = defineProps({
     selectedIDs: { type: Array, default: () => [] },
 });
 
+const emit = defineEmits(['close']);
+
 const form = useForm({
     inventory_item_id: [],
     accountable_persons_id: "",
@@ -17,11 +20,24 @@ const form = useForm({
     par_date: "",
     remarks: "",
 });
+
+const isClosing = ref(false);
+
+// ANIMATION FOR CLOSE
+function closeWithAnimation() {
+    isClosing.value = true;
+    setTimeout(() => {
+        emit('close');
+        isClosing.value = false;
+    }, 200);
+}
 </script>
 
 <template>
-     <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4" >
-        <div class="bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]">
+     <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4" @click="$emit('close')" >
+        <div :class="['bg-white rounded-lg w-full max-w-6xl p-4 overflow-y-auto max-h-[90vh]',
+            isClosing ? 'animate-pop-out' : 'animate-pop-in'
+        ]" @click.stop>
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold text-[#850038] mb-6">
                     {{ mode === 'edit' ? 'Update' : mode === 'view' ? 'Assigned Details' : 'Re-Assign' }}
@@ -113,6 +129,19 @@ const form = useForm({
                         {{ mode === 'edit' ? "Update" : "Re-Assign" }}</button>
                 </div>
             </form>
+             <!-- VIEW MODAL -->
+            <div v-else>
+                <div class="grid grid-cols-2 gap-3">
+                    <div v-for="(v, k) in local" :key="k" class="p-2 border rounded">
+                        <div class="text-xs text-gray-500">{{ k }}</div>
+                        <div class="font-medium">{{ v }}</div>
+                    </div>
+                </div>
+                <!-- BUTTON -->
+                <div class="mt-4 flex justify-end">
+                    <button @click="closeWithAnimation" class="px-3 py-1 border rounded">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 </template>

@@ -68,6 +68,12 @@ function openAdd(item) {
   showFormModal.value = true;
 };
 
+function handleView(item) {
+  formMode.value = 'view';
+  currentItem.value = item;
+  showFormModal.value = true;
+}
+
 // const processedItems = computed(() =>
 //   items.value.data.map((item) => {
 //     const newItem = { ...item }
@@ -174,16 +180,35 @@ const handlePrint = async (id) => {
               </SecondaryButton>
             </div>
 
-            <ItemFilterControls :search="search" :status="status" :unitCostOptions="unitCostOptions"
-              :filterStatus="filterStatus" :cost_range="cost_range" @update:search="search = $event"
-              @update:status="status = $event" @update:cost_range="cost_range = $event" :mode="'transactions'" />
+            <ItemFilterControls 
+              :search="search" 
+              :status="status" 
+              :unitCostOptions="unitCostOptions"
+              :filterStatus="filterStatus" 
+              :cost_range="cost_range" 
+              @update:search="search = $event"
+              @update:status="status = $event" 
+              @update:cost_range="cost_range = $event" 
+              :mode="'transactions'" />
           </div>
 
-          <AssignedFormModal v-if="showFormModal" :mode="formMode" :accountableField="accountableField"
-            :inputFields="inputFields" :itemSelectedField="itemSelectedField" @close="showFormModal = false" />
+          <AssignedFormModal 
+            v-if="showFormModal" 
+            :mode="formMode" 
+            :accountableField="accountableField"
+            :inputFields="inputFields" 
+            :itemSelectedField="itemSelectedField" 
+            @close="() => showFormModal = false" 
+          />
 
-          <InventoryTable :columns="columns" :rows="items" :actions="['view', 'delete', 'print']"
-            @selection-changed="handleSelectionChanged" @print="handlePrint" />
+          <InventoryTable 
+            :columns="columns" 
+            :rows="items" 
+            :actions="['view', 'delete', 'print']"
+            @selection-changed="handleSelectionChanged" 
+            @view="handleView"
+            @print="handlePrint" 
+          />
         </div>
       </main>
     </div>

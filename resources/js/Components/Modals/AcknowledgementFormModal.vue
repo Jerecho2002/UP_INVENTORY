@@ -11,6 +11,8 @@ const props = defineProps({
     items: { type: Object, default: () => ({ data: [] }) },
     accPerson: { type: Object, default: () => ({ data: [] }) },
     users: { type: Array, default: () => [] },
+    viewItem: { type: Array, default: () => [] },
+    item: { type: Object, default: () => ({}) },
 });
 
 const selectedCategory = ref('');
@@ -163,6 +165,20 @@ function closeWithAnimation() {
         isClosing.value = false; // reset for next open
     }, 200);
 }
+
+function getNestedValue(obj, path) {
+  if (!obj || !path) return null;
+  return path.split('.').reduce((o, k) => (o ? o[k] : null), obj);
+}
+
+function getViewValue(view) {
+    const rawValue = getNestedValue(props.item, view.key);
+
+    if (view.format) {
+        return view.format(rawValue);
+    }
+    return rawValue ?? 'N/A';
+}
 </script>
 
 
@@ -277,15 +293,25 @@ function closeWithAnimation() {
 
             <!-- VIEW MODAL -->
             <div v-else>
-                <div class="grid grid-cols-2 gap-3">
-                    <div v-for="(v, k) in local" :key="k" class="p-2 border rounded">
-                        <div class="text-xs text-gray-500">{{ k }}</div>
-                        <div class="font-medium">{{ v }}</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                    <div v-for="view in viewItem" :key="view.key"
+                        class="flex items-start justify-between gap-4 border-b pb-2">
+                        <!-- LABEL -->
+                        <div class="text-sm font-semibold text-[#000000] w-1/2">
+                            {{ view.label }}:
+                        </div>
+
+                        <!-- VALUE -->
+                        <div class="text-sm font-medium text-gray-600 w-1/2 text-right" v-html="getViewValue(view)" />
                     </div>
                 </div>
+
                 <!-- BUTTON -->
-                <div class="mt-4 flex justify-end">
-                    <button @click="closeWithAnimation" class="px-3 py-1 border rounded">Close</button>
+                <div class="mt-6 flex justify-end">
+                    <button @click="closeWithAnimation"
+                        class="px-6 py-3 border border-[#8d8a8a] rounded-md hover:bg-gray-100 text-sm font-medium">
+                        Back
+                    </button>
                 </div>
             </div>
 

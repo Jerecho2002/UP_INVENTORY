@@ -45,18 +45,18 @@ const columns = [
 ]
 
 const viewItem = [
-  { label: "Property Number", key: "property_number" },
-  { label: "Serial Number", key: "serial_number" },
-  { label: "Supplier", key: "supplier.supplier_name" },
-  { label: "Invoice", key: "invoice" },
-  { label: "Fund Source", key: "fund_source" },
-  { label: "PR Number", key: "pr_number" },
-  { label: "PO Number", key: "po_number" },
-  { label: "Remarks", key: "remarks" },
   { label: "Item Name", key: "item_name" },
-  { label: "Unit Cost", key: "unit_cost",  format: (val) => val !== null && val !== undefined  ? `₱${Number(val).toLocaleString()}` : "N/A"},
+  { label: "Property Number", key: "property_number" },
   { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
+  { label: "Serial Number", key: "serial_number" },
+  { label: "Unit Cost", key: "unit_cost",  format: (val) => val !== null && val !== undefined  ? `₱${Number(val).toLocaleString()}` : "N/A"},
+  { label: "PO Number", key: "po_number" },
+  { label: "Supplier", key: "supplier.supplier_name" },
+  { label: "PR Number", key: "pr_number" },
   { label: "Description", key: "description" },
+  { label: "Invoice", key: "invoice" },
+  { label: "Remarks", key: "remarks" },
+  { label: "Fund Source", key: "fund_source" },
   { label: "Date Acquired", key: "date_acquired" },
   {
     label: "Status", key: 'status',
@@ -103,7 +103,7 @@ const supplierOptions = [
 const requestFields = [
   { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
   { label: "Purchase Order", model: "po_number", placeholder: "PO-###", type: "text" },
-  { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
+  // { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
 ]
 
 const invoicesFundFields = [

@@ -1,6 +1,6 @@
 <script setup>
 import { router } from '@inertiajs/vue3';
-import { watch, ref } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { debounce } from 'lodash';
 
 const props = defineProps({
@@ -196,6 +196,21 @@ watch(cost_range, (value) => {
 
     emit("update:cost_range", value);
 });
+
+//-------------------DYNAMIC PLACEHOLDER---------------------
+const searchPlaceholder = computed(() => {
+    switch (props.mode) {
+        case 'inventory':
+            return 'Search Item, Property Number, Serial Number...';
+        case 'acknowledgements':
+            return 'Search Item to assign';
+        case 'transactions':
+            return 'Search';
+        default:
+            return 'Search item';
+    }
+});
+
 </script>
 
 
@@ -245,7 +260,7 @@ watch(cost_range, (value) => {
             <input
                 v-model="search"
                 type="search"
-                placeholder="Search item"
+                :placeholder="searchPlaceholder"
                 class="w-full sm:w-64 md:w-96 h-9 sm:h-10 rounded-full pl-10 pr-3 border text-sm 
                 focus:ring-[#850038] focus:outline-none focus:border-[#850038]"
             />
