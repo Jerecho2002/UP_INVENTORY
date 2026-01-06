@@ -4,7 +4,6 @@ import { defineProps, computed, ref } from 'vue';
 import TableCell from './TableCell.vue';
 import PrintButton from "@/Components/Buttons/PrintButton.vue";
 
-
 const props = defineProps({
     // rooms: Array, // -> InventoryTable
     columns: Array, // -> InventoryTable
@@ -137,7 +136,7 @@ function toggleCheck(item) {
                             <div class="flex items-center gap-2">
 
                                 <PrintButton v-if="props.actions.includes('print')" :item="item"
-                                    @print="$emit('print', $event)" />
+                                    @print="$emit('print', item.id)" />
 
                                 <button v-if="props.actions.includes('view')" @click="$emit('view', item)" title="View"
                                     class="text-[#3F3F3F]">

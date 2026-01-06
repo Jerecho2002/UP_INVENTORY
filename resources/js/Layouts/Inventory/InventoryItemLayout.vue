@@ -349,6 +349,7 @@ const toggleSidebar = () => {
                 @view="handleView"
                 @edit="handleEdit"
                 @delete="handleDelete"
+                :actions="['view', 'delete', 'edit']"
               />
             </div>
         </div>
