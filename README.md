@@ -14,7 +14,7 @@ It includes authentication, user management, and a layered architecture that pro
 ## 🚀 Features
 
 - 🔐 Laravel Breeze Authentication
-- 👥 User Management (CRUD)
+- 👥 Inventory CRUD Management
 - 🔎 Searchable & Paginated Listings
 - 🧱 Repository – Service – Transformer Architecture
 - 🎨 Clean UI with Tailwind CSS
@@ -51,7 +51,16 @@ Ensure the following are installed:
 
 ### 1️⃣ Clone the Repository
 
-```bash
+```
 git clone https://github.com/Jerecho2002/UP_INVENTORY.git
 
 cd UP_INVENTORY
+
+```
+
+
+
+
+
+
+
