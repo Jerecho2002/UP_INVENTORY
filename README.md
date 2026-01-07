@@ -58,6 +58,12 @@ cd UP_INVENTORY
 ```
 ---
 
+## 📚 References
+
+#### ITC BASECODE
+
+---
+
 ## 👨‍💻 Contributors
 
 - **Leandro Labos** - Front End
