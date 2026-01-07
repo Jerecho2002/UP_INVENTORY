@@ -56,10 +56,14 @@ git clone https://github.com/Jerecho2002/UP_INVENTORY.git
 
 cd UP_INVENTORY
 ```
+---
+
 ## 👨‍💻 Contributors
 
-- Leandro Labos - Front End
-- Jerecho Latosa - Back End
+- **Leandro Labos** - Front End
+- **Jerecho Latosa** - Back End
+
+
 
 
 
