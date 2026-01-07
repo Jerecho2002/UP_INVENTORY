@@ -103,7 +103,7 @@ const supplierOptions = [
 const requestFields = [
   { label: "Purchase Request", model: "pr_number", placeholder: "PR-###", type: "text" },
   { label: "Purchase Order", model: "po_number", placeholder: "PO-###", type: "text" },
-  // { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
+  { label: "Remarks", model: "remarks", placeholder: "RM-###", type: "text" },
 ]
 
 const invoicesFundFields = [
