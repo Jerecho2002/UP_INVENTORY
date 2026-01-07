@@ -53,9 +53,7 @@ Ensure the following are installed:
 
 ```
 git clone https://github.com/Jerecho2002/UP_INVENTORY.git
-
 cd UP_INVENTORY
-
 ```
 
 
