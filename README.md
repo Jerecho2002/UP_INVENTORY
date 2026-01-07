@@ -13,26 +13,25 @@ It includes authentication, user management, and a layered architecture that pro
 
 ## 🚀 Features
 
-- 🔐 Laravel Breeze Authentication
+<!-- - 🔐 User Authentication (Login / Register) -->
 - 📦 Inventory CRUD Management
-- 🔎 Searchable & Paginated Listings
+- 🗂️ Category & Item Tracking
+- 🔎 Search & Pagination
 - 🧱 Repository – Service – Transformer Architecture
-- 🎨 Clean UI with Tailwind CSS
-- 👥 Role-based Access (extendable)
+- 🎨 Clean UI with Vue JS + Tailwind CSS
+- ⚡ Secure & Scalable Laravel Backend
+- 👥 Role-based Access Control (extendable)
 <!-- - 🧪 Testing Ready -->
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer        | Technology |
-|-------------|-----------|
-| Backend     | Laravel 12 |
-| Frontend   | Vue JS + Tailwind CSS |
-| Auth       | Laravel Breeze |
-| Database   | MySQL |
-| Build Tool | Vite |
-| Runtime    | PHP 8.2+, Node.js 18+ |
+- 🖥️ **Backend:** Laravel 12
+- 🎨 **Frontend:** Vue 3 JS + Tailwind CSS
+- 🗃️ **Database:** MySQL
+- 🔐 **Authentication:** Laravel Breeze
+- 📦 **Package Manager:** Composer & NPM
 
 ---
 
@@ -42,7 +41,7 @@ Ensure the following are installed:
 
 - PHP **>= 8.2**
 - Composer
-- Node.js **>= 18+**
+- Node.js **>= 18**
 - MySQL
 - Laravel CLI
 
@@ -58,6 +57,10 @@ git clone https://github.com/Jerecho2002/UP_INVENTORY.git
 cd UP_INVENTORY
 ```
 ## 👨‍💻 Contributors
+
+- Leandro Labos - Front End
+- Jerecho Latosa - Back End
+
 
 
 
