@@ -60,7 +60,7 @@ cd UP_INVENTORY
 
 ## 📚 References
 
-#### ITC BASECODE
+#### ITC BASECODE © 2026
 
 ---
 
