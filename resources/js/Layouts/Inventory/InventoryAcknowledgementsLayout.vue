@@ -202,7 +202,7 @@ const selectedIds = ref([]);
               :users="users"
               :itemSelectedField="itemSelectedField"
               :selectedIDs="selectedIds.value"
-              :items="items"
+              :item="currentItem"
               :viewItem="viewItem"
               @submit="handleSubmit"
               @close="() => showFormModal = false"
