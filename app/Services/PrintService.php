@@ -13,8 +13,18 @@ class PrintService
     {
 
         // Normalize IDs
-        if (!is_array($ids))
+        if (!is_array($ids)) {
             $ids = [$ids];
+        }
+
+        // Remove nulls and convert to integers
+        $ids = array_filter($ids, fn($id) => !is_null($id) && $id !== '');
+        $ids = array_map('intval', $ids);
+
+        if (empty($ids)) {
+            throw new \Exception('No valid ID provided');
+        }
+
 
         // Fetch records
         $acknowledgementItems = AcknowledgementItem::with([

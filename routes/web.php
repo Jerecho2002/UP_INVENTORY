@@ -52,7 +52,7 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
 
 Route::get('/dummy-auth', function () {
     // Temporary Authentication
-    $user_id = 11;
+    $user_id = 1;
     Auth::loginUsingId($user_id);
 
 
