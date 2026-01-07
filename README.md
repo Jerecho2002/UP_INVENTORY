@@ -62,6 +62,7 @@ cd UP_INVENTORY
 
 - **Leandro Labos** - Front End
 - **Jerecho Latosa** - Back End
+- **Sir Anthony** - OG Mentor
 
 
 
