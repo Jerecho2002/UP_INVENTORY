@@ -17,9 +17,8 @@ It includes authentication, user management, and a layered architecture that pro
 - 👥 User Management (CRUD)
 - 🔎 Searchable & Paginated Listings
 - 🧱 Repository – Service – Transformer Architecture
-- 📧 Email Integration Ready
 - 🎨 Clean UI with Tailwind CSS
-- 🧪 Testing Ready
+<!-- - 🧪 Testing Ready -->
 
 ---
 
@@ -28,9 +27,9 @@ It includes authentication, user management, and a layered architecture that pro
 | Layer        | Technology |
 |-------------|-----------|
 | Backend     | Laravel 12 |
-| Frontend   | Blade + Tailwind CSS |
+| Frontend   | Vue JS + Tailwind CSS |
 | Auth       | Laravel Breeze |
-| Database   | MySQL / PostgreSQL |
+| Database   | MySQL |
 | Build Tool | Vite |
 | Runtime    | PHP 8.2+, Node.js 18+ |
 
@@ -42,8 +41,8 @@ Ensure the following are installed:
 
 - PHP **>= 8.2**
 - Composer
-- Node.js **>= 18**
-- MySQL or PostgreSQL
+- Node.js **>= 18+**
+- MySQL
 - Laravel CLI
 
 ---
@@ -53,5 +52,6 @@ Ensure the following are installed:
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/University-of-the-Philippines-Cebu/ITC_Basecode.git
-cd ITC_Basecode
+git clone https://github.com/Jerecho2002/UP_INVENTORY.git
+
+cd UP_INVENTORY
