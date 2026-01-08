@@ -8,6 +8,8 @@ const props = defineProps({
     inputFields: { type: Array, default: () => [] },
     itemSelectedField: { type: Array, default: () => [] },
     selectedIDs: { type: Array, default: () => [] },
+    viewItem: { type: Array, default: () => [] },
+    item: { type: Object, default: () => ({}) }
 });
 
 const emit = defineEmits(['close']);
@@ -30,6 +32,20 @@ function closeWithAnimation() {
         emit('close');
         isClosing.value = false;
     }, 200);
+}
+
+function getNestedValue(obj, path) {
+  if (!obj || !path) return null;
+  return path.split('.').reduce((o, k) => (o ? o[k] : null), obj);
+}
+
+function getViewValue(view) {
+    const rawValue = getNestedValue(props.item, view.key);
+
+    if (view.format) {
+        return view.format(rawValue);
+    }
+    return rawValue ?? 'N/A';
 }
 </script>
 
@@ -131,7 +147,7 @@ function closeWithAnimation() {
             </form>
              <!-- VIEW MODAL -->
             <div v-else>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 border-b border-[#850038] pb-4">
                     <div v-for="view in viewItem" :key="view.key"
                         class="flex items-start justify-between gap-4 border-b pb-2">
                         <!-- LABEL -->
