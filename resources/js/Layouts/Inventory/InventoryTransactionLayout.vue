@@ -126,23 +126,23 @@ const printSelected = async () => {
   }
 }
 
-// const handlePrint = async (id) => {
-//   if (isPrinting.value) return;
+const handlePrint = async (id) => {
+  if (isPrinting.value) return;
 
-//   isPrinting.value = true;
-//   try {
-//     const response = await axios.post('/print/receipt', { ids: [id] });
+  isPrinting.value = true;
+  try {
+    const response = await axios.post('/print/receipt', { ids: [id] });
 
-//     if (response.data?.url) {
-//       window.open(response.data.url, '_blank'); // open the PDF
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     alert('Failed to print.');
-//   } finally {
-//     isPrinting.value = false;
-//   }
-// };
+    if (response.data?.url) {
+      window.open(response.data.url, '_blank'); // open the PDF
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Failed to print.');
+  } finally {
+    isPrinting.value = false;
+  }
+};
 
 </script>
 
