@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 const columns = [
   { label: "", key: "select_all" },
   { label: 'Item Name', key: 'inventory_items', format: (val) => val?.item_name ?? 'N/A' },
-  { label: 'Quantity', key: 'inventory_items', format: (val) => val?.quantity ?? 'N/A' },
+  { label: 'Quantity', key: 'inventory_items', format: (val) => val?.quantity ?? 'N/A' },  
   { label: 'Unit Cost', key: 'inventory_items', format: (val) => val?.unit_cost ? `₱${(val.unit_cost)}` : 'N/A' },
   { label: 'Property Number', key: 'inventory_items', format: (val) => val?.property_number ?? 'N/A' },
   { label: 'PAR/ICS', key: 'acknowledgement_receipts', format: (val) => val?.category ?? 'N/A' },
@@ -26,6 +26,46 @@ const columns = [
   { label: 'Date Released', key: 'acknowledgement_receipts', format: (val) => val ? dayjs(val.created_at).format('MMM D, YYYY') : 'N/A' },
   { label: "Action", key: "action" }
 ]
+
+const viewItem = [
+  { label: "Accountable Person", key: 'acknowledgement_receipts.accountable_person', format: (val) => val?.full_name ?? 'N/A' },
+  { label: "Property Number", key: 'inventory_items', format: (val) => val?.property_number ?? 'N/A' },
+  { label: "Item Name", key: 'inventory_items', format: (val) => val?.item_name ?? 'N/A' },
+  { label: "Serial Number", key: 'inventory_items', format: (val) => val?.serial_number ?? 'N/A' },
+  { label: "Unit", key: 'inventory_items', format: (val) => val?.unit ?? 'N/A' },
+  { label: "PO Number", key: "inventory_items", format: (val) => val?.po_number ?? 'N/A' },
+  { label: "Unit Cost", key: "inventory_items",  format: (val) => val?.unit_cost != null ? `₱${Number(val.unit_cost).toLocaleString()}` : "N/A" },
+  { label: "PR Number", key: "inventory_items", format: (val) => val?.pr_number ?? 'N/A' },
+  // { label: "Supplier",key: "inventory_items.supplier.supplier_name" },
+  { label: "PAR/ICS Number", key: 'acknowledgement_receipts', format: (val) => val?.category ?? 'N/A' },
+  // { label: "Description", key: "description" },
+  { label: "Fund Source", key: "inventory_items", format: (val) => val?.fund_source ?? 'N/A' },
+  { label: "Remarks", key: 'acknowledgement_receipts', format: (val) => val?.remarks ?? 'N/A' },
+  { label: "Invoice", key: "inventory_items", format: (val) => val?.invoice ?? 'N/A' },
+  { label: "Date Released", key: 'acknowledgement_receipts', format: (val) => val ? dayjs(val.created_at).format('MMM D, YYYY') : 'N/A' },
+  // {
+  //   label: "Status", key: 'status',
+  //   format: (status) => {
+  //     let label = 'Unknown', cls = 'text-gray-500', icon = '';
+  //     if (status === 0) {
+  //       label = 'Inactive';
+  //       cls = 'text-[#D32F2F] font-bold bg-[#F8D4D4] py-2 px-4 rounded-full';
+  //       icon = '<i class="fa-solid fa-ban"></i>';
+  //     }
+  //     else if (status === 1) {
+  //       label = 'Active';
+  //       cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
+  //       icon = '<i class="fa-solid fa-circle-check"></i>';
+  //     }
+  //     else if (status === 2) { 
+  //       label = 'Pending'; 
+  //       cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
+  //       icon = '<i class="fa-solid fa-clock"></i>';
+  //     }
+  //     return `<span class="${cls}">${icon} ${label}</span>`;
+  //   }
+  // },
+];
 
 const accountableField = [
   { label: "New Accountable Person", model: "accountable_persons_id", name: "users", option: "email", value: "id" },
@@ -126,23 +166,23 @@ const printSelected = async () => {
   }
 }
 
-// const handlePrint = async (id) => {
-//   if (isPrinting.value) return;
+const handlePrint = async (id) => {
+  if (isPrinting.value) return;
 
-//   isPrinting.value = true;
-//   try {
-//     const response = await axios.post('/print/receipt', { ids: [id] });
+  isPrinting.value = true;
+  try {
+    const response = await axios.post('/print/receipt', { ids: [id] });
 
-//     if (response.data?.url) {
-//       window.open(response.data.url, '_blank'); // open the PDF
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     alert('Failed to print.');
-//   } finally {
-//     isPrinting.value = false;
-//   }
-// };
+    if (response.data?.url) {
+      window.open(response.data.url, '_blank'); // open the PDF
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Failed to print.');
+  } finally {
+    isPrinting.value = false;
+  }
+};
 
 </script>
 
@@ -196,7 +236,9 @@ const printSelected = async () => {
             v-if="showFormModal" 
             :mode="formMode" 
             :accountableField="accountableField"
-            :inputFields="inputFields" 
+            :inputFields="inputFields"
+            :item="currentItem"
+            :viewItem="viewItem"
             :itemSelectedField="itemSelectedField" 
             @close="() => showFormModal = false" 
           />
