@@ -34,23 +34,26 @@
 
     @foreach ($acknowledgementItems as $item)
 
-        <p><strong>Item:</strong>
-            {{ $item->inventoryItems->item_name ?? 'N/A' }}
-        </p>
-
-        <p><strong>Property No:</strong>
-            {{ $item->inventoryItems->property_number ?? 'N/A' }}
-        </p>
-
-        <p><strong>Accountable Person:</strong>
-            {{ $item->acknowledgementReceipts->accountablePerson->full_name ?? 'N/A' }}
-        </p>
-
-        <p><strong>Issued By:</strong>
-            {{ $item->acknowledgementReceipts->issuedBy->email ?? 'N/A' }}
-        </p>
-
-        <hr>
+       <table>
+    <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Property Number</th>
+            <th>Accountable Person</th>
+            <th>Issued By</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($acknowledgementItems as $item)
+            <tr>
+                <td>{{ $item->inventoryItems->item_name ?? 'N/A' }}</td>
+                <td>{{ $item->inventoryItems->property_number ?? 'N/A' }}</td>
+                <td>{{ $item->acknowledgementReceipts->accountablePerson->full_name ?? 'N/A' }}</td>
+                <td>{{ $item->acknowledgementReceipts->issuedBy->email ?? 'N/A' }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
     @endforeach
 

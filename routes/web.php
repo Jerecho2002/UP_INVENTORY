@@ -9,6 +9,8 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemArchivingController;
 use App\Http\Controllers\TransactionPrintController;
 use App\Http\Controllers\AccountablePersonController;
+use Illuminate\Support\Facades\Route;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     //Dashboard
@@ -47,8 +49,9 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::get('item_archiving', [ItemArchivingController::class, 'index'])->name('item_archiving.index');
     
     //Printing
-    Route::post('/print/receipt', [PrintController::class, 'printReceipt']);
+    Route::post('/print/receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
 });
+
 
 Route::get('/dummy-auth', function () {
     // Temporary Authentication

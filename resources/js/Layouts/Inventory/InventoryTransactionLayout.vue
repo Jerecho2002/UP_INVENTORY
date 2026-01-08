@@ -136,52 +136,56 @@ const isPrinting = ref(false)
 
 const handleSelectionChanged = (ids) => {
   tempSelectedIds.value = ids
-  console.log('IDs updated from table:', [...tempSelectedIds.value])
 }
 
-const printSelected = async () => {
-  if (isPrinting.value) return; // ignore if already printing
+function submitPrintForm(ids) {
+  if (!ids || !ids.length) return;
 
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/print/receipt';
+
+  // CSRF token from meta
+  const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  const csrfInput = document.createElement('input');
+  csrfInput.type = 'hidden';
+  csrfInput.name = '_token';
+  csrfInput.value = token;
+  form.appendChild(csrfInput);
+
+  // Add each ID as a hidden input
+  ids.forEach((id) => {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'ids[]';
+    input.value = id;
+    form.appendChild(input);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+}
+
+// ---------- Print multiple selected items ----------
+const printSelected = () => {
   if (!tempSelectedIds.value.length) {
-    alert('Please select at least one item to print.')
-    return
+    alert('Please select at least one item');
+    return;
   }
+  submitPrintForm(tempSelectedIds.value);
+};
 
-  console.log('Selected IDs before print:', [...tempSelectedIds.value])
-
-  isPrinting.value = true
-  try {
-    const response = await axios.post('/print/receipt', {
-      ids: tempSelectedIds.value
-    })
-
-    if (response.data?.url) {
-      window.open(response.data.url, '_blank')
-    }
-  } catch (error) {
-    console.error(error)
-    alert('Failed to generate PDF')
-  } finally {
-    isPrinting.value = false // release lock
-  }
-}
-
-const handlePrint = async (id) => {
+// ---------- Print a single item ----------
+const handlePrint = (id) => {
   if (isPrinting.value) return;
 
   isPrinting.value = true;
-  try {
-    const response = await axios.post('/print/receipt', { ids: [id] });
 
-    if (response.data?.url) {
-      window.open(response.data.url, '_blank'); // open the PDF
-    }
-  } catch (err) {
-    console.error(err);
-    alert('Failed to print.');
-  } finally {
-    isPrinting.value = false;
-  }
+  submitPrintForm([id]);
+
+  // Unlock immediately (PDF opens in new tab)
+  isPrinting.value = false;
 };
 
 </script>
@@ -249,7 +253,7 @@ const handlePrint = async (id) => {
             :actions="['view', 'delete', 'print']"
             @selection-changed="handleSelectionChanged" 
             @view="handleView"
-            @print="handlePrint" 
+            @print="handlePrint"
           />
         </div>
       </main>

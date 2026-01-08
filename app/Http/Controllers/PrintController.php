@@ -12,23 +12,15 @@ class PrintController extends Controller
 {
     public function __construct(
         protected PrintService $printService,
-    ){}
-     public function printReceipt(Request $request)
+    ) {}
+    public function printReceipt(Request $request)
     {
-        try {
-            $ids = $request->input('ids');
+        $ids = $request->input('ids');
 
-            $url = $this->printService->generateReceiptPdf($ids);
+        $pdf = $this->printService->generateReceiptPdf($ids);
 
-            return response()->json([
-                'success' => true,
-                'url' => $url,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 422);
-        }
+        // Force the browser to download the PDF instead of opening it
+        $fileName = 'receipt_' . now()->format('Ymd_His') . '.pdf';
+        return $pdf->download($fileName);
     }
 }

@@ -101,21 +101,18 @@ let cost_range = ref(null);
 let formMode = ref('create'); // CREATE || EDIT || VIEW
 let showFormModal = ref(false);
 let showDeleteModal = ref(false);
-let currentItem = ref({});
 
 const showSuccessModal = ref(false);
 const successMessage = ref("");
 
 function openAdd(item) {
   formMode.value = 'create';
-  currentItem.value = item;
   showFormModal.value = true;
   console.log("Selected IDs before opening modal:", selectedIds.value);
 };
 
 function handleView(item) {
   formMode.value = 'view';
-  currentItem.value = item;
   showFormModal.value = true;
 }
 
@@ -202,7 +199,7 @@ const selectedIds = ref([]);
               :users="users"
               :itemSelectedField="itemSelectedField"
               :selectedIDs="selectedIds.value"
-              :item="currentItem"
+              :items="items"
               :viewItem="viewItem"
               @submit="handleSubmit"
               @close="() => showFormModal = false"
@@ -223,7 +220,7 @@ const selectedIds = ref([]);
               :actions="['view', 'edit']"
               @view="handleView"
               @update:selected="ids => selectedIds.value = ids"
-              @selection-changed="ids => console.log('Item Selected', ids)" 
+              @selection-changed="ids => console.log('Item Selected', ids)"
             />  
         </div>
        </div>
