@@ -38,9 +38,6 @@ class PrintService
             'acknowledgementItems' => $acknowledgementItems,
         ]);
 
-<<<<<<< HEAD
-        return $pdf; // return the PDF instance, let controller stream it
-=======
         $pdf->setPaper('A4', 'portrait');
 
         // Store PDF
@@ -70,6 +67,5 @@ class PrintService
         foreach ($filesToDelete as $file) {
             File::delete($file->getRealPath());
         }
->>>>>>> modifier
     }
 }
