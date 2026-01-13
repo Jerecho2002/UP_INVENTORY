@@ -42,6 +42,8 @@ class PrintService
             'acknowledgementItems' => $acknowledgementItems,
         ]);
 
+        $pdf->setPaper('A4', 'portrait');
+
         // Store PDF
         $fileName = 'receipt_' . time() . '.pdf';
         Storage::disk('public')->put('prints/' . $fileName, $pdf->output());
