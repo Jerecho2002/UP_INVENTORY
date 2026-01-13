@@ -32,7 +32,7 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
 
     //Suppliers
     Route::get('/suppliers', [SupplierController::class, 'suppliers'])->name('suppliers.index');
-    Route::post('/suppliers', action: [SupplierController::class, 'store'])->name('suppliers.store');
+    Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
    
     //Accountable Person
     Route::get('/accountable-person', [AccountablePersonController::class, 'accountablePerson'])->name('accountable.index');

@@ -18,7 +18,7 @@ const emit = defineEmits(["toggleSidebar"]);
                     </button>
                 </div>
                 <div>
-                    <Link><img src="/images/up-logo.png" alt="Logo" /></Link>
+                    <Link><img class="h-24 w-24" src="/images/uplogo-1.png" alt="Logo" /></Link>
                 </div>
             </div>
         </nav>
