@@ -31,20 +31,23 @@
             margin: 0 auto;
             background: #fff;
             position: relative;
-            border: 1px solid #000;
+            overflow: hidden;
+            outline: 1px solid #000;
+            /* ✅ USE OUTLINE, NOT BORDER */
         }
 
         /* CONTENT */
         .content-area {
-            padding: 15mm 20mm 45mm 20mm;
-            /* reserve space for signature */
+            padding: 15mm 20mm 32mm 20mm;
+            /* 🔽 reduced bottom */
         }
 
         /* HEADER */
         .header {
             display: table;
             width: 100%;
-            margin-bottom: 8mm;
+            margin-bottom: 6mm;
+            /* 🔽 */
             table-layout: fixed;
         }
 
@@ -67,6 +70,7 @@
 
         .header img {
             max-width: 120px;
+            /* 🔽 logo size */
         }
 
         .header-center h1 {
@@ -84,10 +88,23 @@
             text-transform: uppercase;
         }
 
+        /* TITLE */
+        .title-header {
+            text-align: center;
+            margin: 6mm 0 10mm 0;
+            /* space above & below */
+        }
+
+        .title-header h1 {
+            font-size: 12pt;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
         /* META */
         .meta {
             font-size: 10.5pt;
-            margin-bottom: 6mm;
+            margin-bottom: 5mm;
         }
 
         .meta-row {
@@ -100,12 +117,19 @@
             width: 50%;
         }
 
+        /* JUSTIFY END (RIGHT COLUMN) */
+        .meta-row div:last-child {
+            text-align: right;
+        }
+
+
         /* TABLE */
         .ics-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 10.5pt;
-            margin-bottom: 6mm;
+            /* margin-bottom: 5mm; */
+            /* 🔽 */
         }
 
         .ics-table th,
@@ -120,79 +144,23 @@
             padding-left: 5px;
         }
 
-        /* COLUMN WIDTHS */
-        .col-1 {
-            width: 7%;
-        }
-
-        .col-2 {
-            width: 7%;
-        }
-
-        .col-3 {
-            width: 12%;
-        }
-
-        .col-4 {
-            width: 12%;
-        }
-
-        .col-5 {
-            width: 28%;
-        }
-
-        .col-6 {
-            width: 17%;
-        }
-
-        .col-7 {
-            width: 17%;
-        }
-
         /* PURCHASE INFO */
         .purchase-info {
             border: 1px solid #000;
-            padding: 6mm;
+            border-top: none;
             font-size: 10.5pt;
-            margin-bottom: 6mm;
+            min-height: 45mm;
+            /* 🔑 THIS FIXES IT */
         }
 
-        .purchase-wrapper {
-            display: grid;
-            grid-template-columns: 35% 65%;
-            column-gap: 10mm;
-        }
-
-        .purchase-left {
-            display: flex;
-            flex-direction: column;
-            gap: 6mm;
-        }
-
-        .purchase-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            row-gap: 4px;
-            column-gap: 10px;
-        }
-
-        .purchase-item {
-            display: flex;
-        }
-
-        .purchase-label {
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .purchase-value {
-            margin-left: 5px;
-        }
 
         /* SIGNATURE */
         .signature-section {
             position: absolute;
-            bottom: 15mm;
+            display: flex;
+            margin-top: -8.3em;
+            /* bottom: 10mm; */
+            /* 🔽 pulled up */
             left: 20mm;
             right: 20mm;
         }
@@ -205,20 +173,20 @@
 
         .signature-table td {
             border: 1px solid #000;
-            height: 30mm;
-            padding: 8px;
+            border-top: none;
+            height: 26mm;
+            padding: 6px;
             vertical-align: top;
         }
 
-        /* PRINT */
+        /* PRINT SAFETY */
         @media print {
             body {
                 margin: 0;
             }
 
-            .a4-page {
-                page-break-after: avoid;
-                page-break-inside: avoid;
+            * {
+                page-break-inside: avoid !important;
             }
         }
     </style>
@@ -237,34 +205,16 @@
                 <div class="header-center">
                     <h1>University of the Philippines</h1>
                     <p>Region VII - Central Visayas</p>
-                    <h2>INVENTORY CUSTODIAN SLIP</h2>
                 </div>
 
-<<<<<<< HEAD
-       <table>
-    <thead>
-        <tr>
-            <th>Item Name</th>
-            <th>Property Number</th>
-            <th>Accountable Person</th>
-            <th>Issued By</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($acknowledgementItems as $item)
-            <tr>
-                <td>{{ $item->inventoryItems->item_name ?? 'N/A' }}</td>
-                <td>{{ $item->inventoryItems->property_number ?? 'N/A' }}</td>
-                <td>{{ $item->acknowledgementReceipts->accountablePerson->full_name ?? 'N/A' }}</td>
-                <td>{{ $item->acknowledgementReceipts->issuedBy->email ?? 'N/A' }}</td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-=======
                 <div class="header-right">
                     <img src="images/uplogo-1.png" alt="Unit Logo">
                 </div>
+            </div>
+
+            <!-- TITLE -->
+            <div class="title-header">
+                <h1>INVENTORY CUSTODIAN SLIP</h1>
             </div>
 
             <!-- META -->
@@ -274,7 +224,7 @@
                     <div><strong>ICS No.:</strong> 205-259-250-295</div>
                 </div>
                 <div class="meta-row">
-                    <div><strong>Fund Cluster:</strong></div>
+                    <div><strong>Fund Cluster:</strong>250292</div>
                     <div><strong>Date:</strong> 18/2026</div>
                 </div>
             </div>
@@ -329,50 +279,7 @@
 
             <!-- PURCHASE INFORMATION -->
             <div class="purchase-info">
-                <div class="purchase-wrapper">
-                    <!-- LEFT -->
-                    <div class="purchase-grid">
-                        <div class="purchase-item">
-                            <div class="purchase-label">Purchase From:</div>
-                            <div class="purchase-value">Testtesttest</div>
-                        </div>
-                        <div class="purchase-item">
-                            <div class="purchase-label">Invoice No.:</div>
-                            <div class="purchase-value">2502</div>
-                        </div>
-                        <div class="purchase-item">
-                            <div class="purchase-label">Date:</div>
-                            <div class="purchase-value">1/10/2026</div>
-                        </div>
-                        <div class="purchase-item">
-                            <div class="purchase-label">PO No.:</div>
-                            <div class="purchase-value">203-4024-184</div>
-                        </div>
-                        <div class="purchase-item">
-                            <div class="purchase-label">PO Date:</div>
-                            <div class="purchase-value">1/10/2026</div>
-                        </div>
-                        <div class="purchase-item">
-                            <div class="purchase-label">PR No.:</div>
-                            <div class="purchase-value">203-259-249</div>
-                        </div>
-                    </div>
->>>>>>> modifier
 
-                    <!-- RIGHT -->
-                    <div class="purchase-left">
-                        <div class="purchase-item">
-                            <div class="purchase-label">Serial No.:</div>
-                            <div class="purchase-value">_____________________</div>
-                        </div>
-                        <div class="purchase-item">
-                            <div class="purchase-label">Location:</div>
-                            <div class="purchase-value">_____________________</div>
-                        </div>
-                    </div>
-
-
-                </div>
             </div>
 
         </div>
