@@ -21,6 +21,6 @@ class PrintController extends Controller
 
         // Force the browser to download the PDF instead of opening it
         $fileName = 'receipt_' . now()->format('Ymd_His') . '.pdf';
-        return $pdf->download($fileName);
+        return $pdf->stream($fileName);
     }
 }
