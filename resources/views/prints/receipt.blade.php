@@ -69,7 +69,7 @@
         }
 
         .header img {
-            max-width: 120px;
+            max-width: 140px;
             /* 🔽 logo size */
         }
 
@@ -145,15 +145,64 @@
         }
 
         /* PURCHASE INFO */
-        .purchase-info {
-            border: 1px solid #000;
-            border-top: none;
-            font-size: 10.5pt;
-            min-height: 45mm;
-            /* 🔑 THIS FIXES IT */
+        .purchase-section {
+            width: 100%;
         }
 
+        /* TABLE */
+        .purchase-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10.5pt;
+        }
 
+        .purchase-table td {
+            border: 1px solid #000;
+            border-top: none;
+            height: 35 mm;
+            padding: 6px;
+            vertical-align: top;
+        }
+
+        /* FLEX INSIDE THE CELL */
+        .purchase-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2mm;
+        }
+
+        .purchase-info .label {
+            font-weight: bold;
+        }
+
+        .purchase-info .value {
+            margin-left: 0;
+        }
+
+        .purchase-info>div {
+            display: flex;
+            gap: 2mm;
+        }
+
+        .purchase-info h2 {
+            font-size: 10.5pt;
+        }
+
+        .puchase-first-line {
+            margin-bottom: 1em;
+        }
+
+        .purchase-second-line {
+            margin-bottom: 1em;
+
+        }
+
+        .purchase-right-content {
+            padding: 25px;
+        }
+        .purchase-right-one {
+            margin-bottom: 3em;
+        }
         /* SIGNATURE */
         .signature-section {
             position: absolute;
@@ -270,7 +319,7 @@
                         <td>unit</td>
                         <td>10,000</td>
                         <td>10,000</td>
-                        <td>Testtesttest test</td>
+                        <td>Testtesttest testawdawdawdawdawdawdawdawd</td>
                         <td>56</td>
                         <td></td>
                     </tr>
@@ -278,10 +327,58 @@
             </table>
 
             <!-- PURCHASE INFORMATION -->
-            <div class="purchase-info">
-
+            <div class="purchase-section">
+                <table class="purchase-table">
+                    <tr>
+                        <td width="60%">
+                            <div class="purchase-info">
+                                <div class="puchase-first-line">
+                                    <span class="label">Purchase From:</span>
+                                    <span class="value">University Of The Philippines</span>
+                                </div>
+                                <div class="purchase-second-line">
+                                    <div>
+                                        <span class="label">Invoice No.:</span>
+                                        <span class="value">259236</span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Date:</span>
+                                        <span class="value">1/14/2026</span>
+                                    </div>
+                                </div>
+                                <div class="purchase-third-line">
+                                    <div>
+                                        <span class="label">PO No.:</span>
+                                        <span class="value">203-4024-184</span>
+                                    </div>
+                                    <div>
+                                        <span class="label">PO Date.:</span>
+                                        <span class="value">1/10/2026</span>
+                                    </div>
+                                    <div>
+                                        <span class="label">PR No.:</span>
+                                        <span class="value">203-259-249</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td width="40%">
+                            <div class="purchase-info">
+                                <div class="purchase-right-content">
+                                    <div class="purchase-right-one">
+                                        <span class="label">Serial No.:</span>
+                                        <span class="value">24294</span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Location:</span>
+                                        <span class="value">Sa Among Balay</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
-
         </div>
 
         <!-- SIGNATURE -->
