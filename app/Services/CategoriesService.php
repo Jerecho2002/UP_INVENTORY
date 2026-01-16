@@ -38,6 +38,7 @@ class CategoriesService
                 fn($query) =>
                 $query->where('status', $status)
             )
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->withQueryString();
     }

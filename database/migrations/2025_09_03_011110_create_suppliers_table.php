@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('email', 60)->nullable();
             $table->string('address', 255)->nullable();
             $table->tinyInteger('status')->default(0);
+            $table->timestamps();
         });
     }
 

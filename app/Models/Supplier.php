@@ -10,7 +10,7 @@ class Supplier extends Model
     use HasFactory;
     protected $fillable = ['supplier_name', 'contact_no', 'email', 'address', 'status'];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function inventoryItems()
     {
