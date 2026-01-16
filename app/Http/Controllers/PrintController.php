@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\PrintService;
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\AcknowledgementItem;
-use Illuminate\Support\Facades\Storage;
 
 class PrintController extends Controller
 {
