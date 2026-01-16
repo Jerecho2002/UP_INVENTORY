@@ -10,7 +10,7 @@ class InventoryItemFactory extends Factory
 {
     public function definition(): array
     {
-        $unitCost = $this->faker->randomFloat(2, 50, 1000);
+        $unitCost = $this->faker->randomFloat(2, 30000, 99000);
         $qty = $this->faker->numberBetween(1, 20);
 
         static $groupCounters = []; // Keeps track of last "group" for each classification code
@@ -22,9 +22,9 @@ class InventoryItemFactory extends Factory
             'supplier_id' => Supplier::factory(),
             'item_name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
-            'quantity' => $qty = $this->faker->numberBetween(1, 10),
+            'quantity' => 1,
             'unit' => $this->faker->randomElement(['pcs', 'box', 'unit']),
-            'unit_cost' => $unitCost = $this->faker->randomFloat(2, 100, 5000),
+            'unit_cost' => $unitCost = $this->faker->randomFloat(2, 30000, 99000),
             'total_amount' => $qty * $unitCost,
             'pr_number' => strtoupper($this->faker->unique()->bothify('PR-###')),
             'po_number' => strtoupper($this->faker->unique()->bothify('PO-###')),

@@ -95,7 +95,7 @@ const items = computed(() => page.props.items);
 //ITEMS FILTER CONTROL
 let search = ref('');
 let status = ref(null);
-let cost_range = ref(null);
+let cost_range = ref('0-50000');
 
 // MODAL FUNCTION
 let formMode = ref('create'); // CREATE || EDIT || VIEW
@@ -165,10 +165,7 @@ function submitPrintForm(ids) {
 
   form.submit();
 
-  // ⏳ Delay removal so browser can process submit
-  setTimeout(() => {
-    document.body.removeChild(form);
-  }, 100);
+  
 }
 
 

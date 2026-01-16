@@ -135,7 +135,8 @@ const totalCost = [
 
 
 const unitCostOptions = [
-    { label: "Unit Cost", options: [{label: "0-50000", value: "0-50000"},
+    { label: "Unit Cost", options: [{label: "Select All", value: ""},
+                                    {label: "₱50,000 Below", value: "0-50000"},
                                     {label: "₱50,000 Above", value: "50000-99999999"},
   ]},
 ];
