@@ -223,7 +223,7 @@ const searchPlaceholder = computed(() => {
             <select
                 v-model="cost_range"
                 class="h-8 sm:h-9 w-full sm:w-36 text-xs rounded-md text-gray-600 border focus:ring-[#850038] focus:outline-none focus:border-[#850038]">
-                <option value="">Select All</option>
+                
                 <option
                     v-for="(option, uIndex) in group.options"
                     :key="uIndex"

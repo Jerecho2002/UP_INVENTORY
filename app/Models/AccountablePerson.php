@@ -11,7 +11,7 @@ class AccountablePerson extends Model
     protected $table = 'accountable_persons';
     protected $fillable = ['full_name', 'department', 'position', 'status'];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function acknowledgementReceipts()
     {

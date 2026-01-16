@@ -38,6 +38,7 @@ class SupplierService
                 fn($query) =>
                 $query->where('status', $status)
             )
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->withQueryString();
     }
@@ -50,6 +51,18 @@ class SupplierService
             'email' => $data['email'] ?? null,
             'address' => $data['address'] ?? null,
             'status' => 1,
+        ]);
+    }
+
+    public function updateSupplier(int $id, array $data): void
+    {
+        $supplier = Supplier::findOrFail($id);
+
+        $supplier->update([
+            'supplier_name' => $data['supplier_name'],
+            'contact_no' => $data['contact_no'] ?? null,
+            'email' => $data['email'] ?? null,
+            'address' => $data['address'] ?? null,
         ]);
     }
 }

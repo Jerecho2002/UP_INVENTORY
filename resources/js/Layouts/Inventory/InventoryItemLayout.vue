@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { usePage, router } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
 import InventoryTable from "@/Components/InventoryTable.vue";
@@ -14,8 +14,6 @@ import ConvertButton from "@/Components/Buttons/ConvertButton.vue";
 import DeleteModal from "@/Components/Modals/DeleteModal.vue";
 import SuccessModal from '@/Components/Modals/SuccessModal.vue';
 import SuccessDeleteModal from '@/Components/Modals/SuccessDeleteModal.vue';
-
-
 
 const columns = [
   { label: "Item Name", key: 'item_name' },
@@ -137,7 +135,8 @@ const totalCost = [
 
 
 const unitCostOptions = [
-    { label: "Unit Cost", options: [{label: "0-50000", value: "0-50000"},
+    { label: "Unit Cost", options: [{label: "Select All", value: ""},
+                                    {label: "₱50,000 Below", value: "0-50000"},
                                     {label: "₱50,000 Above", value: "50000-99999999"},
   ]},
 ];
@@ -205,20 +204,19 @@ function handleSubmit() {
 
 
 function confirmDelete(item) {
-  console.log('delete confirmed', item);
-  showDeleteModal.value = false;
-  showDeleteSuccessModal.value = true;
+  router.delete(route('items.destroy', item.id), {
+    preserveScroll: true,
+    onSuccess: () => {
+      showDeleteModal.value = false;
+      showDeleteSuccessModal.value = true;
+    }
+  });
 }
+
 
 function handleAction() {
   console.log("Action button clicked");
 }
-
-// function refreshItems() {
-//   router.reload({
-//     only: ['items'] // optional but faster if you only need items
-//   });
-// }
 
 //-----------DYNAMIC ICON-------------------
 const iconAdded = `

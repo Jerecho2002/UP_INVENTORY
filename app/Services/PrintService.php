@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Models\AcknowledgementItem;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 
 class PrintService
 {
@@ -38,6 +36,6 @@ class PrintService
             'acknowledgementItems' => $acknowledgementItems,
         ]);
 
-        return $pdf; // return the PDF instance, let controller stream it
+        return $pdf;
     }
 }

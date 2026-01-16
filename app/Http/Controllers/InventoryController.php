@@ -21,7 +21,7 @@ class InventoryController extends Controller
     public function __construct(
         protected InventoryService $inventoryService,
         protected AcknowledgementReceiptService $acknowledgementReceiptService,
-    ){}
+    ) {}
     public function InventoryItems(Request $request, RoomApiService $roomsApi)
     {
         // $rooms = $roomsApi->fetchRooms();
@@ -43,13 +43,22 @@ class InventoryController extends Controller
     public function InventoryTransactions(Request $request)
     {
         $search = $request->input('search');
-        $costRange = $request->input('cost_range');
         $status = $request->input('status');
 
+        $costRange = $request->input('cost_range', '0-50000');
+
         return inertia('Inventory/InventoryTransaction', [
-            'items' => $this->inventoryService->filterAndPaginateTransaction($search, $costRange, $status),
+            'items' => $this->inventoryService
+                ->filterAndPaginateTransaction($search, $costRange, $status),
+
+            'filters' => [
+                'search' => $search,
+                'status' => $status,
+                'cost_range' => $costRange,
+            ],
         ]);
     }
+
 
     public function InventoryAcknowledgements(Request $request)
     {
@@ -74,8 +83,10 @@ class InventoryController extends Controller
 
     public function updateCategoryForItems(UpdateInventoryCategoryRequest $request)
     {
-        $this->inventoryService->updateCategory($request->input('inventory_item_ids'),
-        $request->input('category'));
+        $this->inventoryService->updateCategory(
+            $request->input('inventory_item_ids'),
+            $request->input('category')
+        );
 
         return back()->with('success', 'Category updated for selected items.');
     }

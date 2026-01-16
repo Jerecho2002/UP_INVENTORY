@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\PrintService;
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\AcknowledgementItem;
-use Illuminate\Support\Facades\Storage;
 
 class PrintController extends Controller
 {
@@ -21,6 +18,6 @@ class PrintController extends Controller
 
         // Force the browser to download the PDF instead of opening it
         $fileName = 'receipt_' . now()->format('Ymd_His') . '.pdf';
-        return $pdf->stream($fileName);
+        return $pdf->download($fileName);
     }
 }

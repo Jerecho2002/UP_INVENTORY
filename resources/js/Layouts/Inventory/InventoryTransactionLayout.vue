@@ -95,7 +95,7 @@ const items = computed(() => page.props.items);
 //ITEMS FILTER CONTROL
 let search = ref('');
 let status = ref(null);
-let cost_range = ref(null);
+let cost_range = ref('0-50000');
 
 // MODAL FUNCTION
 let formMode = ref('create'); // CREATE || EDIT || VIEW
@@ -145,15 +145,14 @@ function submitPrintForm(ids) {
   form.method = 'POST';
   form.action = '/print/receipt';
 
-  // CSRF token from meta
   const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
   const csrfInput = document.createElement('input');
   csrfInput.type = 'hidden';
   csrfInput.name = '_token';
   csrfInput.value = token;
   form.appendChild(csrfInput);
 
-  // Add each ID as a hidden input
   ids.forEach((id) => {
     const input = document.createElement('input');
     input.type = 'hidden';
@@ -163,9 +162,12 @@ function submitPrintForm(ids) {
   });
 
   document.body.appendChild(form);
+
   form.submit();
-  document.body.removeChild(form);
+
+  
 }
+
 
 // ---------- Print multiple selected items ----------
 const printSelected = () => {

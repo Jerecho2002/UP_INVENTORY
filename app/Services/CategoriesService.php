@@ -38,6 +38,7 @@ class CategoriesService
                 fn($query) =>
                 $query->where('status', $status)
             )
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->withQueryString();
     }
@@ -48,6 +49,17 @@ class CategoriesService
             'classification_name' => $data['classification_name'],
             'classification_code' => $data['classification_code'] ?? null,
             'status' => 1,
+        ]);
+    }
+
+    public function updateCategories(int $id, array $data): void
+    {
+        $itemClassification = ItemClassification::findOrFail($id);
+
+        $itemClassification->update([
+            'classification_name' => $data['classification_name'],
+            'classification_code' => $data['classification_code'] ?? null,
+            // 'status' => 1,
         ]);
     }
 }

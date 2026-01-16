@@ -12,53 +12,57 @@ use App\Http\Controllers\AccountablePersonController;
 use Illuminate\Support\Facades\Route;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-Route::middleware(['auth', 'role:staff,admin'])->group(function () {
-    //Dashboard
-     Route::get('/dashboard', [DashboardController::class, 'searchBar'])->name('dashboard.index');
+// Route::middleware(['auth', 'role:staff,admin'])->group(function () {
+//Dashboard
+Route::get('/dashboard', [DashboardController::class, 'searchBar'])->name('dashboard.index');
 
-    //Inventory
-    Route::get('/inventory/items', [InventoryController::class, 'InventoryItems'])->name('inventory.items');
-    Route::get('/inventory/transactions', [InventoryController::class, 'InventoryTransactions'])->name('inventory.transactions');
-    Route::get('/inventory/acknowledgements', [InventoryController::class, 'InventoryAcknowledgements'])->name('inventory.acknowledgements');
-    Route::post('/inventory/acknowledgements/store', [InventoryController::class, 'InventoryAcknowledgementsStore'])->name('inventory.acknowledgements.store');
-    Route::put('/inventory/items/update-category', [InventoryController::class, 'updateCategoryForItems'])
-        ->name('inventory.items.update-category');
-    Route::post('/items/store', [InventoryController::class, 'store'])->name('items.store');
-    Route::put('/items/{id}', [InventoryController::class, 'update'])->name('items.update');
-    Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
-    Route::post('/convert-excel-to-csv', [InventoryController::class, 'convert']);
-    Route::post('/import-csv', [InventoryController::class, 'importCsv']);
-    Route::get('/export-csv', [InventoryController::class, 'exportCsv']);
+//Inventory
+Route::get('/inventory/items', [InventoryController::class, 'InventoryItems'])->name('inventory.items');
+Route::get('/inventory/transactions', [InventoryController::class, 'InventoryTransactions'])->name('inventory.transactions');
+Route::get('/inventory/acknowledgements', [InventoryController::class, 'InventoryAcknowledgements'])->name('inventory.acknowledgements');
+Route::post('/inventory/acknowledgements/store', [InventoryController::class, 'InventoryAcknowledgementsStore'])->name('inventory.acknowledgements.store');
+Route::put('/inventory/items/update-category', [InventoryController::class, 'updateCategoryForItems'])
+    ->name('inventory.items.update-category');
+Route::post('/items/store', [InventoryController::class, 'store'])->name('items.store');
+Route::put('/items/{id}', [InventoryController::class, 'update'])->name('items.update');
+Route::delete('/items/{id}', [InventoryController::class, 'destroy'])->name('items.destroy');
+Route::post('/convert-excel-to-csv', [InventoryController::class, 'convert']);
+Route::post('/import-csv', [InventoryController::class, 'importCsv']);
+Route::get('/export-csv', [InventoryController::class, 'exportCsv']);
 
-    //Suppliers
-    Route::get('/suppliers', [SupplierController::class, 'suppliers'])->name('suppliers.index');
-    Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
-   
-    //Accountable Person
-    Route::get('/accountable-person', [AccountablePersonController::class, 'accountablePerson'])->name('accountable.index');
-    Route::post('/accountable-person', action: [AccountablePersonController::class, 'store'])->name('accountable.store');
+//Suppliers
+Route::get('/suppliers', [SupplierController::class, 'suppliers'])->name('suppliers.index');
+Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+Route::put('/suppliers/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
+Route::delete('/suppliers/{id}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
-    //Categories
-    Route::get('/categories', [Categories::class, 'categories'])->name('categories.index');
-    Route::post('/categories', [Categories::class, 'store'])->name('categories.store');
-    
-    //Reports
-    Route::get('/report', [ReportController::class, 'searchBar'])->name('reports.index');
-    
-    //Item Archiving
-    Route::get('item_archiving', [ItemArchivingController::class, 'index'])->name('item_archiving.index');
-    
-    //Printing
-    Route::post('/print/receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
-});
+//Accountable Person
+Route::get('/accountable-person', [AccountablePersonController::class, 'accountablePerson'])->name('accountable.index');
+Route::post('/accountable-person', [AccountablePersonController::class, 'store'])->name('accountable.store');
+Route::put('/accountable-person{id}', [AccountablePersonController::class, 'update'])->name('accountable.update');
+Route::delete('/accountable-person{id}', [AccountablePersonController::class, 'destroy'])->name('accountable.destroy');
+
+//Categories
+Route::get('/categories', [Categories::class, 'categories'])->name('categories.index');
+Route::post('/categories', [Categories::class, 'store'])->name('categories.store');
+Route::put('/categories{id}', [Categories::class, 'update'])->name('categories.update');
+Route::delete('/categories{id}', [Categories::class, 'destroy'])->name('categories.destroy');
+
+//Reports
+Route::get('/report', [ReportController::class, 'searchBar'])->name('reports.index');
+
+//Item Archiving
+Route::get('item_archiving', [ItemArchivingController::class, 'index'])->name('item_archiving.index');
+
+//Printing
+Route::post('/print/receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
+// });
 
 
-Route::get('/dummy-auth', function () {
-    // Temporary Authentication
-    $user_id = 1;
-    Auth::loginUsingId($user_id);
+// Route::get('/dummy-auth', function () {
+//     $user_id = 1;
+//     Auth::loginUsingId($user_id);
 
 
-    return "User logged in {$user_id}";
-});
-
+//     return "User logged in {$user_id}";
+// });

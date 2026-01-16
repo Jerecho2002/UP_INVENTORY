@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('department', 80);
             $table->string('position', 80);
             $table->tinyInteger('status')->default(0);
+            $table->timestamps();
         });
     }
 

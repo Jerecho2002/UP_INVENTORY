@@ -24,6 +24,11 @@
             color: #000;
         }
 
+        .money {
+            font-family: DejaVu Sans, sans-serif;
+        }
+
+
         /* A4 PAGE */
         .a4-page {
             width: 210mm;
@@ -200,9 +205,11 @@
         .purchase-right-content {
             padding: 25px;
         }
+
         .purchase-right-one {
             margin-bottom: 3em;
         }
+
         /* SIGNATURE */
         .signature-section {
             position: absolute;
@@ -242,164 +249,161 @@
 </head>
 
 <body>
-    <div class="a4-page">
-        <div class="content-area">
+    @foreach ($acknowledgementItems->groupBy('acknowledgement_receipts_id') as $receiptItems)
+        @php
+            $receipt = $receiptItems->first()->acknowledgementReceipts;
+            $firstItem = $receiptItems->first()->inventoryItems;
+        @endphp
 
-            <!-- HEADER -->
-            <div class="header">
-                <div class="header-left">
-                    <img src="images/uplogo-2.png" alt="UP Logo">
+        <div class="a4-page">
+            <div class="content-area">
+
+                <!-- HEADER -->
+                <div class="header">
+                    <div class="header-left">
+                        <img src="{{ public_path('images/uplogo-2.png') }}">
+                    </div>
+
+                    <div class="header-center">
+                        <h1>University of the Philippines</h1>
+                        <p>Region VII - Central Visayas</p>
+                    </div>
+
+                    <div class="header-right">
+                        <img src="{{ public_path('images/uplogo-1.png') }}">
+                    </div>
                 </div>
 
-                <div class="header-center">
-                    <h1>University of the Philippines</h1>
-                    <p>Region VII - Central Visayas</p>
+                <!-- TITLE -->
+                <div class="title-header">
+                    <h1>INVENTORY CUSTODIAN SLIP</h1>
                 </div>
 
-                <div class="header-right">
-                    <img src="images/uplogo-1.png" alt="Unit Logo">
+                <!-- META -->
+                <div class="meta">
+                    <div class="meta-row">
+                        <div>
+                            <strong>Entity Name:</strong>
+                            {{ $firstItem->item_name ?? 'N/A' }}
+                        </div>
+                        <div>
+                            <strong>ICS No.:</strong>
+                            {{ $firstItem->property_number ?? 'N/A' }}
+                        </div>
+                    </div>
+
+                    <div class="meta-row">
+                        <div>
+                            <strong>Fund Cluster:</strong>
+                            {{ $receiptItems->first()->inventoryItems->fund_source ?? 'N/A' }}
+                        </div>
+                        <div>
+                            <strong>Date:</strong>
+                            {{ optional($receipt->created_at)->format('m/d/Y') }}
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- TITLE -->
-            <div class="title-header">
-                <h1>INVENTORY CUSTODIAN SLIP</h1>
-            </div>
+                <!-- ITEMS TABLE -->
+                <table class="ics-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Quantity</th>
+                            <th rowspan="2">Unit</th>
+                            <th colspan="2">Amount</th>
+                            <th rowspan="2">Description</th>
+                            <th rowspan="2">Inventory Item No.</th>
+                            <th rowspan="2">Estimated Useful Life</th>
+                        </tr>
+                        <tr>
+                            <th>Unit Cost</th>
+                            <th>Total Cost</th>
+                        </tr>
+                    </thead>
 
-            <!-- META -->
-            <div class="meta">
-                <div class="meta-row">
-                    <div><strong>Entity Name:</strong> ITC Office</div>
-                    <div><strong>ICS No.:</strong> 205-259-250-295</div>
-                </div>
-                <div class="meta-row">
-                    <div><strong>Fund Cluster:</strong>250292</div>
-                    <div><strong>Date:</strong> 18/2026</div>
-                </div>
-            </div>
+                    <tbody>
+                        @foreach ($receiptItems as $item)
+                            <tr>
+                                <td>{{ $item->inventoryItems->quantity ?? 1 }}</td>
+                                <td>{{ $item->inventoryItems->unit ?? 'unit' }}</td>
+                                <td><span class="money">₱</span>{{ number_format($item->inventoryItems->unit_cost, 2) }}</td>
+                                <td><span class="money">₱</span>{{ number_format($item->inventoryItems->unit_cost * ($item->inventoryItems->quantity ?? 1), 2) }}
+                                </td>
+                                <td>{{ $item->inventoryItems->item_name }}</td>
+                                <td>{{ $item->inventoryItems->property_number }}</td>
+                                <td>{{ $item->inventoryItems->useful_life ?? '' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-            <!-- ITEMS TABLE -->
-            <table class="ics-table">
-                <thead>
-                    <tr>
-                        <th class="col-1" rowspan="2">Quantity</th>
-                        <th class="col-2" rowspan="2">Unit</th>
-                        <th class="col-3" colspan="2">Amount</th>
-                        <th class="col-5" rowspan="2">Description</th>
-                        <th class="col-6" rowspan="2">Inventory Item No.</th>
-                        <th class="col-7" rowspan="2">Estimated Useful Life</th>
-                    </tr>
-                    <tr>
-                        <th class="col-3">Unit Cost</th>
-                        <th class="col-4">Total Cost</th>
-                    </tr>
-                </thead>
+                <!-- PURCHASE INFO -->
+                <div class="purchase-section">
+                    <table class="purchase-table">
+                        <tr>
+                            <td width="60%">
+                                <div class="purchase-info">
+                                    <div>
+                                        <span class="label">Purchase From:</span>
+                                        <span class="value">
+                                            {{ $item->inventoryItems->supplier->supplier_name ?? 'N/A' }}
+                                        </span>
+                                    </div>
 
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>unit</td>
-                        <td>10,000</td>
-                        <td>10,000</td>
-                        <td>Testtesttest</td>
-                        <td>56</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>unit</td>
-                        <td>10,000</td>
-                        <td>10,000</td>
-                        <td>Testtesttest test</td>
-                        <td>56</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>unit</td>
-                        <td>10,000</td>
-                        <td>10,000</td>
-                        <td>Testtesttest testawdawdawdawdawdawdawdawd</td>
-                        <td>56</td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- PURCHASE INFORMATION -->
-            <div class="purchase-section">
-                <table class="purchase-table">
-                    <tr>
-                        <td width="60%">
-                            <div class="purchase-info">
-                                <div class="puchase-first-line">
-                                    <span class="label">Purchase From:</span>
-                                    <span class="value">University Of The Philippines</span>
-                                </div>
-                                <div class="purchase-second-line">
                                     <div>
                                         <span class="label">Invoice No.:</span>
-                                        <span class="value">259236</span>
+                                        <span class="value">{{ $item->inventoryItems->invoice ?? 'N/A' }}</span>
                                     </div>
-                                    <div>
-                                        <span class="label">Date:</span>
-                                        <span class="value">1/14/2026</span>
-                                    </div>
-                                </div>
-                                <div class="purchase-third-line">
+
                                     <div>
                                         <span class="label">PO No.:</span>
-                                        <span class="value">203-4024-184</span>
+                                        <span class="value">{{ $item->inventoryItems->po_number ?? 'N/A' }}</span>
                                     </div>
-                                    <div>
-                                        <span class="label">PO Date.:</span>
-                                        <span class="value">1/10/2026</span>
-                                    </div>
+
                                     <div>
                                         <span class="label">PR No.:</span>
-                                        <span class="value">203-259-249</span>
+                                        <span class="value">{{ $item->inventoryItems->pr_number ?? 'N/A' }}</span>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td width="40%">
-                            <div class="purchase-info">
-                                <div class="purchase-right-content">
-                                    <div class="purchase-right-one">
+                            </td>
+
+                            <td width="40%">
+                                <div class="purchase-info">
+                                    <div>
                                         <span class="label">Serial No.:</span>
-                                        <span class="value">24294</span>
+                                        <span class="value">{{ $item->inventoryItems->serial_number ?? 'N/A' }}</span>
                                     </div>
+
                                     <div>
                                         <span class="label">Location:</span>
-                                        <span class="value">Sa Among Balay</span>
+                                        {{ $receipt->accountablePerson->department ?? 'N/A' }}
                                     </div>
                                 </div>
-                            </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SIGNATURE -->
+            <div class="signature-section">
+                <table class="signature-table">
+                    <tr>
+                        <td width="50%">
+                            <strong>Received From:</strong><br><br>
+                            {{ $receipt->issuedBy->full_name ?? '___________________________' }}<br>
+                            Signature over Printed Name
+                        </td>
+                        <td width="50%">
+                            <strong>Received By:</strong><br><br>
+                            {{ $receipt->accountablePerson->full_name ?? '___________________________' }}<br>
+                            Signature over Printed Name
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
-
-        <!-- SIGNATURE -->
-        <div class="signature-section">
-            <table class="signature-table">
-                <tr>
-                    <td width="50%">
-                        <strong>Received From:</strong><br><br>
-                        ___________________________<br>
-                        Signature over Printed Name
-                    </td>
-                    <td width="50%">
-                        <strong>Received By:</strong><br><br>
-                        ___________________________<br>
-                        Signature over Printed Name
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-    </div>
+    @endforeach
 </body>
 
 </html>

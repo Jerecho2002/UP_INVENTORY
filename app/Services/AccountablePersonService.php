@@ -38,6 +38,7 @@ class AccountablePersonService
                 fn($query) =>
                 $query->where('status', $status)
             )
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->withQueryString();
     }
@@ -49,6 +50,18 @@ class AccountablePersonService
             'department' => $data['department'] ?? null,
             'position' => $data['position'] ?? null,
             'status' => 1,
+        ]);
+    }
+
+    public function updateAccountablePerson(int $id, array $data): void
+    {
+        $supplier = AccountablePerson::findOrFail($id);
+
+        $supplier->update([
+            'full_name' => $data['full_name'],
+            'department' => $data['department'] ?? null,
+            'position' => $data['position'] ?? null,
+            // 'status' => 1,
         ]);
     }
 }
