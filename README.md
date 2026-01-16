@@ -63,6 +63,11 @@ cd UP_INVENTORY
 #### ITC BASECODE © 2026
 
 ---
+## 🤝 Collaborators
+
+University of the Philippines X Cebu Eastern College
+
+---
 
 ## 👨‍💻 Contributors
 
