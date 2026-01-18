@@ -56,6 +56,7 @@ Route::get('item_archiving', [ItemArchivingController::class, 'index'])->name('i
 
 //Printing
 Route::post('/print/receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
+
 // });
 
 

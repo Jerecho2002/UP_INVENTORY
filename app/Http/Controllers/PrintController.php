@@ -14,10 +14,10 @@ class PrintController extends Controller
     {
         $ids = $request->input('ids');
 
-        $pdf = $this->printService->generateReceiptPdf($ids);
+        $result = $this->printService->generateReceiptPdf($ids);
 
-        // Force the browser to download the PDF instead of opening it
-        $fileName = 'receipt_' . now()->format('Ymd_His') . '.pdf';
-        return $pdf->download($fileName);
+        $fileName = $result['type'] . '_' . now()->format('Y_m_d_His') . '.pdf';
+
+        return $result['pdf']->download($fileName);
     }
 }

@@ -7,7 +7,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PrintService
 {
-    public function generateReceiptPdf(int|array $ids)
+    public function generateReceiptPdf(int|array $ids): array
     {
         // Normalize IDs
         if (!is_array($ids)) {
@@ -24,18 +24,31 @@ class PrintService
         $acknowledgementItems = AcknowledgementItem::with([
             'inventoryItems',
             'acknowledgementReceipts.accountablePerson',
-            'acknowledgementReceipts.issuedBy'
-        ])->whereIn('id', $ids)->get();
+            'acknowledgementReceipts.issuedBy',
+        ])
+            ->whereIn('id', $ids)
+            ->get();
 
         if ($acknowledgementItems->isEmpty()) {
             throw new \Exception('Item(s) not found');
         }
 
-        // Generate PDF
-        $pdf = Pdf::loadView('prints.receipt', [
+        // 🔑 Determine receipt type
+        $hasParItem = $acknowledgementItems->contains(function ($item) {
+            return ($item->inventoryItems->unit_cost ?? 0) > 50000;
+        });
+
+        $view = $hasParItem
+            ? 'prints.par_receipt'
+            : 'prints.ics_receipt';
+
+        $pdf = Pdf::loadView($view, [
             'acknowledgementItems' => $acknowledgementItems,
         ]);
 
-        return $pdf;
+        return [
+            'pdf' => $pdf,
+            'type' => $hasParItem ? 'PAR' : 'ICS',
+        ];
     }
 }

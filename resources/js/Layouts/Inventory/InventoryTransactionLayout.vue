@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed, nextTick } from "vue";
-import axios from 'axios';
 import { usePage, router } from "@inertiajs/vue3";
 import NavHeader from "@/Components/NavHeader.vue";
 import SideBar from "@/Components/SideBar.vue";
@@ -164,8 +163,6 @@ function submitPrintForm(ids) {
   document.body.appendChild(form);
 
   form.submit();
-
-  
 }
 
 
