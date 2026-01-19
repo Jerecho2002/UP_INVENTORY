@@ -310,10 +310,9 @@
                         <tr>
                             <th rowspan="2">Quantity</th>
                             <th rowspan="2">Unit</th>
-                            <th colspan="2">Amount</th>
                             <th rowspan="2">Description</th>
-                            <th rowspan="2">Inventory Item No.</th>
-                            <th rowspan="2">Estimated Useful Life</th>
+                            <th rowspan="2">Property No.</th>
+                            <th colspan="2">Amount</th>
                         </tr>
                         <tr>
                             <th>Unit Cost</th>
@@ -326,12 +325,11 @@
                             <tr>
                                 <td>{{ $item->inventoryItems->quantity ?? 1 }}</td>
                                 <td>{{ $item->inventoryItems->unit ?? 'unit' }}</td>
+                                <td>{{ $item->inventoryItems->description }}</td>
+                                <td>{{ $item->inventoryItems->property_number }}</td>
                                 <td><span class="money">₱</span>{{ number_format($item->inventoryItems->unit_cost, 2) }}</td>
                                 <td><span class="money">₱</span>{{ number_format($item->inventoryItems->unit_cost * ($item->inventoryItems->quantity ?? 1), 2) }}
                                 </td>
-                                <td>{{ $item->inventoryItems->item_name }}</td>
-                                <td>{{ $item->inventoryItems->property_number }}</td>
-                                <td>{{ $item->inventoryItems->useful_life ?? '' }}</td>
                             </tr>
                         @endforeach
                     </tbody>

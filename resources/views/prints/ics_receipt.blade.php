@@ -329,7 +329,7 @@
                                 <td><span class="money">₱</span>{{ number_format($item->inventoryItems->unit_cost, 2) }}</td>
                                 <td><span class="money">₱</span>{{ number_format($item->inventoryItems->unit_cost * ($item->inventoryItems->quantity ?? 1), 2) }}
                                 </td>
-                                <td>{{ $item->inventoryItems->item_name }}</td>
+                                <td>{{ $item->inventoryItems->description }}</td>
                                 <td>{{ $item->inventoryItems->property_number }}</td>
                                 <td>{{ $item->inventoryItems->useful_life ?? '' }}</td>
                             </tr>
