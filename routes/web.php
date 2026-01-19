@@ -7,10 +7,8 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemArchivingController;
-use App\Http\Controllers\TransactionPrintController;
 use App\Http\Controllers\AccountablePersonController;
 use Illuminate\Support\Facades\Route;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 // Route::middleware(['auth', 'role:staff,admin'])->group(function () {
 //Dashboard
@@ -56,14 +54,3 @@ Route::get('item_archiving', [ItemArchivingController::class, 'index'])->name('i
 
 //Printing
 Route::post('/print/receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
-
-// });
-
-
-// Route::get('/dummy-auth', function () {
-//     $user_id = 1;
-//     Auth::loginUsingId($user_id);
-
-
-//     return "User logged in {$user_id}";
-// });
