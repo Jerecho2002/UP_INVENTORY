@@ -19,6 +19,9 @@ Route::middleware('guest')->group(function () {
     });
     Route::get('/login', [AuthController::class, 'login'])->name('login.index');
     Route::post('/login', [AuthController::class, 'authenticate']);
+
+    Route::get('/register', [AuthController::class, 'register'])->name('register.index');
+    Route::post('/register', [AuthController::class, 'authenticate']);
 });
 
 Route::middleware(['auth', 'role:staff,admin'])->group(function () {
