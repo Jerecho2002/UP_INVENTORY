@@ -18,10 +18,10 @@ import { Link } from "@inertiajs/vue3";
       </div>
     </div>
     <div
-      class="bg-[#850038] w-full md:w-1/2 flex items-center justify-center p-6 md:p-12"
+      class="bg-[#850038] rounded-tl-2xl rounded-bl-2xl w-full md:w-1/2 flex items-center justify-center p-6 md:p-12"
     >
       <div
-        class="w-full sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-1/2 max-w-lg bg-white px-6 py-6 shadow-md rounded-lg"
+        class="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[80%] xl:w-[75%] max-w-2xl bg-white shadow-md rounded-lg"
       >
         <slot />
       </div>
