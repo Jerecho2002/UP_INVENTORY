@@ -102,24 +102,30 @@
         }
 
         /* META */
-        .meta {
-            font-size: 10.5pt;
-            margin-bottom: 5mm;
+        .meta-section {
+            margin-bottom: 3mm;
         }
 
-        .meta-row {
-            display: table;
+        .meta-table {
             width: 100%;
+            font-size: 12pt;
+            border-collapse: collapse;
         }
 
-        .meta-row div {
-            display: table-cell;
-            width: 50%;
+        .meta-table td {
+            padding: 4px 0;
+            vertical-align: top;
+            line-height: 1.6;
+            /* 👈 spacing between Entity Name / Fund Cluster */
         }
 
-        /* JUSTIFY END (RIGHT COLUMN) */
-        .meta-row div:last-child {
-            text-align: right;
+        .meta-table td span {
+            color: #363636;
+        }
+
+        /* spacing between left (Entity) and right (PAR / Date) */
+        .meta-table td:first-child {
+            padding-right: 10mm;
         }
 
 
@@ -219,9 +225,9 @@
             border: 1px solid #000;
             border-top: none;
             height: 26mm;
-            padding: 6px;
+            padding-top: 15px;
+            padding-left: 6px;
             vertical-align: top;
-            text-align: center;
             position: relative;
         }
 
@@ -298,29 +304,47 @@
                 </div>
 
                 <!-- META -->
-                <div class="meta">
-                    <div class="meta-row">
-                        <div>
-                            <strong>Entity Name:</strong>
-                            {{ $firstItem->item_name ?? 'N/A' }}
-                        </div>
-                        <div>
-                            <strong>ICS No.:</strong>
-                            {{ $firstItem->property_number ?? 'N/A' }}
-                        </div>
-                    </div>
-
-                    <div class="meta-row">
-                        <div>
-                            <strong>Fund Cluster:</strong>
-                            {{ $receiptItems->first()->inventoryItems->fund_source ?? 'N/A' }}
-                        </div>
-                        <div>
-                            <strong>Date:</strong>
-                            {{ optional($receipt->created_at)->format('m/d/Y') }}
-                        </div>
-                    </div>
+                <div class="meta-section">
+                    <table class="meta-table">
+                        <tr>
+                            <td width="60%">
+                                <strong>Entity Name:</strong> <span>{{ $firstItem->item_name ?? 'N/A' }}</span>
+                                <br>
+                                <strong>Fund Cluster:</strong> <span>{{ $firstItem->fund_source ?? 'N/A' }}</span>
+                            </td>
+                            <td width="40%">
+                                <strong>ICS No.:</strong> <span>{{ $firstItem->property_number ?? 'N/A' }}</span>
+                                <br>
+                                <strong>Date:</strong> <span>{{ optional($receipt->created_at)->format('m/d/Y') }}</span>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
+
+                <!-- META -->
+                <!-- <div class="meta">
+                        <div class="meta-row">
+                            <div>
+                                <strong>Entity Name:</strong>
+                                {{ $firstItem->item_name ?? 'N/A' }}
+                            </div>
+                            <div>
+                                <strong>ICS No.:</strong>
+                                {{ $firstItem->property_number ?? 'N/A' }}
+                            </div>
+                        </div>
+
+                        <div class="meta-row">
+                            <div>
+                                <strong>Fund Cluster:</strong>
+                                {{ $receiptItems->first()->inventoryItems->fund_source ?? 'N/A' }}
+                            </div>
+                            <div>
+                                <strong>Date:</strong>
+                                {{ optional($receipt->created_at)->format('m/d/Y') }}
+                            </div>
+                        </div>
+                    </div> -->
 
                 <!-- ITEMS TABLE -->
                 <table class="ics-table">

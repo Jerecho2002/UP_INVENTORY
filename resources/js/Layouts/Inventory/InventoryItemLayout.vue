@@ -215,7 +215,7 @@ function confirmDelete(item) {
 
 
 function handleAction() {
-  console.log("Action button clicked");
+  router.visit('/inventory/acknowledgements')
 }
 
 //-----------DYNAMIC ICON-------------------
@@ -259,7 +259,7 @@ const toggleSidebar = () => {
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
       <aside  class="transition-all duration-600 ease-in-out transform"
-    :class="isSidebarOpen ? 'translate-x-0 opacity-100 w-64' : '-translate-x-full opacity-0 w-0'">
+    :class="isSidebarOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0 w-0'">
         <SideBar/>
       </aside>
 
