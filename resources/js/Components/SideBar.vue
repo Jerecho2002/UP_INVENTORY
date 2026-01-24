@@ -18,15 +18,16 @@ const menuItems = [
         icon: "fa-solid fa-layer-group",
         children: [
             { name: "Suppliers", icon: "fa-solid fa-handshake", route: "suppliers.index" },
-            { name: "Accountable Persons", route:"accountable.index"},
-            { name: "Categories", route:"categories.index"},
+            { name: "Accountable Persons", route: "accountable.index" },
+            { name: "Categories", route: "categories.index" },
             // { name: "Units", route:"units.index"},
         ],
     },
     { name: "Reports", icon: "fa-solid fa-file-export", route: "reports.index" },
     { name: "Item Archiving", icon: "fa-solid fa-recycle", route: "item_archiving.index" },
+    { name: "Logout", icon: "fa-solid fa-right-from-bracket", route: "logout", method: "post" },
 ];
-    
+
 const openDropdown = ref(null);
 
 
@@ -72,14 +73,16 @@ watchEffect(() => {
                 </div>
 
                 <!-- Link if no children -->
-                <Link v-else :href="route(item.route)"
+                <!-- Link if no children -->
+                <Link v-else :href="route(item.route)" :method="item.method || 'get'" as="button"
                     class="flex items-center gap-3 text-[#3A3434] py-4 px-4 mx-2 sm:mx-3 rounded-md hover:bg-[#D9D9D9] transition-all duration-300"
                     :class="{
                         'bg-[#D9D9D9] font-semibold text-[#850038]': route().current(item.route),
                     }">
-                <i :class="item.icon"></i>
-                <span>{{ item.name }}</span>
+                    <i :class="item.icon"></i>
+                    <span>{{ item.name }}</span>
                 </Link>
+
 
                 <!-- Dropdown children-->
                 <div v-if="item.children" class="overflow-hidden transition-all duration-500 ease-in-out"
@@ -92,7 +95,7 @@ watchEffect(() => {
                                     'font-semibold text-[#850038]': route().current(child.route),
                                     'text-gray-600': !route().current(child.route),
                                 }">
-                            {{ child.name }}
+                                {{ child.name }}
                             </Link>
                         </li>
                     </ul>
