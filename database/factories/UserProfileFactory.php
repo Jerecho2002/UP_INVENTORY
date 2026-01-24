@@ -11,7 +11,9 @@ class UserProfileFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'full_name' => $this->faker->name(),
+            'first_name' => $this->faker->name(),
+            'middle_name' => $this->faker->name(),
+            'last_name' => $this->faker->name(),
             'contact_number' => $this->faker->phoneNumber(),
             'status' => $this->faker->boolean ? 1 : 0,
         ];

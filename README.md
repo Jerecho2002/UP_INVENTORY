@@ -49,12 +49,31 @@ Ensure the following are installed:
 
 ## ⚙️ Installation
 
-### 1️⃣ Clone the Repository
+### Clone Repository
 
 ```
 git clone https://github.com/Jerecho2002/UP_INVENTORY.git
 
 cd UP_INVENTORY
+```
+## 🗂️ PACKAGES/MODULES
+
+### Chart JS
+
+```
+npm install chart.js
+```
+
+### Day JS
+
+```
+npm install dayjs
+```
+
+### Dom PDF
+
+```
+composer require barryvdh/laravel-dompdf
 ```
 ---
 

@@ -24,11 +24,6 @@
             color: #000;
         }
 
-        .money {
-            font-family: DejaVu Sans, sans-serif;
-        }
-
-
         /* A4 PAGE */
         .a4-page {
             width: 210mm;
@@ -193,21 +188,16 @@
             font-size: 10.5pt;
         }
 
-        .puchase-first-line {
-            margin-bottom: 1em;
-        }
-
-        .purchase-second-line {
-            margin-bottom: 1em;
-
+        .purchase-second-content {
+            margin-top: 1em;
         }
 
         .purchase-right-content {
-            padding: 25px;
+            padding: 10px;
         }
 
-        .purchase-right-one {
-            margin-bottom: 3em;
+        .second-right-content {
+            margin-top: 2em;
         }
 
         /* SIGNATURE */
@@ -215,8 +205,6 @@
             position: absolute;
             display: flex;
             margin-top: -8.3em;
-            /* bottom: 10mm; */
-            /* 🔽 pulled up */
             left: 20mm;
             right: 20mm;
         }
@@ -233,6 +221,36 @@
             height: 26mm;
             padding: 6px;
             vertical-align: top;
+            text-align: center;
+            position: relative;
+        }
+
+        .signature-table td span {
+            display: block;
+            text-align: center;
+            margin-top: 4px;
+            /* Reduced from 8px to bring it up */
+            position: relative;
+            top: -4px;
+            /* Added to move it up slightly more */
+        }
+
+        .name-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            margin: 12px 0 8px 0;
+            /* Reduced bottom margin to bring text up */
+        }
+
+        .underline {
+            border-bottom: 1px solid #000;
+            width: 250px;
+            padding-bottom: 4px;
+            text-align: center;
+            margin: 0 auto;
         }
 
         /* PRINT SAFETY */
@@ -326,8 +344,8 @@
                             <tr>
                                 <td>{{ $item->inventoryItems->quantity ?? 1 }}</td>
                                 <td>{{ $item->inventoryItems->unit ?? 'unit' }}</td>
-                                <td><span class="money">₱</span>{{ number_format($item->inventoryItems->unit_cost, 2) }}</td>
-                                <td><span class="money">₱</span>{{ number_format($item->inventoryItems->unit_cost * ($item->inventoryItems->quantity ?? 1), 2) }}
+                                <td>{{ number_format($item->inventoryItems->unit_cost, 2) }}</td>
+                                <td>{{ number_format($item->inventoryItems->unit_cost * ($item->inventoryItems->quantity ?? 1), 2) }}
                                 </td>
                                 <td>{{ $item->inventoryItems->description }}</td>
                                 <td>{{ $item->inventoryItems->property_number }}</td>
@@ -350,33 +368,37 @@
                                         </span>
                                     </div>
 
-                                    <div>
-                                        <span class="label">Invoice No.:</span>
-                                        <span class="value">{{ $item->inventoryItems->invoice ?? 'N/A' }}</span>
-                                    </div>
+                                    <div class="purchase-second-content">
+                                        <div>
+                                            <span class="label">Invoice No.:</span>
+                                            <span class="value">{{ $item->inventoryItems->invoice ?? 'N/A' }}</span>
+                                        </div>
 
-                                    <div>
-                                        <span class="label">PO No.:</span>
-                                        <span class="value">{{ $item->inventoryItems->po_number ?? 'N/A' }}</span>
-                                    </div>
+                                        <div>
+                                            <span class="label">PO No.:</span>
+                                            <span class="value">{{ $item->inventoryItems->po_number ?? 'N/A' }}</span>
+                                        </div>
 
-                                    <div>
-                                        <span class="label">PR No.:</span>
-                                        <span class="value">{{ $item->inventoryItems->pr_number ?? 'N/A' }}</span>
+                                        <div>
+                                            <span class="label">PR No.:</span>
+                                            <span class="value">{{ $item->inventoryItems->pr_number ?? 'N/A' }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </td>
 
                             <td width="40%">
                                 <div class="purchase-info">
-                                    <div>
-                                        <span class="label">Serial No.:</span>
-                                        <span class="value">{{ $item->inventoryItems->serial_number ?? 'N/A' }}</span>
-                                    </div>
+                                    <div class="purchase-right-content">
+                                        <div>
+                                            <span class="label">Serial No.:</span>
+                                            <span class="value">{{ $item->inventoryItems->serial_number ?? 'N/A' }}</span>
+                                        </div>
 
-                                    <div>
-                                        <span class="label">Location:</span>
-                                        {{ $receipt->accountablePerson->department ?? 'N/A' }}
+                                        <div class="second-right-content">
+                                            <span class="label">Location:</span>
+                                            {{ $receipt->accountablePerson->department ?? 'N/A' }}
+                                        </div>
                                     </div>
                                 </div>
                             </td>
@@ -390,14 +412,22 @@
                 <table class="signature-table">
                     <tr>
                         <td width="50%">
-                            <strong>Received From:</strong><br><br>
-                            {{ $receipt->issuedBy->full_name ?? '___________________________' }}<br>
-                            Signature over Printed Name
+                            <strong>Received From:</strong>
+                            <div class="name-container">
+                                <div class="underline">
+                                    {{ $receipt->issuedBy->full_name ?? ' ' }}
+                                </div>
+                            </div>
+                            <span>Signature over Printed Name</span>
                         </td>
                         <td width="50%">
-                            <strong>Received By:</strong><br><br>
-                            {{ $receipt->accountablePerson->full_name ?? '___________________________' }}<br>
-                            Signature over Printed Name
+                            <strong>Received By:</strong>
+                            <div class="name-container">
+                                <div class="underline">
+                                    {{ $receipt->accountablePerson->full_name ?? ' ' }}
+                                </div>
+                            </div>
+                            <span>Signature over Printed Name</span>
                         </td>
                     </tr>
                 </table>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class UserProfile extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'full_name', 'contact_number', 'status'];
+    protected $fillable = ['user_id', 'first_name', 'middle_name', 'last_name', 'contact_number', 'status'];
 
     public $timestamps = false;
 

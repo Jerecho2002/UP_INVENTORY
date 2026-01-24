@@ -6,25 +6,10 @@ import PrintButton from "@/Components/Buttons/PrintButton.vue";
 
 
 const props = defineProps({
-    // rooms: Array, // -> InventoryTable
-    columns: Array, // -> InventoryTable
-    rows: Object, // -> InventoryTable
+    // rooms: Array,
+    columns: Array,
+    rows: Object,
     users: Array,
-    unitCostOptions: Array, // InventoryFilter
-    Status: Array, // -> InventoryFilter
-    itemClass: Array, // InventoryForm
-    suppliers: Object, // InventoryForm
-    viewItems: Array, // InventoryForm
-    inputFields: Array, // InventoryForm
-    inputFieldsEdit: Array, // InventoryForm
-    quantityCostFields: Array, // InventoryForm
-    firstDropdown: Array, // InventoryForm
-    secondDropdown: Array, // InventoryForm
-    requestFields: Array, // InventoryForm
-    invoicesFundFields: Array, // InventoryForm
-    search: String, //InventoryFilter
-    cost_range: String, //InventoryFilter
-    status: String, // InventoryFilter
     actions: {
         type: Array,
         default: () => []
