@@ -38,7 +38,7 @@ function closeWithAnimation() {
       <p class="text-xl mt-2 text-gray-600">{{ message }}</p>
 
       <div class="space-x-4">
-        <button v-if="actionButtonLabel" @click="$emit('action')"
+        <button v-if="actionButtonLabel" @click="$emit('action') "
           class="mt-6 bg-[#54B3AB] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#40a79e]">
           {{ actionButtonLabel }}
         </button>

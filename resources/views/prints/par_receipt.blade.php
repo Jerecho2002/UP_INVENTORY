@@ -90,24 +90,32 @@
         }
 
         /* META */
-        .meta {
-            font-size: 10.5pt;
-            margin-bottom: 5mm;
+        .meta-section {
+            margin-bottom: 3mm;
         }
 
-        .meta-row {
-            display: table;
+        .meta-table {
             width: 100%;
+            font-size: 12pt;
+            border-collapse: collapse;
         }
 
-        .meta-row div {
-            display: table-cell;
-            width: 50%;
+        .meta-table td {
+            padding: 4px 0;
+            vertical-align: top;
+            line-height: 1.6;
+            /* 👈 spacing between Entity Name / Fund Cluster */
         }
 
-        .meta-row div:last-child {
-            text-align: right;
+        .meta-table td span {
+            color: #363636;
         }
+
+        /* spacing between left (Entity) and right (PAR / Date) */
+        .meta-table td:first-child {
+            padding-right: 10mm;
+        }
+
 
         /* ITEMS TABLE */
         .ics-table {
@@ -147,14 +155,22 @@
             font-weight: bold;
         }
 
-        /* SIGNATURE */
-        .signature-section {
-            position: absolute;
-            bottom: 15mm;
-            left: 20mm;
-            right: 20mm;
+        /* REMARKS/LOCATION */
+        .second-content-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10.5pt;
         }
 
+        .second-content-table td {
+            border: 1px solid #000;
+            border-top: none;
+            height: 5mm;
+            padding: 6px;
+            vertical-align: top;
+        }
+
+        /* SIGNATURE */
         .signature-table {
             width: 100%;
             border-collapse: collapse;
@@ -165,9 +181,36 @@
             border: 1px solid #000;
             border-top: none;
             height: 26mm;
-            padding: 6px;
+            padding-top: 15px;
+            padding-left: 6px;
             vertical-align: top;
         }
+
+        .signature-table td span {
+            display: block;
+            text-align: center;
+            margin-top: 2mm;
+            position: relative;
+        }
+
+        .name-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            margin-top: 10px;
+            /* Reduced bottom margin to bring text up */
+        }
+
+        .underline {
+            border-bottom: 1px solid #000;
+            width: 250px;
+            padding-bottom: 2px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
 
         /* PRINT */
         @media print {
@@ -209,18 +252,36 @@
                     <h1>PROPERTY ACKNOWLEDGEMENT RECEIPT</h1>
                 </div>
 
-                <!-- META -->
-                <div class="meta">
-                    <div class="meta-row">
-                        <div><strong>Entity Name:</strong> {{ $firstItem->item_name ?? 'N/A' }}</div>
-                        <div><strong>PAR No.:</strong> {{ $firstItem->property_number ?? 'N/A' }}</div>
-                    </div>
-
-                    <div class="meta-row">
-                        <div><strong>Fund Cluster:</strong> {{ $firstItem->fund_source ?? 'N/A' }}</div>
-                        <div><strong>Date:</strong> {{ optional($receipt->created_at)->format('m/d/Y') }}</div>
-                    </div>
+                <!-- TEST META -->
+                <div class="meta-section">
+                    <table class="meta-table">
+                        <tr>
+                            <td width="60%">
+                                <strong>Entity Name:</strong> <span>{{ $firstItem->item_name ?? 'N/A' }}</span>
+                                <br>
+                                <strong>Fund Cluster:</strong> <span>{{ $firstItem->fund_source ?? 'N/A' }}</span>
+                            </td>
+                            <td width="40%">
+                                <strong>PAR No.:</strong> <span>{{ $firstItem->property_number ?? 'N/A' }}</span>
+                                <br>
+                                <strong>Date:</strong> <span>{{ optional($receipt->created_at)->format('m/d/Y') }}</span>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
+
+                <!-- META -->
+                <!-- <div class="meta">
+                            <div class="meta-row-one">
+                                <div><strong>Entity Name:</strong> {{ $firstItem->item_name ?? 'N/A' }}</div>
+                                <div><strong>PAR No.:</strong> {{ $firstItem->property_number ?? 'N/A' }}</div>
+                            </div>
+
+                            <div class="meta-row-two">
+                                <div><strong>Fund Cluster:</strong> {{ $firstItem->fund_source ?? 'N/A' }}</div>
+                                <div><strong>Date:</strong> {{ optional($receipt->created_at)->format('m/d/Y') }}</div>
+                            </div>
+                        </div> -->
 
                 <!-- ITEMS -->
                 <table class="ics-table">
@@ -265,24 +326,45 @@
                     </tr>
                 </table>
 
-            </div>
+                <!-- REMARKS/LOCATION -->
+                <div class="second-area">
+                    <table class="second-content-table">
+                        <tr>
+                            <td width="50%">
+                                <strong>Remarks:</strong>
+                            </td>
+                            <td width="50%">
+                                <strong>Location:</strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
-            <!-- SIGNATURE -->
-            <div class="signature-section">
-                <table class="signature-table">
-                    <tr>
-                        <td width="50%">
-                            <strong>Received From:</strong><br><br>
-                            {{ $receipt->issuedBy->full_name ?? '___________________________' }}<br>
-                            Signature over Printed Name
-                        </td>
-                        <td width="50%">
-                            <strong>Received By:</strong><br><br>
-                            {{ $receipt->accountablePerson->full_name ?? '___________________________' }}<br>
-                            Signature over Printed Name
-                        </td>
-                    </tr>
-                </table>
+                <!-- SIGNATURE -->
+                <div class="signature-section">
+                    <table class="signature-table">
+                        <tr>
+                            <td width="50%">
+                                <strong>Received From:</strong>
+                                <div class="name-container">
+                                    <div class="underline">
+                                        {{ $receipt->issuedBy->full_name ?? ' ' }}
+                                    </div>
+                                </div>
+                                <span>Signature over Printed Name</span>
+                            </td>
+                            <td width="50%">
+                                <strong>Received By:</strong>
+                                <div class="name-container">
+                                    <div class="underline">
+                                        {{ $receipt->accountablePerson->full_name ?? ' ' }}
+                                    </div>
+                                </div>
+                                <span>Signature over Printed Name</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     @endforeach
