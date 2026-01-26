@@ -17,4 +17,11 @@ class UserFactory extends Factory
             'role_id' => Role::inRandomOrder()->first()->id, // pick a real seeded role
         ];
     }
+     public function withProfile(): static
+    {
+        return $this->has(
+            \App\Models\UserProfile::factory(),
+            'userProfiles'
+        );
+    }
 }

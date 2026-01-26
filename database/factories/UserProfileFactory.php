@@ -10,7 +10,6 @@ class UserProfileFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
             'first_name' => $this->faker->name(),
             'middle_name' => $this->faker->name(),
             'last_name' => $this->faker->name(),

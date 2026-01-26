@@ -43,9 +43,4 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserProfile::class);
     }
-
-    public function userOffices()
-    {
-        return $this->hasMany(UserOffice::class);
-    }
 }
