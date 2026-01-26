@@ -320,7 +320,7 @@
                                 <div><span class="label">Invoice No.:</span> {{ $firstItem->invoice ?? 'N/A' }}</div>
                                 <div><span class="label">PO No.:</span> {{ $firstItem->po_number ?? 'N/A' }}</div>
                                 <div><span class="label">PR No.:</span> {{ $firstItem->pr_number ?? 'N/A' }}</div>
-                                <div><span class="label">Date of Issuance:</div>
+                                <div><span class="label">Date of Issuance: </span> {{ $receipt->par_date ?? 'N/A' }}</div>
                             </div>
                         </td>
                     </tr>
@@ -348,7 +348,7 @@
                                 <strong>Received From:</strong>
                                 <div class="name-container">
                                     <div class="underline">
-                                        {{ $receipt->issuedBy->full_name ?? ' ' }}
+                                        {{ optional($receipt->issuedBy->userProfiles)->first_name }} {{ optional($receipt->issuedBy->userProfiles)->middle_name }} {{ optional($receipt->issuedBy->userProfiles)->last_name }}
                                     </div>
                                 </div>
                                 <span>Signature over Printed Name</span>

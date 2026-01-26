@@ -24,7 +24,7 @@ class PrintService
         $acknowledgementItems = AcknowledgementItem::with([
             'inventoryItems',
             'acknowledgementReceipts.accountablePerson',
-            'acknowledgementReceipts.issuedBy',
+            'acknowledgementReceipts.issuedBy.userProfiles',
         ])
             ->whereIn('id', $ids)
             ->get();

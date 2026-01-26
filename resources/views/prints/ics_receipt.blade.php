@@ -439,7 +439,7 @@
                             <strong>Received From:</strong>
                             <div class="name-container">
                                 <div class="underline">
-                                    {{ $receipt->issuedBy->full_name ?? ' ' }}
+                                    {{ optional($receipt->issuedBy->userProfiles)->first_name }} {{ optional($receipt->issuedBy->userProfiles)->middle_name }} {{ optional($receipt->issuedBy->userProfiles)->last_name }}
                                 </div>
                             </div>
                             <span>Signature over Printed Name</span>

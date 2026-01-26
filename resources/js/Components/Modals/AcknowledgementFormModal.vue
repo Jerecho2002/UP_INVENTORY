@@ -11,6 +11,7 @@ const props = defineProps({
     items: { type: Object, default: () => ({ data: [] }) },
     accPerson: { type: Object, default: () => ({ data: [] }) },
     users: { type: Array, default: () => [] },
+    userProfiles: { type: Array, default: () => [] },
     viewItem: { type: Array, default: () => [] },
     item: { type: Object, default: () => ({}) },
 });

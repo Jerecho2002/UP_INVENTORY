@@ -21,7 +21,7 @@ const columns = [
   { label: 'Property Number', key: 'inventory_items', format: (val) => val?.property_number ?? 'N/A' },
   { label: 'PAR/ICS', key: 'acknowledgement_receipts', format: (val) => val?.category ?? 'N/A' },
   { label: 'Accountable Person', key: 'acknowledgement_receipts.accountable_person', format: (val) => val?.full_name ?? 'N/A' },
-  { label: 'Issued By', key: 'acknowledgement_receipts.issued_by', format: (val) => val?.email ?? 'N/A' },
+  { label: 'Issued By', key: 'acknowledgement_receipts.issued_by.user_profiles', format: (val) => val?.first_name ?? 'N/A' },
   { label: 'Date Released', key: 'acknowledgement_receipts', format: (val) => val ? dayjs(val.created_at).format('MMM D, YYYY') : 'N/A' },
   { label: "Action", key: "action" }
 ]

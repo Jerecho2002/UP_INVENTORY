@@ -57,7 +57,7 @@ class InventoryService
 
     public function filterAndPaginateTransaction($search = null, $costRange = null, $status)
     {
-        return AcknowledgementItem::with('inventoryItems', 'acknowledgementReceipts.accountablePerson', 'acknowledgementReceipts.issuedBy')
+        return AcknowledgementItem::with('inventoryItems', 'acknowledgementReceipts.accountablePerson', 'acknowledgementReceipts.issuedBy.userProfiles')
             ->when($search, fn($query, $search) => $query->search($search))
             ->when($costRange, function ($query, $costRange) {
                 [$min, $max] = explode('-', $costRange);

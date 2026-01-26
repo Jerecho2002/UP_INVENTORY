@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AccountablePerson;
 use App\Models\User;
 use App\Models\Supplier;
+use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use App\Models\InventoryItem;
 use App\Services\RoomApiService;
+use App\Models\AccountablePerson;
 use App\Models\ItemClassification;
 use App\Services\InventoryService;
 use App\Http\Requests\InventoryStoreRequest;
@@ -65,11 +66,13 @@ class InventoryController extends Controller
         $search = $request->input('search');
         $costRange = $request->input('cost_range');
         $users = User::all();
+        $userProfiles = UserProfile::all();
         $accPerson = AccountablePerson::all();
 
         return inertia('Inventory/InventoryAcknowledgements', [
             'items' => $this->acknowledgementReceiptService->filterAndPaginateAcknowledgementReceipt($search, $costRange),
             'accPerson' => $accPerson,
+            'userProfiles' => $userProfiles,
             'users' => $users,
         ]);
     }
