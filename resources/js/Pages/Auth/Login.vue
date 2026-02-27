@@ -47,13 +47,13 @@ const submit = () => {
         </div>
 
         <div>
-          <InputLabel class="text-bold text-lg" for="email" value="Email" />
+          <InputLabel class="text-bold text-[#3B3B3B]" for="email" value="Email" />
 
           <TextInput
             id="email"
             type="email"
             placeholder="Enter your email"
-            class="mt-1 block w-full py-3 text-md"
+            class="mt-1 block w-full text-[#850038] py-3"
             v-model="form.email"
             required
             autofocus
@@ -62,13 +62,13 @@ const submit = () => {
         </div>
 
         <div class="mt-4">
-          <InputLabel text-bold text-lg for="password" value="Password" />
+          <InputLabel class="text-bold text-[#3B3B3B]" for="password" value="Password" />
 
           <TextInput
             id="password"
             type="password"
             placeholder="Enter your password"
-            class="mt-1 block w-full py-3 text-md"
+            class="mt-1 block w-full text-[#850038] py-3 "
             v-model="form.password"
             required
             autocomplete="current-password"

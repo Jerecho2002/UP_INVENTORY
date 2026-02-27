@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         }
 
         // Create users WITH profiles
-        User::factory(10)
+        User::factory(20)
             ->withProfile()
             ->create();
     }
