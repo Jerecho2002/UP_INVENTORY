@@ -151,7 +151,7 @@ function toggleCheck(item) {
     <div class="mt-2 flex justify-end mx-2">
         <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 
                 bg-gray-100 border border-gray-300 rounded-md px-3 py-1">
-            <p class="text-xs sm:text-sm border-r border-gray-300 px-3">
+            <p class="text-xs text-[#3B3B3B] sm:text-sm border-r border-gray-300 px-3">
                 {{ rows.from }}-{{ rows.to }} of
                 {{ rows.total }}
             </p>

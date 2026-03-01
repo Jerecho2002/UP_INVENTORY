@@ -56,7 +56,13 @@ git clone https://github.com/Jerecho2002/UP_INVENTORY.git
 
 cd UP_INVENTORY
 ```
-## 🗂️ PACKAGES/MODULES
+## 🗂️ Packages/Modules
+
+### Prime Vue V4
+
+```
+npm install primevue @primevue/themes primeicons
+```
 
 ### Chart JS
 
