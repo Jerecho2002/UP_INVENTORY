@@ -2,22 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory;
-    protected $fillable = ['email', 'password', 'status', 'role_id'];
+    use HasFactory, HasRoles;
+    protected $fillable = ['email', 'password', 'status'];
 
     protected $hidden = ['password'];
-
-    // Relationships
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
 
     public function accountableReceipts()
     {
