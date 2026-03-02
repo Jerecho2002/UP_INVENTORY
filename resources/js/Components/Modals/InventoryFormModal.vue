@@ -366,7 +366,8 @@ function getViewValue(view) {
                     <input
                       v-model="form.date_acquired"
                       :class="[
-                        'w-full sm:w-[10rem] rounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-gray-500 text-sm focus:ring-1 focus:outline-none',
+                        'w-full sm:w-[10rem] r
+                        ounded-md border border-gray-300 px-3 py-3 bg-[#F8F8F8] text-gray-500 text-sm focus:ring-1 focus:outline-none',
                         form.errors.date_acquired
                           ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
                           : 'border-gray-300 focus:ring-[#dfa8bf] focus:border-[#850038]',
