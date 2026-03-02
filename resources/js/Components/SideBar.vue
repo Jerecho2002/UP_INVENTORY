@@ -5,7 +5,7 @@ import { ref, watchEffect } from "vue";
 const menuItems = [
   {
     name: "Dashboard",
-    icon: "fa-solid fa-table-cells-large",
+    icon: "fas fa-chart-line",
     route: "dashboard.index",
   },
   {
@@ -36,6 +36,11 @@ const menuItems = [
     name: "Item Archiving",
     icon: "fa-solid fa-recycle",
     route: "item_archiving.index",
+  },
+  {
+    name: "Permissions",
+    icon: "fa-solid fa-users-gear",
+    route: "user_management.index",
   },
   {
     name: "Logout",

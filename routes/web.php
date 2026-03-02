@@ -9,6 +9,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemArchivingController;
 use App\Http\Controllers\AccountablePersonController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -24,7 +25,6 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
     Route::get('/dashboard', [DashboardController::class, 'searchBar'])->name('dashboard.index');
 
     Route::middleware(['role:admin|staff'])->group(function () {
@@ -78,5 +78,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/report', [ReportController::class, 'searchBar'])->name('reports.index');
         Route::get('item_archiving', [ItemArchivingController::class, 'index'])->name('item_archiving.index');
         Route::post('/print/receipt', [PrintController::class, 'printReceipt'])->name('print.receipt');
+    });
+
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/user-management', [UserManagementController::class, 'UserManagement'])->name('user_management.index');
     });
 });
