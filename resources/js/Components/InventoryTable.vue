@@ -3,7 +3,9 @@ import { usePage, router } from '@inertiajs/vue3';
 import { defineProps, computed, ref } from 'vue';
 import TableCell from './TableCell.vue';
 import PrintButton from "@/Components/Buttons/PrintButton.vue";
+import { useAuth } from '@/Composables/useAuth';
 
+const { isAdmin, can } = useAuth()
 
 const props = defineProps({
     // rooms: Array,
@@ -17,14 +19,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['view', 'edit', 'delete', 'update:selected', 'selection-changed']);
-
-
-const page = usePage();
-const user = computed(() => page.props.auth.user);
-const userRole = computed(() => user.value?.role);
-
-const canDelete = computed(() => ['admin'].includes(userRole.value));
-const canEdit = computed(() => ['admin'].includes(userRole.value));
 
 // PAGINATE
 const goToPage = (url) => {
@@ -96,6 +90,7 @@ function toggleCheck(item) {
                 </tr>
             </thead>
 
+
             <tbody class="text-gray-700">
                 <tr v-for="item in props.rows.data" :key="item.id" class="even:bg-gray-200">
                     <TableCell v-for="col in props.columns" :key="col.key">
@@ -116,30 +111,26 @@ function toggleCheck(item) {
                         <template v-else>
                             <div class="flex items-center gap-2">
 
-                                <!-- PRINT -->
                                 <PrintButton v-if="actions.includes('print')" :item="item"
                                     @print="$emit('print', item.id)" />
 
-                                <!-- VIEW -->
                                 <button v-if="actions.includes('view')" @click="$emit('view', item)"
                                     class="text-[#3F3F3F] hover:text-[#191818]" title="View">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
 
-                                <!-- EDIT -->
-                                <button v-if="actions.includes('edit')" @click="$emit('edit', item)"
+                                <button v-if="actions.includes('edit') && isAdmin" @click="$emit('edit', item)"
                                     class="text-[#54B3AB] hover:text-[#38a69d]" title="Edit">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
 
-                                <!-- DELETE -->
-                                <button v-if="actions.includes('delete')" @click="$emit('delete', item)"
-                                    class="text-[#D71D1D] hover:text-[#c50e0e]" title="Delete">
+                                <button v-if="actions.includes('delete') && (isAdmin || can('delete inventory'))"
+                                    @click="$emit('delete', item)" class="text-[#D71D1D] hover:text-[#c50e0e]"
+                                    title="Delete">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
 
                             </div>
-
                         </template>
                     </TableCell>
                 </tr>

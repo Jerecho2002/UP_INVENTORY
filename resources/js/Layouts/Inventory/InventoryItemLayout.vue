@@ -23,7 +23,8 @@ const columns = [
   { label: "Serial Number", key: 'serial_number' },
   { label: "Invoice", key: 'invoice' },
   { label: "Supplier Name", key: 'supplier', format: (val) => val?.supplier_name ?? 'N/A' },
-  { label: "Status", key: 'status', 
+  {
+    label: "Status", key: 'status',
     format: (status) => {
       let label = 'Unknown', cls = 'text-gray-500', icon = '';
       if (status === 0) {
@@ -47,7 +48,7 @@ const viewItem = [
   { label: "Property Number", key: "property_number" },
   { label: "Unit", key: "unit", format: (val) => val ?? "N/A" },
   { label: "Serial Number", key: "serial_number" },
-  { label: "Unit Cost", key: "unit_cost",  format: (val) => val !== null && val !== undefined  ? `₱${Number(val).toLocaleString()}` : "N/A"},
+  { label: "Unit Cost", key: "unit_cost", format: (val) => val !== null && val !== undefined ? `₱${Number(val).toLocaleString()}` : "N/A" },
   { label: "PO Number", key: "po_number" },
   { label: "Supplier", key: "supplier.supplier_name" },
   { label: "PR Number", key: "pr_number" },
@@ -70,8 +71,8 @@ const viewItem = [
         cls = 'text-[#2E7D32] font-bold bg-[#D4F8D4] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-circle-check"></i>';
       }
-      else if (status === 2) { 
-        label = 'Pending'; 
+      else if (status === 2) {
+        label = 'Pending';
         cls = 'text-[#8D6E00] font-bold bg-[#FFF3CD] py-2 px-4 rounded-full';
         icon = '<i class="fa-solid fa-clock"></i>';
       }
@@ -81,8 +82,8 @@ const viewItem = [
 ];
 
 const quantityCostFields = [
-  { label: "Quantity", model: "quantity", placeholder: "0", type: "number"},
-  { label: "Unit Cost", model: "unit_cost", placeholder: "0", type: "number"},
+  { label: "Quantity", model: "quantity", placeholder: "0", type: "number" },
+  { label: "Unit Cost", model: "unit_cost", placeholder: "0", type: "number" },
 ];
 
 const inputFields = [
@@ -118,33 +119,41 @@ const firstInputField = [
 ];
 
 const secondDropdown = [
-  { label: "Unit", model: "unit", options: 
-                                            [{label: "unit", value: "unit"},
-                                             {label: "pcs", value: "pcs"}, 
-                                             {label: "box", value: "box"}]},
-  { label: "Status", model: "status", options: 
-                                            [{label: "Received", value: "1"},
-                                             {label: "Cancelled", value: "0"},
-                                            
-  ]},
+  {
+    label: "Unit", model: "unit", options:
+      [{ label: "unit", value: "unit" },
+      { label: "pcs", value: "pcs" },
+      { label: "box", value: "box" }]
+  },
+  {
+    label: "Status", model: "status", options:
+      [{ label: "Received", value: "1" },
+      { label: "Cancelled", value: "0" },
+
+      ]
+  },
 ];
 
 const totalCost = [
-  { label: "Total Cost"}
+  { label: "Total Cost" }
 ];
 
 
 const unitCostOptions = [
-    { label: "Unit Cost", options: [{label: "Select All", value: ""},
-                                    {label: "₱50,000 Below", value: "0-50000"},
-                                    {label: "₱50,000 Above", value: "50000-99999999"},
-  ]},
+  {
+    label: "Unit Cost", options: [{ label: "Select All", value: "" },
+    { label: "₱50,000 Below", value: "0-50000" },
+    { label: "₱50,000 Above", value: "50000-99999999" },
+    ]
+  },
 ];
 
 const filterStatus = [
-    {label: "Status", options: [{ label: "Received", value: 1},
-                                { label: "Cancelled", value: 0 },
-  ]},
+  {
+    label: "Status", options: [{ label: "Received", value: 1 },
+    { label: "Cancelled", value: 0 },
+    ]
+  },
 ];
 
 const page = usePage();
@@ -183,7 +192,7 @@ function handleView(item) {
 
 function handleEdit(item) {
   formMode.value = 'edit';
-  currentItem.value = item ;
+  currentItem.value = item;
   showFormModal.value = true;
 }
 
@@ -242,8 +251,6 @@ const successIcon = computed(() => {
   return formMode.value === "edit" ? iconEdit : iconAdded;
 });
 
-
-
 const isSidebarOpen = ref(true);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
@@ -254,102 +261,60 @@ const toggleSidebar = () => {
 <template>
   <div class="h-screen flex flex-col bg-gray-100 overflow-hidden">
     <!-- Pass toggle event -->
-    <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />  
+    <NavHeader class="flex-shrink-0" @toggleSidebar="toggleSidebar" />
 
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
-      <aside  class="transition-all duration-600 ease-in-out transform"
-    :class="isSidebarOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0 w-0'">
-        <SideBar/>
+      <aside class="transition-all duration-600 ease-in-out transform"
+        :class="isSidebarOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0 w-0'">
+        <SideBar />
       </aside>
 
-      <!-- Main --> 
+      <!-- Main -->
       <main class="flex-1 sm:p-5 md:p-6 md:mx-0 overflow-y-auto">
         <div class="m-2">
           <PageHeader title="Items" />
-            <div class="w-full h-full">
-                <div class="flex flex-col md:flex-row gap-2 justify-end mt-6">
-                  <ConvertButton />
-                  <ImportButton />
-                  <ExportButton />
-                </div>
-                
-              <div class="flex flex-col md:flex-row justify-between mt-10">
-                <PrimaryButton @click="openAdd">
-                  <i class="fa-solid fa-plus"></i>
-                  <span> Add Item</span>
-                </PrimaryButton>
-
-                <ItemFilterControls
-                  :search="search"
-                  :cost_range="cost_range"
-                  :status="status"
-                  :unitCostOptions="unitCostOptions" 
-                  :filterStatus="filterStatus"
-                  @update:search="search = $event"
-                  @update:status="status = $event"
-                  @update:cost_range="cost_range = $event"
-                  :mode="'inventory'"
-                />
-              </div>
-
-              <InventoryFormModal
-                v-if="showFormModal"
-                :mode="formMode"
-                :firstDropdown="firstDropdown"
-                :firstInputField="firstInputField"
-                :secondDropdown="secondDropdown"
-                :quantityCostFields="quantityCostFields"
-                :input-fields="inputFields"
-                :invoicesFundFields="invoicesFundFields"
-                :supplierOptions="supplierOptions"
-                :requestFields="requestFields"
-                :inputFieldsEdit="inputFieldsEdit"
-                :totalCost="totalCost"
-                :itemClass="itemClassifications"
-                :initialValues="currentItem"
-                :suppliers="suppliers"
-                :item="currentItem"
-                :viewItem="viewItem"
-                @submit="handleSubmit"
-                @close="() => showFormModal = false"
-              />
-
-              <SuccessModal 
-                v-if="showSuccessModal"
-                :icon="successIcon"
-                :title="formMode === 'edit' ? 'Edit Success' : 'Added Success'"
-                :message="formMode === 'edit' ? 'Item edit successfully!' : 'Item added successfully!'"
-                :actionButtonLabel="formMode === 'edit' ? 'View Item' : 'Assign'"
-                @action="handleAction"
-                @close="showSuccessModal = false" 
-              />
-
-              <SuccessDeleteModal
-                v-if="showDeleteSuccessModal"
-                :icon="iconDelete"
-                title="Delete Success"
-                message="Item deleted successfully!"
-                buttonText="Confirm"
-                @close="showDeleteSuccessModal = false"
-              />
-
-              <DeleteModal
-                v-if="showDeleteModal"
-                :item="currentItem"
-                @confirm="confirmDelete"
-                @close="() => showDeleteModal = false"
-              />
-
-              <InventoryTable 
-                :columns="columns"
-                :rows="items"
-                @view="handleView"
-                @edit="handleEdit"
-                @delete="handleDelete"
-                :actions="['view', 'delete', 'edit']"
-              />
+          <div class="w-full h-full">
+            <div class="flex flex-col md:flex-row gap-2 justify-end mt-6">
+              <ConvertButton />
+              <ImportButton />
+              <ExportButton />
             </div>
+
+            <div class="flex flex-col md:flex-row justify-between mt-10">
+              <PrimaryButton @click="openAdd">
+                <i class="fa-solid fa-plus"></i>
+                <span> Add Item</span>
+              </PrimaryButton>
+
+              <ItemFilterControls :search="search" :cost_range="cost_range" :status="status"
+                :unitCostOptions="unitCostOptions" :filterStatus="filterStatus" @update:search="search = $event"
+                @update:status="status = $event" @update:cost_range="cost_range = $event" :mode="'inventory'" />
+            </div>
+
+            <InventoryFormModal v-if="showFormModal" :mode="formMode" :firstDropdown="firstDropdown"
+              :firstInputField="firstInputField" :secondDropdown="secondDropdown"
+              :quantityCostFields="quantityCostFields" :input-fields="inputFields"
+              :invoicesFundFields="invoicesFundFields" :supplierOptions="supplierOptions" :requestFields="requestFields"
+              :inputFieldsEdit="inputFieldsEdit" :totalCost="totalCost" :itemClass="itemClassifications"
+              :initialValues="currentItem" :suppliers="suppliers" :item="currentItem" :viewItem="viewItem"
+              @submit="handleSubmit" @close="() => showFormModal = false" />
+
+            <SuccessModal v-if="showSuccessModal" :icon="successIcon"
+              :title="formMode === 'edit' ? 'Edit Success' : 'Added Success'"
+              :message="formMode === 'edit' ? 'Item edit successfully!' : 'Item added successfully!'"
+              :actionButtonLabel="formMode === 'edit' ? 'View Item' : 'Assign'" @action="handleAction"
+              @close="showSuccessModal = false" />
+
+            <SuccessDeleteModal v-if="showDeleteSuccessModal" :icon="iconDelete" title="Delete Success"
+              message="Item deleted successfully!" buttonText="Confirm" @close="showDeleteSuccessModal = false" />
+
+            <DeleteModal v-if="showDeleteModal" :item="currentItem" @confirm="confirmDelete"
+              @close="() => showDeleteModal = false" />
+
+            <InventoryTable :columns="columns" :rows="items" @view="handleView" @edit="handleEdit"
+              @delete="handleDelete" :actions="['view', 'delete', 'edit']" />
+          </div>
         </div>
       </main>
     </div>
