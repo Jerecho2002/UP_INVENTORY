@@ -38,7 +38,7 @@ const menuItems = [
     route: "item_archiving.index",
   },
   {
-    name: "Permissions",
+    name: "User Permissions",
     icon: "fa-solid fa-users-gear",
     route: "user_management.index",
   },

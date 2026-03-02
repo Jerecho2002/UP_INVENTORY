@@ -39,7 +39,7 @@ const toggleSidebar = () => {
       <!-- Main -->
       <main class="flex-1 sm:p-5 md:p-6 md:mx-0 overflow-y-auto">
         <div class="m-2">
-            <PageHeader title="User Management" />
+            <PageHeader title="User Permissions" />
 
             <!-- <InventoryTable /> -->
         </div>
