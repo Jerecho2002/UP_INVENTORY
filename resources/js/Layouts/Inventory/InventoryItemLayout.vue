@@ -408,11 +408,7 @@ const toggleSidebar = () => {
               v-if="showSuccessModal"
               :icon="successIcon"
               :title="formMode === 'edit' ? 'Edit Success' : 'Added Success'"
-              :message="
-                formMode === 'edit'
-                  ? 'Item edit successfully!'
-                  : 'Item added successfully!'
-              "
+              :message="successMessage"
               :actionButtonLabel="formMode === 'edit' ? 'View Item' : 'Assign'"
               @action="handleAction"
               @close="showSuccessModal = false"

@@ -40,10 +40,7 @@ const submit = () => {
     <form @submit.prevent="submit">
       <div class="px-16 py-6">
         <div class="text-center mb-8">
-          <h1 class="font-bold text-2xl text-[#332B2B]">Welcome Back!</h1>
-          <span class="text-[#A6A6A6] text-sm font-semibold"
-            >We missed you! Please enter your details.</span
-          >
+          <h1 class="font-bold text-3xl text-[#332B2B]">Log In</h1>
         </div>
 
         <div>

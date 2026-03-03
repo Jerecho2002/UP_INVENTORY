@@ -42,7 +42,7 @@ function closeWithAnimation() {
   }, 200);
 }
 
-function submitForm() {
+function submit() {
   if (props.mode === "edit") {
     form.put(route("suppliers.update", form.id), {
       onSuccess: () => {
@@ -54,6 +54,7 @@ function submitForm() {
         });
 
         emit("close");
+        emit("submit", form);
       },
       onError: (errors) => {
         const firstError = Object.values(errors)[0];
@@ -77,6 +78,7 @@ function submitForm() {
         });
 
         form.reset();
+        emit("submit", form);
         emit("close");
       },
       onError: (errors) => {
@@ -110,7 +112,7 @@ function submitForm() {
     <Toast />
 
       <!-- FORM -->
-      <form @submit.prevent="submitForm">
+      <form @submit.prevent="submit">
         <div class="space-y-4">
           <div v-for="supF in supplierFields" :key="supF.model">
             <label class="block text-sm text-[#3B3B3B] font-bold mb-1">
