@@ -1,51 +1,29 @@
 <?php
+
 namespace App\Services;
 
-use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\UserCreated;
+use App\Models\User;
 
 class UserService
 {
-    protected $repository;
-
-    public function __construct(UserRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
-    public function getAllUsers() {
-        return $this->repository->all();
-    }
-
-    public function getPaginatedUsers($search = null)
-    {
-    return $this->repository->query()
-        ->when($search, function ($query, $search) {
-            $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-        })
-        ->orderBy('name')
-        ->paginate(10);
-    }
-
-    public function getUserById($id) {
-        return $this->repository->find($id);
-    }
-
-    public function createUser(array $data) {
-        $data['password'] = Hash::make($data['password']);
-        $user = $this->repository->create($data);
-        Mail::to($user->email)->send(new UserCreated($user));
-        return $user;
-    }
-
-    public function updateUser($user, array $data) {
-        return $this->repository->update($user, $data);
-    }
-
-    public function deleteUser($user) {
-        return $this->repository->delete($user);
+    public function filterAndPaginateUsers(
+        ?string $search = null,
+        int|string|null $status = null,
+        int $perPage = 10
+    ) {
+        return User::with('userProfiles')
+            ->when(
+                $search,
+                fn($query, $search) =>
+                $query->search($search)
+            )
+            ->when(
+                !is_null($status),
+                fn($query) =>
+                $query->where('status', $status)
+            )
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage)
+            ->withQueryString();
     }
 }
