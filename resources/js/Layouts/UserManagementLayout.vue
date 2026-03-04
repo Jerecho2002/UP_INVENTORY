@@ -51,6 +51,56 @@ const statusDropdown = [
   },
 ];
 
+const firstDropdown = [
+  {
+    label: "Role",
+    // model: "role",
+    options: [
+      { label: "Admin" },
+      { label: "Staff" },
+    ],
+  },
+];
+
+const secondDropdown = [
+  {
+    label: "Permissions",
+    options: [
+      { label: "View" },
+      { label: "Edit" },
+      { label: "Delete" },
+    ],
+  }
+];
+
+const inputFields = [
+  {
+    label: "Email",
+    // model: "user.email",
+    placeholder: "Email",
+  },
+  {
+    label: "First Name",
+    // model: "user_profiles.first_name",
+    placeholder: "First Name",
+  },
+  {
+    label: "Last Name",
+    // model: "user_profiles.last_name",
+    placeholder: "Last Name",
+  },
+  {
+    label: "Middle Name",
+    // model: "user_profiles.middle_name",
+    placeholder: "Middle Name",
+  },
+  {
+    label: "Contact Number",
+    // model: "user_profiles.contact_number",
+    placeholder: "Contact Number",
+  },
+]
+
 const page = usePage();
 const users = computed(() => page.props.users || []);
 
@@ -116,10 +166,14 @@ const toggleSidebar = () => {
 
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
-      <aside class="transition-all duration-600 ease-in-out transform" :class="isSidebarOpen
-        ? 'translate-x-0 opacity-100'
-        : '-translate-x-full opacity-0 w-0'
-        ">
+      <aside
+        class="transition-all duration-600 ease-in-out transform"
+        :class="
+          isSidebarOpen
+            ? 'translate-x-0 opacity-100'
+            : '-translate-x-full opacity-0 w-0'
+        "
+      >
         <SideBar />
       </aside>
 
@@ -133,23 +187,53 @@ const toggleSidebar = () => {
               <span>Add User</span>
             </PrimaryButton>
 
-            <ItemFilterControls :search="search" @update:search="search = $event" :mode="'users'" />
+            <ItemFilterControls
+              :search="search"
+              @update:search="search = $event"
+              :mode="'users'"
+            />
           </div>
 
-          <UserFormModal v-if="showFormModal" :mode="formMode" :user="currentUser" :userFields="userFields"
-            @submit="handleSubmit" @close="showFormModal = false" />
+          <UserFormModal
+            v-if="showFormModal"
+            :mode="formMode"
+            :user="currentUser"
+            :inputFields="inputFields"
+            :firstDropdown="firstDropdown"
+            :secondDropdown="secondDropdown"
+            @submit="handleSubmit"
+            @close="showFormModal = false"
+          />
 
-          <DeleteModal v-if="showDeleteModal" :item="currentUser" @confirm="confirmDelete"
-            @close="() => (showDeleteModal = false)" />
+          <DeleteModal
+            v-if="showDeleteModal"
+            :item="currentUser"
+            @confirm="confirmDelete"
+            @close="() => (showDeleteModal = false)"
+          />
 
-          <SuccessModal v-if="showSuccessModal" title="Success" :message="successMessage"
-            @close="showSuccessModal = false" />
+          <SuccessModal
+            v-if="showSuccessModal"
+            title="Success"
+            :message="successMessage"
+            @close="showSuccessModal = false"
+          />
 
-          <SuccessDeleteModal v-if="showDeleteSuccessModal" title="Delete Success" message="User deleted successfully!"
-            buttonText="Confirm" @close="showDeleteSuccessModal = false" />
+          <SuccessDeleteModal
+            v-if="showDeleteSuccessModal"
+            title="Delete Success"
+            message="User deleted successfully!"
+            buttonText="Confirm"
+            @close="showDeleteSuccessModal = false"
+          />
 
-          <InventoryTable :columns="columns" :rows="users" :actions="['edit', 'delete']" @edit="handleEdit"
-            @delete="handleDelete" />
+          <InventoryTable
+            :columns="columns"
+            :rows="users"
+            :actions="['edit', 'delete']"
+            @edit="handleEdit"
+            @delete="handleDelete"
+          />
         </div>
       </main>
     </div>

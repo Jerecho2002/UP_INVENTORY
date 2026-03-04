@@ -175,7 +175,7 @@ const invoicesFundFields = [
 
 const firstDropdown = [
   {
-    label: "Category",
+    label: "Classifications",
     model: "item_classification_id",
     name: "itemClass",
     option: "classification_name",

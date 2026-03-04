@@ -3,6 +3,7 @@ import { useForm, usePage } from "@inertiajs/vue3";
 import { watch, ref } from "vue";
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast'
+import MultiSelect from 'primevue/multiselect';
 
 const props = defineProps({
   mode: { type: String, default: "create" },
@@ -261,7 +262,6 @@ function getViewValue(view) {
                   <div
                     v-for="fdp in firstDropdown"
                     :key="fdp.model"
-                    class="flex flex-col"
                   >
                     <label class="block text-[#3B3B3B] text-sm font-bold mb-1">{{
                       fdp.label

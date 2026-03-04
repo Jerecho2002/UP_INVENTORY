@@ -4,7 +4,7 @@
 </script>
 
 <template>
-   <Head title="UP | User Management" />
+   <Head title="UP | User Permissions" />
     
         <div class="bg-[#F3F3F3]">
             <UserManagementLayout/>

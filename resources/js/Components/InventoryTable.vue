@@ -181,14 +181,14 @@ function toggleCheck(item) {
   <div class="mt-2 flex justify-between items-center mx-2">
     <div>
       <p class="text-base font-bold text-[#3B3B3B]">
-        Results: {{ rows.from }}-{{ rows.to }} of
-        {{ rows.total }}
+        Results:
+        <span class="text-[#850038]"
+          >{{ rows.from }}-{{ rows.to }} of {{ rows.total }}</span
+        >
       </p>
     </div>
     <div class="flex justify-center">
-      <div
-        class="flex items-center gap-1 sm:gap-2 py-2"
-      >
+      <div class="flex items-center gap-1 sm:gap-2 py-2">
         <span v-for="link in rows.links" :key="link.label">
           <span
             v-if="link.url"
@@ -199,7 +199,6 @@ function toggleCheck(item) {
               'bg-[#850038] text-white font-semibold shadow-sm': link.active,
             }"
           >
-            <!-- Keep chevrons unchanged -->
             <i
               v-if="link.label.includes('Previous')"
               class="fa-solid fa-chevron-left"
