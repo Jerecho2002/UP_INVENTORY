@@ -41,21 +41,41 @@ watch(
 
     form.id = val.id;
     form.email = val.email;
-    form.password = "";  // always blank on edit
+    form.password = "";
     form.status = val.status ?? 0;
-
     form.user_profiles.first_name = val.user_profiles?.first_name ?? "";
     form.user_profiles.last_name = val.user_profiles?.last_name ?? "";
     form.user_profiles.middle_name = val.user_profiles?.middle_name ?? "";
     form.user_profiles.contact_number = val.user_profiles?.contact_number ?? "";
-
     form.role = val.roles?.length ? val.roles[0].name : null;
 
-    form.permissions = props.permissions.filter((p) =>
-      val.permissions?.some((up) => up.name === p.name)
+    const userPermissionNames = val.permissions?.map(p => p.name) ?? [];
+    const userRole = props.roles.find(r => r.name === form.role);
+    const rolePermissionNames = userRole?.permissions?.map(p => p.name) ?? [];
+    const allPermissionNames = [...new Set([...userPermissionNames, ...rolePermissionNames])];
+
+    form.permissions = props.permissions.filter(p =>
+      allPermissionNames.includes(p.name)
     );
   },
   { immediate: true }
+);
+
+watch(
+  () => form.role,
+  (newRole) => {
+    if (!newRole) {
+      form.permissions = [];
+      return;
+    }
+
+    const selectedRole = props.roles.find(r => r.name === newRole);
+    const rolePermissionNames = selectedRole?.permissions?.map(p => p.name) ?? [];
+
+    form.permissions = props.permissions.filter(p =>
+      rolePermissionNames.includes(p.name)
+    );
+  }
 );
 
 const isClosing = ref(false);
