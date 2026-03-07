@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             ->create(['email' => 'special@example.com']);
 
         $specialStaff->assignRole('staff');
-        $specialStaff->givePermissionTo('delete inventory');
+        $specialStaff->givePermissionTo('delete');
 
         User::factory(18)
             ->withProfile()

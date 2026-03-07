@@ -12,9 +12,9 @@ class RolePermissionSeeder extends Seeder
     {
 
         $permissions = [
-            'view inventory',
-            'edit inventory',
-            'delete inventory',
+            'view',
+            'edit',
+            'delete',
         ];
 
         foreach ($permissions as $permission) {
@@ -29,8 +29,8 @@ class RolePermissionSeeder extends Seeder
         $adminRole->givePermissionTo(Permission::all());
 
         $staffRole->givePermissionTo([
-            'view inventory',
-            'edit inventory',
+            'view',
+            'edit',
         ]);
     }
 }
