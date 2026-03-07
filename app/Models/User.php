@@ -35,7 +35,7 @@ class User extends Authenticatable
 
     public function userProfiles()
     {
-        return $this->hasOne(UserProfile::class);
+        return $this->hasOne(UserProfile::class, 'user_id', 'id');
     }
 
     public function scopeSearch($query, $term)
@@ -45,7 +45,13 @@ class User extends Authenticatable
         }
 
         return $query->where(function ($q) use ($term) {
-            $q->where('email', 'like', "%{$term}%");
+            $q->where('email', 'like', "%{$term}%")
+                ->orWhereHas('userProfiles', function ($profile) use ($term) {
+                    $profile->where('first_name', 'like', "%{$term}%")
+                        ->orWhere('last_name', 'like', "%{$term}%")
+                        ->orWhere('middle_name', 'like', "%{$term}%")
+                        ->orWhere('contact_number', 'like', "%{$term}%");
+                });
         });
     }
 }

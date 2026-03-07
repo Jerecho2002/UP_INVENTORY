@@ -341,14 +341,10 @@ const toggleSidebar = () => {
 
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
-      <aside
-        class="transition-all duration-600 ease-in-out transform"
-        :class="
-          isSidebarOpen
-            ? 'translate-x-0 opacity-100'
-            : '-translate-x-full opacity-0 w-0'
-        "
-      >
+      <aside class="transition-all duration-600 ease-in-out transform" :class="isSidebarOpen
+          ? 'translate-x-0 opacity-100'
+          : '-translate-x-full opacity-0 w-0'
+        ">
         <SideBar />
       </aside>
 
@@ -369,75 +365,32 @@ const toggleSidebar = () => {
                 <span> Add Item</span>
               </PrimaryButton>
 
-              <ItemFilterControls
-                :search="search"
-                :cost_range="cost_range"
-                :status="status"
-                :unitCostOptions="unitCostOptions"
-                :filterStatus="filterStatus"
-                @update:search="search = $event"
-                @update:status="status = $event"
-                @update:cost_range="cost_range = $event"
-                :mode="'inventory'"
-              />
+              <ItemFilterControls :search="search" :cost_range="cost_range" :status="status"
+                :unitCostOptions="unitCostOptions" :filterStatus="filterStatus" @update:search="search = $event"
+                @update:status="status = $event" @update:cost_range="cost_range = $event" :mode="'inventory'" />
             </div>
 
-            <InventoryFormModal
-              v-if="showFormModal"
-              :mode="formMode"
-              :firstDropdown="firstDropdown"
-              :firstInputField="firstInputField"
-              :secondDropdown="secondDropdown"
-              :quantityCostFields="quantityCostFields"
-              :input-fields="inputFields"
-              :invoicesFundFields="invoicesFundFields"
-              :supplierOptions="supplierOptions"
-              :requestFields="requestFields"
-              :inputFieldsEdit="inputFieldsEdit"
-              :totalCost="totalCost"
-              :itemClass="itemClassifications"
-              :initialValues="currentItem"
-              :suppliers="suppliers"
-              :item="currentItem"
-              :viewItem="viewItem"
-              @submit="handleSubmit"
-              @close="() => (showFormModal = false)"
-            />
+            <InventoryFormModal v-if="showFormModal" :mode="formMode" :firstDropdown="firstDropdown"
+              :firstInputField="firstInputField" :secondDropdown="secondDropdown"
+              :quantityCostFields="quantityCostFields" :input-fields="inputFields"
+              :invoicesFundFields="invoicesFundFields" :supplierOptions="supplierOptions" :requestFields="requestFields"
+              :inputFieldsEdit="inputFieldsEdit" :totalCost="totalCost" :itemClass="itemClassifications"
+              :initialValues="currentItem" :suppliers="suppliers" :item="currentItem" :viewItem="viewItem"
+              @submit="handleSubmit" @close="() => (showFormModal = false)" />
 
-            <SuccessModal
-              v-if="showSuccessModal"
-              :icon="successIcon"
-              :title="formMode === 'edit' ? 'Edit Success' : 'Added Success'"
-              :message="successMessage"
-              :actionButtonLabel="formMode === 'edit' ? 'View Item' : 'Assign'"
-              @action="handleAction"
-              @close="showSuccessModal = false"
-            />
+            <SuccessModal v-if="showSuccessModal" :icon="successIcon"
+              :title="formMode === 'edit' ? 'Edit Success' : 'Added Success'" :message="successMessage"
+              :actionButtonLabel="formMode === 'edit' ? 'View Item' : 'Assign'" @action="handleAction"
+              @close="showSuccessModal = false" />
 
-            <SuccessDeleteModal
-              v-if="showDeleteSuccessModal"
-              :icon="iconDelete"
-              title="Delete Success"
-              message="Item deleted successfully!"
-              buttonText="Confirm"
-              @close="showDeleteSuccessModal = false"
-            />
+            <SuccessDeleteModal v-if="showDeleteSuccessModal" :icon="iconDelete" title="Delete Success"
+              message="Item deleted successfully!" buttonText="Confirm" @close="showDeleteSuccessModal = false" />
 
-            <DeleteModal
-              v-if="showDeleteModal"
-              :item="currentItem"
-              @confirm="confirmDelete"
-              @close="() => (showDeleteModal = false)"
-            />
+            <DeleteModal v-if="showDeleteModal" :item="currentItem" @confirm="confirmDelete"
+              @close="() => (showDeleteModal = false)" />
 
-            <InventoryTable
-              :columns="columns"
-              :rows="items"
-              @view="handleView"
-              @edit="handleEdit"
-              @delete="handleDelete"
-              :actions="['view', 'delete', 'edit']"
-            />
+            <InventoryTable :columns="columns" :rows="items" @view="handleView" @edit="handleEdit"
+              @delete="handleDelete" :actions="['view', 'delete', 'edit']" />
           </div>
         </div>
       </main>

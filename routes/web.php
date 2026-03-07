@@ -10,6 +10,7 @@ use App\Http\Controllers\ItemArchivingController;
 use App\Http\Controllers\AccountablePersonController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\RolePermissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -83,7 +84,17 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/user-management', [UserManagementController::class, 'UserManagement'])->name('user_management.index');
         Route::post('/user-management', [UserManagementController::class, 'store'])->name('user_management.store');
-        Route::put('/user-management/{id}', [UserManagementController::class, 'update'])->name('user_management.update');
-        Route::delete('/user-management/{id}', [UserManagementController::class, 'destroy'])->name('user_management.destroy');
+        Route::put('/user-management/{user}', [UserManagementController::class, 'update'])->name('user_management.update');
+        Route::delete('/user-management/{user}', [UserManagementController::class, 'destroy'])->name('user_management.destroy');
+    });
+
+    Route::middleware(['role:admin'])->group(function () {
+        Route::post('/roles', [RolePermissionController::class, 'storeRole'])->name('roles.store');
+        Route::put('/roles/{role}', [RolePermissionController::class, 'updateRole'])->name('roles.update');
+        Route::delete('/roles/{role}', [RolePermissionController::class, 'destroyRole'])->name('roles.destroy');
+
+        Route::post('/permissions', [RolePermissionController::class, 'storePermission'])->name('permissions.store');
+        Route::put('/permissions/{permission}', [RolePermissionController::class, 'updatePermission'])->name('permissions.update');
+        Route::delete('/permissions/{permission}', [RolePermissionController::class, 'destroyPermission'])->name('permissions.destroy');
     });
 });

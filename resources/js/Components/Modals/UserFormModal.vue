@@ -8,33 +8,56 @@ import MultiSelect from "primevue/multiselect";
 const toast = useToast();
 
 const props = defineProps({
-  mode: { type: String, default: "create" },
-  userFields: { type: Array, default: () => [] },
-  user: { type: Object, default: () => ({}) },
-  inputFields: { type: Array, default: () => [] },
-  firstDropdown: { type: Array, default: () => [] },
-  secondDropdown: { type: Array, default: () => [] },
+  mode: String,
+  user: Object,
+  roles: Array,
+  permissions: Array,
 });
 
 const emit = defineEmits(["submit", "close"]);
 
-const form = useForm({});
+const form = useForm({
+  id: null,
+  email: "",
+  password: "",
+  status: 0,
+  user_profiles: {
+    first_name: "",
+    last_name: "",
+    middle_name: "",
+    contact_number: "",
+  },
+  role: null,
+  permissions: [],
+});
 
-// Populate form when editing
 watch(
   () => props.user,
   (val) => {
-    if (val) {
-      Object.assign(form, {
-        ...val,
-        email: val.user?.email ?? "",
-      });
+    if (!val) {
+      form.reset();
+      return;
     }
+
+    form.id = val.id;
+    form.email = val.email;
+    form.password = "";  // always blank on edit
+    form.status = val.status ?? 0;
+
+    form.user_profiles.first_name = val.user_profiles?.first_name ?? "";
+    form.user_profiles.last_name = val.user_profiles?.last_name ?? "";
+    form.user_profiles.middle_name = val.user_profiles?.middle_name ?? "";
+    form.user_profiles.contact_number = val.user_profiles?.contact_number ?? "";
+
+    form.role = val.roles?.length ? val.roles[0].name : null;
+
+    form.permissions = props.permissions.filter((p) =>
+      val.permissions?.some((up) => up.name === p.name)
+    );
   },
   { immediate: true }
 );
 
-// Animation
 const isClosing = ref(false);
 
 function closeWithAnimation() {
@@ -46,159 +69,219 @@ function closeWithAnimation() {
 }
 
 function submit() {
-  if (props.mode === "edit") {
-    form.put(route("user_management.update", form.id), {
-      onSuccess: () => {
-        toast.add({
-          severity: "success",
-          summary: "Updated",
-          detail: "User updated successfully.",
-          life: 3000,
-        });
+  const url = props.mode === 'edit'
+    ? route('user_management.update', form.id)
+    : route('user_management.store');
 
-        emit("close");
-        emit("submit", form);
-      },
-      onError: (errors) => {
-        const firstError = Object.values(errors)[0];
+  const method = props.mode === 'edit' ? 'put' : 'post';
 
-        toast.add({
-          severity: "error",
-          summary: "Validation Failed",
-          detail: firstError,
-          life: 4000,
-        });
-      },
-    });
-  } else {
-    form.post(route("user_management.store"), {
-      onSuccess: () => {
-        toast.add({
-          severity: "success",
-          summary: "Created",
-          detail: "User added successfully.",
-          life: 3000,
-        });
+  form
+    .transform((data) => ({
+      ...data,
+      permissions: data.permissions.map((p) =>
+        typeof p === 'object' ? p.name : p
+      ),
+    }))
+  [method](url, {
+    onSuccess: () => {
+      toast.add({
+        severity: 'success',
+        summary: props.mode === 'edit' ? 'Updated' : 'Created',
+        detail: props.mode === 'edit'
+          ? 'User updated successfully.'
+          : 'User added successfully.',
+        life: 3000,
+      });
+      if (props.mode !== 'edit') form.reset();
+      emit('submit');
+      emit('close');
+    },
+    onError: (errors) => {
+      const firstError = Object.values(errors)[0];
 
-        form.reset();
-        emit("submit", form);
-        emit("close");
-      },
-      onError: (errors) => {
-        const firstError = Object.values(errors)[0];
-
-        toast.add({
-          severity: "error",
-          summary: "Validation Failed",
-          detail: firstError,
-          life: 4000,
-        });
-      },
-    });
-  }
+      toast.add({
+        severity: 'error',
+        summary: 'Validation Failed',
+        detail: firstError,
+        life: 4000,
+      });
+    },
+  });
 }
 </script>
 
 <template>
   <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
-    <div
-      :class="[
-        'bg-white rounded-lg w-full max-w-lg p-6 overflow-y-auto max-h-[90vh]',
-        isClosing ? 'animate-pop-out' : 'animate-pop-in',
-      ]"
-      @click.stop
-    >
+
+    <div :class="[
+      'bg-white rounded-lg w-full max-w-lg p-6 overflow-y-auto max-h-[90vh]',
+      isClosing ? 'animate-pop-out' : 'animate-pop-in'
+    ]">
+
       <h3 class="text-2xl font-bold text-[#850038] mb-6">
-        {{ mode === "edit" ? "Edit Permissions" : "Add User" }}
+        {{ mode === 'edit' ? 'Edit User' : 'Add User' }}
       </h3>
 
       <Toast />
 
-      <!-- FORM -->
       <form @submit.prevent="submit">
+
         <div class="space-y-4">
-          <div class="flex flex-col md:flex-row gap-4">
-            <!-- FIRST DROPDOWN -->
-            <div v-for="fdp in firstDropdown" :key="fdp.label">
-              <label class="block text-[#3B3B3B] text-sm font-bold mb-1">{{
-                fdp.label
-              }}</label>
-              <select
-                :class="[
-                  'w-full sm:w-[14rem] rounded-md px-3 py-3 bg-[#F8F8F8] text-gray-500 cursor-pointer text-sm focus:ring-1 focus:outline-none',
-                ]"
-              >
-                <option value="">Select</option>
-                <option
-                  v-for="item in props[fdp.name]"
-                  :key="item.id"
-                  :value="item[fdp.value]"
-                >
-                  {{ item[fdp.option] || "N/A" }}
-                </option>
-              </select>
-            </div>
 
-            <!-- SECOND DROPDOWN -->
-            <div v-for="sec in secondDropdown" :key="sec.label">
-              <label class="block text-[#3B3B3B] text-sm font-bold mb-1">{{
-                sec.label
-              }}</label>
-              <MultiSelect
-                v-model="form[sec.label]"
-                :options="sec.options"
-                optionLabel="label"
-                display="chip"
-                filter
-                placeholder="Select"
-                :maxSelectedLabels="3"
-                :class="[
-                  'w-full sm:w-[14rem] rounded-xl py-1 bg-[#F8F8F8] text-gray-700 text-sm shadow-sm !border-1 !border-black hover:!border-black hover:!shadow-none',
-                ]"
-              />
-            </div>
-          </div>
-
-          <!-- INPUT FIELDS -->
-          <div v-for="userF in inputFields" :key="userF.model">
-            <label class="block text-sm text-[#3B3B3B] font-bold mb-1">
-              {{ userF.label }}
+          <div>
+            <label class="block text-sm font-bold mb-1">
+              Email
             </label>
-
-            <input
-              v-model="
-                form[userF.model === 'user.email' ? 'email' : userF.model]
-              "
-              :type="userF.type || 'text'"
-              :placeholder="userF.placeholder"
-              :class="[
-                'w-full rounded-md px-3 py-3 text-[#3B3B3B] bg-[#F8F8F8] text-sm focus:ring-1 focus:outline-none',
-              ]"
-            />
-            <!-- <div v-if="form.errors[userF.model]" class="text-red-500 text-sm">
-              {{ form.errors[userF.model] }}
-            </div> -->
+            <input v-model="form.email" type="email" placeholder="Email" :class="[
+              'w-full rounded-md px-3 py-3 text-[#3B3B3B] bg-[#F8F8F8] text-sm focus:ring-1 focus:outline-none',
+              form.errors.email
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-[#850038] focus:border-[#850038]',
+            ]" />
+            <div v-if="form.errors.email" class="text-red-500 text-sm">
+              {{ form.errors.email }}
+            </div>
           </div>
+
+          <!-- Password -->
+          <div>
+            <label class="block text-sm font-bold mb-1">
+              Password <span v-if="mode === 'edit'" class="text-gray-400 font-normal">(leave blank to keep
+                current)</span>
+            </label>
+            <input v-model="form.password" type="password" placeholder="Password" :class="[
+              'w-full rounded-md px-3 py-3 text-[#3B3B3B] bg-[#F8F8F8] text-sm focus:ring-1 focus:outline-none',
+              form.errors.password
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-[#850038] focus:border-[#850038]',
+            ]" />
+            <div v-if="form.errors.password" class="text-red-500 text-sm">
+              {{ form.errors.password }}
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div>
+            <label class="block text-sm font-bold mb-1">Status</label>
+            <select v-model="form.status" :class="[
+              'w-full rounded-md px-3 py-3 text-[#3B3B3B] bg-[#F8F8F8] text-sm focus:ring-1 focus:outline-none',
+              form.errors.status
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-[#850038] focus:border-[#850038]',
+            ]">
+              <option :value="1">Active</option>
+              <option :value="0">Inactive</option>
+            </select>
+            <div v-if="form.errors.status" class="text-red-500 text-sm">
+              {{ form.errors.status }}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-1">
+              First Name
+            </label>
+            <input v-model="form.user_profiles.first_name" :class="[
+              'w-full rounded-md px-3 py-3 text-[#3B3B3B] bg-[#F8F8F8] text-sm focus:ring-1 focus:outline-none',
+              form.errors['user_profiles.first_name']
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-[#850038] focus:border-[#850038]',
+            ]" />
+            <div v-if="form.errors['user_profiles.first_name']" class="text-red-500 text-sm">
+              {{ form.errors['user_profiles.first_name'] }}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-1">
+              Last Name
+            </label>
+            <input v-model="form.user_profiles.last_name" :class="[
+              'w-full rounded-md px-3 py-3 text-[#3B3B3B] bg-[#F8F8F8] text-sm focus:ring-1 focus:outline-none',
+              form.errors['user_profiles.last_name']
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-[#850038] focus:border-[#850038]',
+            ]" />
+            <div v-if="form.errors['user_profiles.last_name']" class="text-red-500 text-sm">
+              {{ form.errors['user_profiles.last_name'] }}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-1">
+              Middle Name
+            </label>
+            <input v-model="form.user_profiles.middle_name" :class="[
+              'w-full rounded-md px-3 py-3 text-[#3B3B3B] bg-[#F8F8F8] text-sm focus:ring-1 focus:outline-none',
+              form.errors['user_profiles.middle_name']
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-[#850038] focus:border-[#850038]',
+            ]" />
+            <div v-if="form.errors['user_profiles.middle_name']" class="text-red-500 text-sm">
+              {{ form.errors['user_profiles.middle_name'] }}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-1">
+              Contact Number
+            </label>
+            <input v-model="form.user_profiles.contact_number" :class="[
+              'w-full rounded-md px-3 py-3 text-[#3B3B3B] bg-[#F8F8F8] text-sm focus:ring-1 focus:outline-none',
+              form.errors['user_profiles.contact_number']
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-[#850038] focus:border-[#850038]',
+            ]" />
+            <div v-if="form.errors['user_profiles.contact_number']" class="text-red-500 text-sm">
+              {{ form.errors['user_profiles.contact_number'] }}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-1">
+              Role
+            </label>
+            <select v-model="form.role" :class="[
+              'w-full rounded-md px-3 py-3 text-[#3B3B3B] bg-[#F8F8F8] text-sm focus:ring-1 focus:outline-none',
+              form.errors.role
+                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                : 'border-gray-300 focus:ring-[#850038] focus:border-[#850038]',
+            ]">
+              <option value="">Select Role</option>
+              <option v-for="role in roles" :key="role.id" :value="role.name">
+                {{ role.name }}
+              </option>
+            </select>
+            <div v-if="form.errors.role" class="text-red-500 text-sm">
+              {{ form.errors.role }}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-1">
+              Permissions
+            </label>
+            <MultiSelect v-model="form.permissions" :options="permissions" optionLabel="name" display="chip" filter
+              placeholder="Select Permissions" />
+            <div v-if="form.errors.permissions" class="text-red-500 text-sm">
+              {{ form.errors.permissions }}
+            </div>
+          </div>
+
         </div>
 
-        <!-- BUTTONS -->
         <div class="flex justify-end gap-3 mt-6">
-          <button
-            type="button"
-            @click="closeWithAnimation"
-            class="border border-gray-400 px-6 py-3 rounded-full text-[#3B3B3B] text-sm font-semibold hover:bg-gray-100"
-          >
+          <button type="button" @click="closeWithAnimation" class="border px-6 py-3 rounded-full">
             Cancel
           </button>
-
-          <button
-            type="submit"
-            class="bg-[#0E6021] text-white px-8 py-3 rounded-full text-sm font-semibold hover:bg-green-800"
-          >
-            {{ mode === "edit" ? "Confirm" : "Add" }}
+          <button type="submit" class="bg-green-700 text-white px-8 py-3 rounded-full">
+            {{ mode === 'edit' ? 'Confirm' : 'Add' }}
           </button>
         </div>
+
       </form>
+
     </div>
+
   </div>
 </template>
